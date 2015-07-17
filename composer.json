@@ -1,0 +1,30 @@
+{
+    "name": "eclipxe/buzoncfdi-cfdireader",
+    "version": "0.1.0",
+    "description": "Library to read and validate a Mexican CFDI (Comprobantre Fiscal por Internet)",
+    "homepage": "https://github.com/eclipxe13/buzoncfdi-cfdireader",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos C Soto",
+            "email": "eclipxe13@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "CFDIReader\\": "src/CFDIReader/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CFDIReaderTests\\": "tests/CFDIReaderTests/"
+        }
+    }
+}
