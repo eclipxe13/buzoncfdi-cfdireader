@@ -18,7 +18,7 @@ class Totales extends AbstractValidator
             $this->warnings->add('El subtotal no coincide con la suma de los importes');
         }
         $retenidos = $this->value($this->comprobante->impuestos["totalImpuestosRetenidos"]);
-        $traslados = $this->value($this->comprobante->impuestos["totalImpuestosRetenidos"]);
+        $traslados = $this->value($this->comprobante->impuestos["totalImpuestosTrasladados"]);
         $descuentos = $this->value($this->comprobante["descuento"]);
         $total = $this->value($this->comprobante["total"]);
         $calculated = $subtotal - $descuentos + $traslados - $retenidos;

@@ -17,10 +17,10 @@ class Impuestos extends AbstractValidator
         if (! $this->compare($retenciones, $retenidos)) {
             $this->warnings->add('El total de impuestos retenidos difiere de la suma de los nodos de las retenciones');
         }
-        $traslados = $this->value($this->comprobante->impuestos["totalImpuestosRetenidos"]);
+        $traslados = $this->value($this->comprobante->impuestos["totalImpuestosTrasladados"]);
         $trasladados = $this->sumNodes($this->comprobante->impuestos->traslados->traslado, "importe");
         if (! $this->compare($traslados, $trasladados)) {
-            $this->warnings->add('El total de impuestos trasladados difiere de la suma de los nodos de las retenciones');
+            $this->warnings->add('El total de impuestos trasladados difiere de la suma de los nodos de los traslados');
         }
 
     }
