@@ -6,6 +6,7 @@ use CFDIReader\CFDIReader;
 use CFDIReader\PostValidations\Messages;
 use CFDIReader\PostValidations\Issues;
 use CFDIReader\PostValidations\IssuesTypes;
+use SimpleXMLElement;
 
 /**
  * Decorator class to write Validators using some protected helper methods
@@ -23,7 +24,7 @@ abstract class AbstractValidator implements \CFDIReader\PostValidations\Validato
     protected $warnings;
 
     /**
-     * @var \SimpleXMLElement
+     * @var SimpleXMLElement
      */
     protected $comprobante;
 
@@ -50,26 +51,39 @@ abstract class AbstractValidator implements \CFDIReader\PostValidations\Validato
     }
 
     /**
-     * Compare two numbers using a delta
+     * Compare two numbers using a delta abs(n - m) <= d
      * @param float $first
      * @param float $second
      * @return bool
      */
-    protected function compare($first, $second)
+    protected function compare($first, $second, $delta = null)
     {
-        return (abs($first - $second) < $this->delta);
+        if (null === $delta) $delta = $this->compareDelta();
+        return (abs($first - $second) <= $delta);
+    }
+
+    protected function compareDelta()
+    {
+        return 0.001;
     }
 
     /**
      * Compute the sum of a collection of nodes considering an attribute
-     * @param \SimpleXMLElement $collection
+     * @param SimpleXMLElement $collection
      * @param string $attribute
      * @return float
      */
-    protected function sumNodes($collection, $attribute) {
+    protected function sumNodes(SimpleXMLElement $collection = null, $attribute = null) {
+        if (null == $collection) return 0;
         $sum = 0;
-        foreach($collection as $node) {
-            $sum = $sum + $this->value($node[$attribute]);
+        if (! $attribute) {
+            foreach($collection as $node) {
+                $sum = $sum + $this->value($node);
+            }
+        } else {
+            foreach($collection as $node) {
+                $sum = $sum + $this->value($node[$attribute]);
+            }
         }
         return $sum;
     }
