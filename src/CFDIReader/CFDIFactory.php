@@ -75,7 +75,7 @@ class CFDIFactory
         // after creation
         $postValidator = $this->newPostValidator();
         if (! $postValidator->validate($cfdireader)) {
-            throw new \RuntimeException('The content of the CFDI is not logic: ' . $postValidator->getError());
+            throw new \RuntimeException('The content of the CFDI is not logic: ' . $postValidator->issues->messages(IssuesTypes::ERROR)->getFirst());
         }
 
         return $cfdireader;
