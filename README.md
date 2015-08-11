@@ -23,7 +23,7 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 
 * The content must be a valid XML
 * The root element must be Comprobante
-* The version attibute must be 3.2
+* The version attribute must be 3.2
 * The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
 * The element Comprobante/Complemento/TimbreFiscalDigital must exists
 
@@ -40,6 +40,7 @@ $cfdi = $reader->comprobante();
 
 // all the nodes and attributes first letter is in lower case except if the name is all upper case
 echo $cfdi->complemento->timbreFiscalDigital["UUID"]
+```
 
 ## TODO
 
