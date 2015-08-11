@@ -2,7 +2,8 @@
 
 namespace CFDIReader\SchemaValidator;
 
-
+use DOMDocument;
+use DOMXPath;
 
 /**
  * This class is a SchemaValidator
@@ -61,8 +62,8 @@ class SchemaValidator
         }
 
         // create the DOMDocument object
-        $dom = new \DOMDocument();
-        $dom->loadXML($content, LIBXML_ERR_FATAL);
+        $dom = new DOMDocument();
+        $dom->loadXML($content, LIBXML_ERR_ERROR);
         // check for errors on load XML
         foreach(libxml_get_errors() as $xmlerror) {
             libxml_clear_errors();
@@ -78,7 +79,7 @@ class SchemaValidator
             // check for errors on load XML
             foreach(libxml_get_errors() as $xmlerror) {
                 libxml_clear_errors();
-                return $this->registerError('Malformed XML Document: ' . $xmlerror->message);
+                return $this->registerError('XML Document break schemas: ' . $xmlerror->message);
             }
         }
         // return true
@@ -98,13 +99,13 @@ class SchemaValidator
 
     /**
      * Utility function to retrieve a list of namespaces with the schema location
-     * @param \DOMDocument $dom
+     * @param DOMDocument $dom
      * @return Schemas
      */
-    private function buildSchemas(\DOMDocument $dom)
+    private function buildSchemas(DOMDocument $dom)
     {
         $schemas = new Schemas();
-        $xpath = new \DOMXPath($dom);
+        $xpath = new DOMXPath($dom);
         if (false !== $schemasList = $xpath->query('//@xsi:schemaLocation', null, true)) {
             for($s = 0 ; $s < $schemasList->length ; $s++) {
                 if (false != $content = $schemasList->item($s)->nodeValue) {
