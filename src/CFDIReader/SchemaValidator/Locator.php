@@ -246,6 +246,9 @@ class Locator
      */
     private function assertUrlIsValid($url)
     {
+        if (empty($url)) {
+            throw new \RuntimeException("Url (empty) is not valid");
+        }
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
             throw new \RuntimeException("Url $url is not valid");
         }
