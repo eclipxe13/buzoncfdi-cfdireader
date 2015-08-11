@@ -61,7 +61,14 @@ class CFDIFactory
         return $postvalidator;
     }
 
-    public function newCFDIReader($content)
+    /**
+     * Create a CFDI Reader, it has to be valid otherwise a exception will be thrown
+     * @param string $content
+     * @param array $errors
+     * @param array $warnings
+     * @return \CFDIReader\CFDIReader
+     */
+    public function newCFDIReader($content, array &$errors = [], array &$warnings = [])
     {
         // before creation SchemaValidator
         $schemaValidator = $this->newSchemaValidator();
@@ -74,10 +81,11 @@ class CFDIFactory
 
         // after creation
         $postValidator = $this->newPostValidator();
-        if (! $postValidator->validate($cfdireader)) {
-            throw new \RuntimeException('The content of the CFDI is not logic: ' . $postValidator->issues->messages(IssuesTypes::ERROR)->getFirst());
-        }
-
+        $postValidator->validate($cfdireader);
+        /* @var $errors \CFDIReader\PostValidations\Messages */
+        $errors = $postValidator->issues->messages(PostValidations\IssuesTypes::ERROR)->all();
+        /* @var $warnings \CFDIReader\PostValidations\Messages */
+        $warnings = $postValidator->issues->messages(PostValidations\IssuesTypes::WARNING)->all();
         return $cfdireader;
     }
 
