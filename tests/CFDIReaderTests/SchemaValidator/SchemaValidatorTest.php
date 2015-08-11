@@ -86,8 +86,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase
         $validator = new SchemaValidator($locator);
         $this->assertFalse($validator->validate(file_get_contents($cfdifile)), 'CFDI File must not be valid');
         $error = $validator->getError();
-        print_r($error);
-        $this->assertContains('Malformed XML Document', $error, 'Report Malformed XML Document');
+        $this->assertContains('Invalid XML Document', $error, 'Report Invalid XML Document');
         $this->assertContains("This element is not expected", $error, 'This element is not expected');
         $this->assertContains('{http://www.sat.gob.mx/cfd/3}emisor', $error, 'Mention emisor');
         $this->assertContains('{http://www.sat.gob.mx/cfd/3}Emisor', $error, 'Mention Emisor');

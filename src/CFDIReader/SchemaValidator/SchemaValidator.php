@@ -79,7 +79,7 @@ class SchemaValidator
             // check for errors on load XML
             foreach(libxml_get_errors() as $xmlerror) {
                 libxml_clear_errors();
-                return $this->registerError('XML Document break schemas: ' . $xmlerror->message);
+                return $this->registerError('Invalid XML Document: ' . $xmlerror->message);
             }
         }
         // return true
