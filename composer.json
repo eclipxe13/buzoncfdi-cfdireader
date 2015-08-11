@@ -1,9 +1,7 @@
 {
     "name": "eclipxe/buzoncfdi-cfdireader",
-    "version": "0.1.0",
-    "description": "Library to read and validate a Mexican CFDI (Comprobantre Fiscal por Internet)",
+    "description": "Library to read and validate a Mexican CFDI (Comprobante Fiscal por Internet)",
     "homepage": "https://github.com/eclipxe13/buzoncfdi-cfdireader",
-    "type": "library",
     "license": "MIT",
     "authors": [
         {
