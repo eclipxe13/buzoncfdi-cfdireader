@@ -19,9 +19,11 @@ class Totales extends AbstractValidator
         }
         $retenidos = $this->value($this->comprobante->impuestos["totalImpuestosRetenidos"]);
         $traslados = $this->value($this->comprobante->impuestos["totalImpuestosTrasladados"]);
+        $localesRetenidos = $this->value($this->comprobante->complemento->impuestosLocales["totaldeRetenciones"]);
+        $localesTraslados = $this->value($this->comprobante->complemento->impuestosLocales["totaldeTraslados"]);
         $descuentos = $this->value($this->comprobante["descuento"]);
         $total = $this->value($this->comprobante["total"]);
-        $calculated = $subtotal - $descuentos + $traslados - $retenidos;
+        $calculated = $subtotal - $descuentos + $traslados - $retenidos + $localesTraslados - $localesRetenidos;
         if (! $this->compare($calculated, $total)) {
             $this->warnings->add('El total no coincide con la suma del subtotal menos el descuento mas los traslados menos las retenciones');
         }

@@ -22,6 +22,18 @@ class Impuestos extends AbstractValidator
         if (! $this->compare($traslados, $trasladados)) {
             $this->warnings->add('El total de impuestos trasladados difiere de la suma de los nodos de los traslados');
         }
+        if (isset($this->comprobante->complemento->impuestosLocales)) {
+            $localesRetenidos = $this->value($this->comprobante->complemento->impuestosLocales["totaldeRetenciones"]);
+            $localesRetenciones = $this->sumNodes($this->comprobante->complemento->impuestosLocales->retencionesLocales, "importe");
+            if (! $this->compare($localesRetenciones, $localesRetenidos)) {
+                $this->warnings->add('El total de impuestos locales retenidos difiere de la suma de los nodos de las retenciones');
+            }
+            $localesTraslados = $this->value($this->comprobante->complemento->impuestosLocales["totaldeTraslados"]);
+            $localesTrasladados = $this->sumNodes($this->comprobante->complemento->impuestosLocales->trasladosLocales, "importe");
+            if (! $this->compare($localesTrasladados, $localesTraslados)) {
+                $this->warnings->add('El total de impuestos locales trasladados difiere de la suma de los nodos de los traslados');
+            }
+        }
 
     }
 }
