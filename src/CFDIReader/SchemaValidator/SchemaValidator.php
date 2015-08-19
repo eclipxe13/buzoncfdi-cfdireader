@@ -109,12 +109,16 @@ class SchemaValidator
         if (false !== $schemasList = $xpath->query('//@xsi:schemaLocation', null, true)) {
             for($s = 0 ; $s < $schemasList->length ; $s++) {
                 if (false != $content = $schemasList->item($s)->nodeValue) {
-                    list($ns, $location) = explode(" ", $content);
-                    $schemas->create($ns, $location);
+                    $parts = array_values(array_filter(explode(' ', $content)));
+                    if (0 !== count($parts) % 2) {
+                        throw new \RuntimeException("The schemaLocation does not contain pairs");
+                    }
+                    for($k = 0 ; $k < count($parts) ; $k = $k + 2) {
+                        $schemas->create($parts[$k], $parts[$k + 1]);
+                    }
                 }
             }
         }
         return $schemas;
     }
-
 }
