@@ -50,10 +50,10 @@ class SchemaValidator
     public function validate($content)
     {
         // encapsulate the function inside libxml_use_internal_errors
-        if (true !== $libxml_use_internal_errors = libxml_use_internal_errors(true)) {
-            $r = $this->validate($content);
+        if (true !== libxml_use_internal_errors(true)) {
+            $return = $this->validate($content);
             libxml_use_internal_errors(false);
-            return $r;
+            return $return;
         }
 
         // input validation
