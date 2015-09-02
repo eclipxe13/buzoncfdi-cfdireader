@@ -29,6 +29,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerValidateInvalidArgumentException
+     * @param mixed $badargument
      */
     public function testValidateInvalidArgumentException($badargument)
     {
@@ -55,6 +56,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param bool $withCommonXsd
      * @return Locator
      */
     private function buildLocator($withCommonXsd)
@@ -66,6 +68,7 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase
             $locator->register('http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd', test_commonxsd_location('cfdv32.xsd'));
             $locator->register('http://www.sat.gob.mx/TimbreFiscalDigital/TimbreFiscalDigital.xsd', test_commonxsd_location('TimbreFiscalDigital.xsd'));
         }
+        return $locator;
     }
 
     public function testValidateValidCFDIWithoutDownload()
@@ -74,7 +77,8 @@ class SchemaValidatorTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($cfdifile, 'Must exists files/cfdi-valid-minimal.xml');
         $locator = $this->buildLocator(true);
         $validator = new SchemaValidator($locator);
-        $this->assertTrue($validator->validate(file_get_contents($cfdifile)), 'CFDI File is not valid, perhaps the cfdi-valid-minimal.xml contains additional namespaces');
+        $isValid = $validator->validate(file_get_contents($cfdifile));
+        $this->assertTrue($isValid, 'CFDI File is not valid, perhaps the cfdi-valid-minimal.xml contains additional namespaces');
         $this->assertEmpty($validator->getError());
     }
 

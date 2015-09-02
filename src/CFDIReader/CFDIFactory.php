@@ -2,6 +2,11 @@
 
 namespace CFDIReader;
 
+use CFDIReader\SchemaValidator\Locator;
+use CFDIReader\SchemaValidator\SchemaValidator;
+use CFDIReader\PostValidations\PostValidator;
+use CFDIReader\PostValidations\Validators;
+
 /**
  * Description of CFDIFactory
  *
@@ -11,15 +16,15 @@ class CFDIFactory
 {
     /**
      * Build a new SchemaValidator object with default options for CFDI validations.
-     * @param \CFDIReader\SchemaValidator\Locator $locator if not provided use factory method to build it with default parameters
-     * @return \CFDIReader\SchemaValidator\SchemaValidator
+     * @param Locator $locator if not provided use factory method to build it with default parameters
+     * @return SchemaValidator
      */
-    public function newSchemaValidator(SchemaValidator\Locator $locator = null)
+    public function newSchemaValidator(Locator $locator = null)
     {
         if (null === $locator) {
             $locator = $this->newLocator();
         }
-        $schemavalidator = new SchemaValidator\SchemaValidator($locator);
+        $schemavalidator = new SchemaValidator($locator);
         return $schemavalidator;
     }
 
@@ -30,11 +35,11 @@ class CFDIFactory
      * @param string $repository location of cached files
      * @param integer $timeout download timeout
      * @param integer $expire expiration
-     * @return \CFDIReader\SchemaValidator\Locator
+     * @return Locator
      */
     public function newLocator($registerCommonXsd = true, $repository = '', $timeout = 20, $expire = 0)
     {
-        $locator = new SchemaValidator\Locator($repository, $timeout, $expire);
+        $locator = new Locator($repository, $timeout, $expire);
         $locator->mimeAllow('application/xml');
         $locator->mimeAllow('text/xml');
         if ($registerCommonXsd) {
@@ -51,13 +56,16 @@ class CFDIFactory
         return $locator;
     }
 
+    /**
+     * @return PostValidator
+     */
     public function newPostValidator()
     {
-        $postvalidator = new \CFDIReader\PostValidations\PostValidator();
-        $postvalidator->validators->append(new \CFDIReader\PostValidations\Validators\Impuestos());
-        $postvalidator->validators->append(new \CFDIReader\PostValidations\Validators\Fechas());
-        $postvalidator->validators->append(new \CFDIReader\PostValidations\Validators\Conceptos());
-        $postvalidator->validators->append(new \CFDIReader\PostValidations\Validators\Totales());
+        $postvalidator = new PostValidator();
+        $postvalidator->validators->append(new Validators\Impuestos());
+        $postvalidator->validators->append(new Validators\Fechas());
+        $postvalidator->validators->append(new Validators\Conceptos());
+        $postvalidator->validators->append(new Validators\Totales());
         return $postvalidator;
     }
 
@@ -66,7 +74,7 @@ class CFDIFactory
      * @param string $content
      * @param array $errors
      * @param array $warnings
-     * @return \CFDIReader\CFDIReader
+     * @return CFDIReader
      */
     public function newCFDIReader($content, array &$errors = [], array &$warnings = [])
     {
@@ -82,9 +90,7 @@ class CFDIFactory
         // after creation
         $postValidator = $this->newPostValidator();
         $postValidator->validate($cfdireader);
-        /* @var $errors \CFDIReader\PostValidations\Messages */
         $errors = $postValidator->issues->messages(PostValidations\IssuesTypes::ERROR)->all();
-        /* @var $warnings \CFDIReader\PostValidations\Messages */
         $warnings = $postValidator->issues->messages(PostValidations\IssuesTypes::WARNING)->all();
         return $cfdireader;
     }

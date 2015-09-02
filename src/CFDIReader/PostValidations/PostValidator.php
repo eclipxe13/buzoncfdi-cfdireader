@@ -7,8 +7,8 @@ use CFDIReader\CFDIReader;
 /**
  * Class to run validators over a CFDIReader
  *
- * @property-read Validators $validators Collection of validators to run
- * @property-read Issues $issues Collection of issues found
+ * @property-read Validators|ValidatorInterface[] $validators Collection of validators to run
+ * @property-read Issues|Messages[] $issues Collection of issues found
  */
 class PostValidator
 {
@@ -29,6 +29,7 @@ class PostValidator
         // reset issues
         $this->issues = new Issues();
         foreach($this->validators as $validator) {
+            /* @var $validator \CFDIReader\PostValidations\ValidatorInterface */
             // a new issues to be populated
             $issues = new Issues();
             // ask the validator command to work

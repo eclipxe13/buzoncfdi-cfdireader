@@ -26,10 +26,7 @@ class SchemaValidator
      */
     public function __construct(Locator $locator = null)
     {
-        if (null === $locator) {
-            $locator = new Locator();
-        }
-        $this->locator = $locator;
+        $this->locator = ($locator) ?: new Locator();
     }
 
     public function getError()
@@ -49,7 +46,7 @@ class SchemaValidator
      */
     public function validate($content)
     {
-        // encapsulate the function inside libxml_use_internal_errors
+        // encapsulate the function inside libxml_use_internal_errors(true)
         if (true !== libxml_use_internal_errors(true)) {
             $return = $this->validate($content);
             libxml_use_internal_errors(false);
@@ -61,15 +58,20 @@ class SchemaValidator
             throw new \InvalidArgumentException('The content to validate must be a non-empty string');
         }
 
+        // clear previous libxml errors
+        libxml_clear_errors();
+
         // create the DOMDocument object
         $dom = new DOMDocument();
         $dom->loadXML($content, LIBXML_ERR_ERROR);
+
         // check for errors on load XML
-        foreach(libxml_get_errors() as $xmlerror) {
+        if(false !== $xmlerror = libxml_get_last_error()) {
             libxml_clear_errors();
             return $this->registerError('Malformed XML Document: ' . $xmlerror->message);
         }
-        // create the schemas collection and validate only if needed
+
+        // create the schemas collection and validate if there are schemas
         $schemas = $this->buildSchemas($dom);
         if ($schemas->count()) {
             // build the unique importing schema using the locator
@@ -77,19 +79,21 @@ class SchemaValidator
             // ask the DOM to validate using the xsd
             $dom->schemaValidateSource($xsd);
             // check for errors on load XML
-            foreach(libxml_get_errors() as $xmlerror) {
+            if(false !== $xmlerror = libxml_get_last_error()) {
                 libxml_clear_errors();
                 return $this->registerError('Invalid XML Document: ' . $xmlerror->message);
             }
         }
+
         // return true
         return !$this->registerError('');
     }
 
     /**
-     * Utility function to setup the error property;
+     * Utility function to setup the error property
+     * Always return FALSE
      * @param string $error
-     * @return boolean Always FALSE
+     * @return false
      */
     private function registerError($error)
     {
@@ -106,7 +110,7 @@ class SchemaValidator
     {
         $schemas = new Schemas();
         $xpath = new DOMXPath($dom);
-        if (false !== $schemasList = $xpath->query('//@xsi:schemaLocation', null, true)) {
+        if (false !== $schemasList = $xpath->query('//@xsi:schemaLocation')) {
             for($s = 0 ; $s < $schemasList->length ; $s++) {
                 if (false != $content = $schemasList->item($s)->nodeValue) {
                     $parts = array_values(array_filter(explode(' ', $content)));

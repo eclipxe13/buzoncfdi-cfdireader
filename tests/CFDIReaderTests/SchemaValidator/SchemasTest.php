@@ -49,6 +49,9 @@ class SchemasTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param int $count
+     * @param string $ns
+     * @param string $location
      * @return Schemas
      */
     public function createSchemaWithCount($count, $ns, $location)
@@ -67,7 +70,7 @@ class SchemasTest extends \PHPUnit_Framework_TestCase
         $schemas = $this->createSchemaWithCount(5, $ns, $location);
         $this->assertCount(5, $schemas, '5 namespaces where included');
         $schemas->create("{$ns}1", "{$location}X");
-        $this->assertCount(5, $schemas, '5 repeated schema do not increment schemas count');
+        $this->assertCount(5, $schemas, '5 repeated schemas do not increment schemas count');
         $this->assertSame("{$location}X", $schemas->item("{$ns}1")->getLocation(), 'The old schema was overriten');
     }
 
@@ -118,7 +121,7 @@ class SchemasTest extends \PHPUnit_Framework_TestCase
         $this->assertContains(' schemaLocation="' . $commonxsdfolder, $xsdcontents, "The returned Xsd must contain the absolute path to $commonxsdfolder");
         // change the default XSD contents because it contains absolute paths, replace with a constant before compare
         file_put_contents($filename, str_replace($commonxsdfolder, '__COMMONXSDPATH__/', $schemas->getXsd($locator)));
-        $this->assertXmlFileEqualsXmlFile($basefile, $filename, 'SAT simple include schema must match files/include-template.xsd');
+        $this->assertXmlFileEqualsXmlFile($basefile, $filename, 'SAT simple include schema must match include-template.xsd');
     }
 
     public function testIteratorAggregate()

@@ -164,6 +164,7 @@ class Locator
     /**
      * Return the filename of an url, of needs to download a new copy then it does
      * @param string $url
+     * @return string
      */
     protected function cache($url)
     {
@@ -210,7 +211,7 @@ class Locator
 
     /**
      * return the list of allowed mimes
-     * @param string $mime
+     * @return bool
      */
     public function mimeList()
     {

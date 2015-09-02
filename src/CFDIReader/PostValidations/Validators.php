@@ -10,7 +10,7 @@ class Validators implements \IteratorAggregate, \Countable
     /**
      * Append a validator into the list of validators,
      * this will search if the validator object does not exists
-     * @param \CFDIReader\PostValidations\ValidatorInterface $validator
+     * @param ValidatorInterface $validator
      */
     public function append(ValidatorInterface $validator)
     {
@@ -21,7 +21,7 @@ class Validators implements \IteratorAggregate, \Countable
 
     /**
      * Remove a validator from the list of validators
-     * @param \CFDIReader\PostValidations\ValidatorInterface $validator
+     * @param ValidatorInterface $validator
      */
     public function remove(ValidatorInterface $validator)
     {
@@ -34,7 +34,7 @@ class Validators implements \IteratorAggregate, \Countable
 
     /**
      * Count of validators
-     * @return type
+     * @return int
      */
     public function count()
     {
@@ -43,6 +43,7 @@ class Validators implements \IteratorAggregate, \Countable
 
     /**
      * Return the index of a registered validator
+     * @param ValidatorInterface $validator
      * @return int index of the validator, return FALSE if not found
      */
     public function getIndex(ValidatorInterface $validator)
@@ -65,6 +66,9 @@ class Validators implements \IteratorAggregate, \Countable
         return $this->validators[$index];
     }
 
+    /**
+     * @return ValidatorInterface[]
+     */
     public function getIterator()
     {
         return new \ArrayIterator($this->validators);

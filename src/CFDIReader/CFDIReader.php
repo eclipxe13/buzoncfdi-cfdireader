@@ -92,8 +92,8 @@ class CFDIReader
 
     /**
      * Normalize a name to be accesible by
-     * @param type $name
-     * @return type
+     * @param string $name
+     * @return string
      */
     private function normalizeName($name)
     {
@@ -125,6 +125,7 @@ class CFDIReader
         // populate attributes
         foreach($nss as $ns) {
             foreach($source->attributes($ns) as $attribute) {
+                /* @var $attribute SimpleXMLElement */
                 $destination->addAttribute($this->normalizeName($attribute->getName()), (string) $attribute);
             }
         }

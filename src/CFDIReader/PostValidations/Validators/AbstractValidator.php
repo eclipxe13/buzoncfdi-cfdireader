@@ -6,12 +6,13 @@ use CFDIReader\CFDIReader;
 use CFDIReader\PostValidations\Messages;
 use CFDIReader\PostValidations\Issues;
 use CFDIReader\PostValidations\IssuesTypes;
+use CFDIReader\PostValidations\ValidatorInterface;
 use SimpleXMLElement;
 
 /**
  * Decorator class to write Validators using some protected helper methods
  */
-abstract class AbstractValidator implements \CFDIReader\PostValidations\ValidatorInterface
+abstract class AbstractValidator implements ValidatorInterface
 {
     /**
      * @var Messages
@@ -54,6 +55,7 @@ abstract class AbstractValidator implements \CFDIReader\PostValidations\Validato
      * Compare two numbers using a delta abs(n - m) <= d
      * @param float $first
      * @param float $second
+     * @param float|null $delta
      * @return bool
      */
     protected function compare($first, $second, $delta = null)
@@ -62,6 +64,9 @@ abstract class AbstractValidator implements \CFDIReader\PostValidations\Validato
         return (abs($first - $second) <= $delta);
     }
 
+    /**
+     * @return float
+     */
     protected function compareDelta()
     {
         return 0.001;

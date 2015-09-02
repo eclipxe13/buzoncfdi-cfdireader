@@ -7,6 +7,10 @@ namespace CFDIReader\PostValidations;
  */
 class Issues implements \IteratorAggregate
 {
+    /**
+     * Messages array
+     * @var Messages[]
+     */
     private $messages = [];
 
     /**
@@ -64,7 +68,6 @@ class Issues implements \IteratorAggregate
     {
         $contents = [];
         foreach($this->messages as $type => $messages) {
-            /* @var \CFDIReader\PostValidations\Messages $messages */
             if ($messages->count()) {
                 $contents[$type] = $messages->all();
             }
