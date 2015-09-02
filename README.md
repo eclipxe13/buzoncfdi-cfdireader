@@ -14,7 +14,7 @@ This library is part of buzoncfdi project, be aware that this could change since
 Install using composer
 
 ```
-composer require "eclipxe/buzoncfdi-cfdireader:*"
+composer require "eclipxe/buzoncfdi-cfdireader:^1.0"
 ```
 
 ## Create a reader
@@ -30,7 +30,7 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 ```php
 <?php
 // get the contents from a file or whatever your source is
-$xml = file_get_contents('some cfdi example.xml');
+$xml = file_get_contents('some-cfdi-example.xml');
 
 // create the reader
 $reader = new \CFDIReader\CFDIReader($xml);
@@ -41,6 +41,19 @@ $cfdi = $reader->comprobante();
 // all the nodes and attributes first letter is in lower case except if the name is all upper case
 echo $cfdi->complemento->timbreFiscalDigital["UUID"]
 ```
+
+## scripts/validate.php
+
+Use `php scripts/validate.php [file1.xml] [file2.xml]` to test CFDIs and see the results.
+
+## Using the CFDIFactory
+
+The CFDIFactory allow a common way to create CFDIReaders using SchemaValidator and PostValidator.
+
+The SchemaValidator is an tool that validates a XML against its multiple XSD files creating a root schema and importing
+all the schemas listed in the XML by schemaLocation nodes.
+
+The PostValidator do some specific checks about the CFDI, this includes `Conceptos`, `Fechas`, `Impuestos` and `Totales`
 
 ## TODO
 
