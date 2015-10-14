@@ -40,6 +40,7 @@ class Schemas implements \IteratorAggregate, \Countable
     {
         $valids = [
             'text/xml' => null,
+            'text/plain' => null,
             'application/xml' => null,
         ];
         if (null === $this->finfo) {
