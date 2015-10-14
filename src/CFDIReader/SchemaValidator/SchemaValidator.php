@@ -71,7 +71,7 @@ class SchemaValidator
             return $this->registerError('Malformed XML Document: ' . $xmlerror->message);
         }
 
-        // create the schemas collection and validate if there are schemas
+        // create the schemas collection, then validate the document against the schemas
         $schemas = $this->buildSchemas($dom);
         if ($schemas->count()) {
             // build the unique importing schema using the locator
@@ -102,25 +102,35 @@ class SchemaValidator
     }
 
     /**
-     * Utility function to retrieve a list of namespaces with the schema location
+     * Retrieve a list of namespaces based on the schemaLocation attibutes
      * @param DOMDocument $dom
      * @return Schemas
      */
-    private function buildSchemas(DOMDocument $dom)
+    protected function buildSchemas(DOMDocument $dom)
     {
         $schemas = new Schemas();
         $xpath = new DOMXPath($dom);
-        if (false !== $schemasList = $xpath->query('//@xsi:schemaLocation')) {
-            for($s = 0 ; $s < $schemasList->length ; $s++) {
-                if (false != $content = $schemasList->item($s)->nodeValue) {
-                    $parts = array_values(array_filter(explode(' ', $content)));
-                    if (0 !== count($parts) % 2) {
-                        throw new \RuntimeException("The schemaLocation does not contain pairs");
-                    }
-                    for($k = 0 ; $k < count($parts) ; $k = $k + 2) {
-                        $schemas->create($parts[$k], $parts[$k + 1]);
-                    }
-                }
+        // get the http://www.w3.org/2001/XMLSchema-instance namespace (it could not be 'xsi')
+        $xsi = $dom->lookupPrefix("http://www.w3.org/2001/XMLSchema-instance");
+        // the namespace is not registered, no need to continue
+        if (!$xsi) return $schemas;
+        // get all the xsi:schemaLocation attributes in the document
+        $schemasList = $xpath->query("//@$xsi:schemaLocation");
+        // schemaLocation attribute not found, no need to continue
+        if (false === $schemasList) return $schemas;
+        // for every schemaLocation
+        for($s = 0 ; $s < $schemasList->length ; $s++) {
+            // get the node content
+            $content = $schemasList->item($s)->nodeValue;
+            // get parts without inner spaces
+            $parts = array_values(array_filter(explode(' ', $content)));
+            // check that the list count is an even number
+            if (0 !== count($parts) % 2) {
+                throw new \RuntimeException("The schemaLocation value '" . $content . "' must have even number of URI's");
+            }
+            // insert the uris pairs into the schemas
+            for ($k = 0; $k < count($parts); $k = $k + 2) {
+                $schemas->create($parts[$k], $parts[$k + 1]);
             }
         }
         return $schemas;
