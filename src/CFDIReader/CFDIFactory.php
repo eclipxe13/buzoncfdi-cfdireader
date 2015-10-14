@@ -41,6 +41,7 @@ class CFDIFactory
     {
         $locator = new Locator($repository, $timeout, $expire);
         $locator->mimeAllow('application/xml');
+        $locator->mimeAllow('text/plain');
         $locator->mimeAllow('text/xml');
         if ($registerCommonXsd) {
             $xsd = [

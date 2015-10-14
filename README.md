@@ -57,5 +57,7 @@ The PostValidator do some specific checks about the CFDI, this includes `Concept
 
 ## TODO
 
+Check the mime validation, Locator validate and Schema also validate but both use different mime list
+
 A lot of work, this is a open source project that try to offer a common and framework independent way to work with CFDI.
 
