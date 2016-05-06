@@ -126,7 +126,7 @@ class SchemaValidator
             $parts = array_values(array_filter(explode(' ', $content)));
             // check that the list count is an even number
             if (0 !== count($parts) % 2) {
-                throw new \RuntimeException("The schemaLocation value '" . $content . "' must have even number of URI's");
+                throw new \RuntimeException("The schemaLocation value '" . $content . "' must have even number of URIs");
             }
             // insert the uris pairs into the schemas
             for ($k = 0; $k < count($parts); $k = $k + 2) {
