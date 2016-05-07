@@ -92,6 +92,7 @@ class CFDICleaner
         $this->removeAddenda();
         $this->removeNonSatNSNodes();
         $this->removeNonSatNSschemaLocations();
+        $this->removeUnusedNamespaces();
     }
 
     /**
@@ -156,16 +157,6 @@ class CFDICleaner
         }
     }
     
-    /**
-     * Procedure to remove all nodes that are not allowed and clean those namespaces from the schemaLocations
-     * It is a shortcut to remove Nodes and schemaLocations 
-     */
-    public function removeNonSatNS()
-    {
-        $this->removeNonSatNSNodes();
-        $this->removeNonSatNSschemaLocations();
-    }
-
     /**
      * Procedure to drop schemaLocations that are not allowed
      * If the schemaLocation is empty then remove the attribute
@@ -232,6 +223,24 @@ class CFDICleaner
     {
         foreach($this->dom->getElementsByTagNameNS($namespace, "*") as $children) {
             $children->parentNode->removeChild($children);
+        }
+    }
+
+    /**
+     * Procedure to remove not allowed xmlns definitions
+     */
+    public function removeUnusedNamespaces()
+    {
+        $nss = [];
+        foreach($this->xpathQuery('//namespace::*') as $node) {
+            $namespace = $node->nodeValue;
+            if (!$namespace or $this->isNameSpaceAllowed($namespace)) continue;
+            $prefix = $this->dom->lookupPrefix($namespace);
+            $nss[$prefix] = $namespace;
+        }
+        $nss = array_unique($nss);
+        foreach($nss as $prefix => $namespace) {
+            $this->dom->documentElement->removeAttributeNS($namespace, $prefix);
         }
     }
 

@@ -45,7 +45,8 @@ class CFDICleanerTest extends \PHPUnit_Framework_TestCase
         $step1 = test_file_location('cfdi-cleaner-no-addenda.xml');
         $step2 = test_file_location('cfdi-cleaner-no-nonsat-nodes.xml');
         $step3 = test_file_location('cfdi-cleaner-no-nonsat-schemalocations.xml');
-        foreach([$basefile, $step1, $step2, $step3] as $filename) {
+        $step4 = test_file_location('cfdi-cleaner-no-nonsat-xmlns.xml');
+        foreach([$basefile, $step1, $step2, $step3, $step4] as $filename) {
             $this->assertFileExists($basefile, "The file $filename for testing does not exists");
         }
         $cleaner = new CFDICleaner(file_get_contents($basefile));
@@ -56,7 +57,10 @@ class CFDICleanerTest extends \PHPUnit_Framework_TestCase
         $this->assertXmlStringEqualsXmlFile($step2, $cleaner->retrieveXml(), 'Compare that non SAT nodes were removed');
         $cleaner->removeNonSatNSschemaLocations();
         $this->assertXmlStringEqualsXmlFile($step3, $cleaner->retrieveXml(), 'Compare that non SAT schemaLocations were removed');
-        $this->assertXmlStringEqualsXmlFile($step3, CFDICleaner::staticClean(file_get_contents($basefile)), 'Check static method for cleaning is giving the same results as detailed execution');
+        $cleaner->removeUnusedNamespaces();
+        $this->assertXmlStringEqualsXmlFile($step4, $cleaner->retrieveXml(), 'Compare that xmlns definitions were removed');
+        $this->assertXmlStringEqualsXmlFile($step4, CFDICleaner::staticClean(file_get_contents($basefile)), 'Check static method for cleaning is giving the same results as detailed execution');
+
     }
 
 }
