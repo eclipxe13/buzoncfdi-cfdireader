@@ -7,9 +7,6 @@ use DOMNode;
 use DOMNodeList;
 use DOMXPath;
 
-class CFDICleanerException extends \RuntimeException {}
-
-
 /**
  * Class to clean CFDI and avoid bad practices
  * Strictly speaking, CFDI must acomplish all XML rules, including that any other
@@ -83,7 +80,7 @@ class CFDICleaner
         }
         return false;
     }
-    
+
     /**
      * Apply all removals (Addenda, Non SAT Nodes and Non SAT namespaces)
      */
@@ -156,7 +153,7 @@ class CFDICleaner
             $addenda->parentNode->removeChild($addenda);
         }
     }
-    
+
     /**
      * Procedure to drop schemaLocations that are not allowed
      * If the schemaLocation is empty then remove the attribute
