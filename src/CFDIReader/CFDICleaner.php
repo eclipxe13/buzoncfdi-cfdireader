@@ -28,7 +28,9 @@ class CFDICleaner
      */
     public function __construct($content)
     {
-        if (!empty($content)) $this->loadContent($content);
+        if (!empty($content)) {
+            $this->loadContent($content);
+        }
     }
 
     /**
@@ -65,7 +67,7 @@ class CFDICleaner
             "http://www.w3.org/2001/XMLSchema-instance",
             "http://www.w3.org/XML/1998/namespace",
         ];
-        foreach($fixedNS as $ns) {
+        foreach ($fixedNS as $ns) {
             if (0 === strcasecmp($ns, $namespace)) {
                 return true;
             }
@@ -73,7 +75,7 @@ class CFDICleaner
         $willcardNS = [
             "http://www.sat.gob.mx/",
         ];
-        foreach($willcardNS as $ns) {
+        foreach ($willcardNS as $ns) {
             if (0 === strpos($namespace, $ns)) {
                 return true;
             }
@@ -113,7 +115,9 @@ class CFDICleaner
             throw new CFDICleanerException('The XML document does not contains a version');
         }
         if (!$this->isVersionAllowed($version->item(0)->nodeValue)) {
-            throw new CFDICleanerException('The XML document version "' . $version->item(0)->nodeValue . '" is not compatible');
+            throw new CFDICleanerException(
+                'The XML document version "' . $version->item(0)->nodeValue . '" is not compatible'
+            );
         }
         $this->dom = $dom;
     }
@@ -147,8 +151,10 @@ class CFDICleaner
         $prefix = $this->dom->lookupPrefix("http://www.sat.gob.mx/cfd/3");
         $query = '/' . $prefix . ':Comprobante/' . $prefix . ':Addenda';
         $addendas = $this->xpathQuery($query);
-        if ($addendas->length == 0) return;
-        for($i = 0 ; $i < $addendas->length ; $i++) {
+        if ($addendas->length == 0) {
+            return;
+        }
+        for ($i = 0; $i < $addendas->length; $i++) {
             $addenda = $addendas->item($i);
             $addenda->parentNode->removeChild($addenda);
         }
@@ -161,10 +167,14 @@ class CFDICleaner
     public function removeNonSatNSschemaLocations()
     {
         $xsi = $this->dom->lookupPrefix("http://www.w3.org/2001/XMLSchema-instance");
-        if (!$xsi) return;
+        if (!$xsi) {
+            return;
+        }
         $schemaLocations = $this->xpathQuery("//@$xsi:schemaLocation");
-        if (false === $schemaLocations or $schemaLocations->length === 0) return;
-        for($s = 0 ; $s < $schemaLocations->length ; $s++) {
+        if (false === $schemaLocations or $schemaLocations->length === 0) {
+            return;
+        }
+        for ($s = 0; $s < $schemaLocations->length; $s++) {
             $this->removeNonSatNSschemaLocation($schemaLocations->item($s));
         }
     }
@@ -181,16 +191,21 @@ class CFDICleaner
         }
         $modified = "";
         for ($k = 0; $k < count($parts); $k = $k + 2) {
-            if (!$this->isNameSpaceAllowed($parts[$k])) continue;
+            if (!$this->isNameSpaceAllowed($parts[$k])) {
+                continue;
+            }
             $modified .= $parts[$k] . " " . $parts[$k + 1] . " ";
         }
         $modified = rtrim($modified, " ");
-        if ($source == $modified) return;
+        if ($source == $modified) {
+            return;
+        }
         if (" " !== $modified) {
             $schemaLocation->nodeValue = $modified;
         } else {
             $schemaLocation->parentNode->attributes->removeNamedItemNS(
-                $schemaLocation->namespaceURI, $schemaLocation->nodeName
+                $schemaLocation->namespaceURI,
+                $schemaLocation->nodeName
             );
         }
     }
@@ -201,13 +216,17 @@ class CFDICleaner
     public function removeNonSatNSNodes()
     {
         $nss = [];
-        foreach($this->xpathQuery('//namespace::*') as $node) {
+        foreach ($this->xpathQuery('//namespace::*') as $node) {
             $namespace = $node->nodeValue;
-            if ($this->isNameSpaceAllowed($namespace)) continue;
+            if ($this->isNameSpaceAllowed($namespace)) {
+                continue;
+            }
             $nss[] = $namespace;
         }
-        if (!count($nss)) return;
-        foreach($nss as $namespace) {
+        if (!count($nss)) {
+            return;
+        }
+        foreach ($nss as $namespace) {
             $this->removeNonSatNSNode($namespace);
         }
     }
@@ -218,7 +237,7 @@ class CFDICleaner
      */
     private function removeNonSatNSNode($namespace)
     {
-        foreach($this->dom->getElementsByTagNameNS($namespace, "*") as $children) {
+        foreach ($this->dom->getElementsByTagNameNS($namespace, "*") as $children) {
             $children->parentNode->removeChild($children);
         }
     }
@@ -229,16 +248,17 @@ class CFDICleaner
     public function removeUnusedNamespaces()
     {
         $nss = [];
-        foreach($this->xpathQuery('//namespace::*') as $node) {
+        foreach ($this->xpathQuery('//namespace::*') as $node) {
             $namespace = $node->nodeValue;
-            if (!$namespace or $this->isNameSpaceAllowed($namespace)) continue;
+            if (!$namespace or $this->isNameSpaceAllowed($namespace)) {
+                continue;
+            }
             $prefix = $this->dom->lookupPrefix($namespace);
             $nss[$prefix] = $namespace;
         }
         $nss = array_unique($nss);
-        foreach($nss as $prefix => $namespace) {
+        foreach ($nss as $prefix => $namespace) {
             $this->dom->documentElement->removeAttributeNS($namespace, $prefix);
         }
     }
-
 }

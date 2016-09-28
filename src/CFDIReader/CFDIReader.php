@@ -41,7 +41,11 @@ class CFDIReader
         try {
             $xml = new SimpleXMLElement($content);
         } catch (\Exception $ex) {
-            throw new \InvalidArgumentException('The content provided to build the CFDIReader is not a valid XML', null, $ex);
+            throw new \InvalidArgumentException(
+                'The content provided to build the CFDIReader is not a valid XML',
+                null,
+                $ex
+            );
         }
         // check the root node name
         if ('Comprobante' !== $xml->getName()) {
@@ -56,7 +60,7 @@ class CFDIReader
             "http://www.sat.gob.mx/cfd/3",
             "http://www.sat.gob.mx/TimbreFiscalDigital",
         ];
-        foreach($required as $namespace) {
+        foreach ($required as $namespace) {
             if (!in_array($namespace, $nss)) {
                 throw new \InvalidArgumentException('The content does not use the namespace '.$namespace);
             }
@@ -123,15 +127,15 @@ class CFDIReader
     private function populateNode(SimpleXMLElement $source, SimpleXMLElement $destination, array $nss)
     {
         // populate attributes
-        foreach($nss as $ns) {
-            foreach($source->attributes($ns) as $attribute) {
+        foreach ($nss as $ns) {
+            foreach ($source->attributes($ns) as $attribute) {
                 /* @var $attribute SimpleXMLElement */
                 $destination->addAttribute($this->normalizeName($attribute->getName()), (string) $attribute);
             }
         }
         // populate children
-        foreach($nss as $ns) {
-            foreach($source->children($ns) as $child) {
+        foreach ($nss as $ns) {
+            foreach ($source->children($ns) as $child) {
                 $this->appendChild($child, $destination, $nss);
             }
         }

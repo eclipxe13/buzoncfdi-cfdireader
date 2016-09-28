@@ -6,7 +6,6 @@ use CFDIReader\CFDIReader;
 
 class CFDIReaderTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testConstructorWithValidCFDI()
     {
         $filename = test_file_location('cfdi-valid.xml');
@@ -95,7 +94,10 @@ class CFDIReaderTest extends \PHPUnit_Framework_TestCase
     {
         $filename = test_file_location('cfdi-valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
-        $this->assertSame('e403f396-6a57-4625-adb4-bb436b00789f', $cfdi->getUUID(), 'Unable to retrieve the UUID by using the getUUID() method');
+        $this->assertSame(
+            'e403f396-6a57-4625-adb4-bb436b00789f',
+            $cfdi->getUUID(),
+            'Unable to retrieve the UUID by using the getUUID() method'
+        );
     }
-
 }

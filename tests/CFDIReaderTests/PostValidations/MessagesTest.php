@@ -29,12 +29,12 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
             'Message three',
             'Message four',
         ];
-        foreach($texts as $text) {
+        foreach ($texts as $text) {
             $this->messages->add($text);
         }
         $this->assertCount(count($texts), $this->messages, "Must include all messages");
         $i = 0;
-        foreach($this->messages as $message) {
+        foreach ($this->messages as $message) {
             $this->assertSame($texts[$i], $message, 'Messages must be the same using the iterator');
             $i = $i + 1;
         }
@@ -42,7 +42,11 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($texts, $this->messages->all(), "All method is not returning the messages");
         $this->assertSame($texts[2], $this->messages->get(2), "Get message must return the correct text");
         $this->assertSame($texts[0], $this->messages->getFirst(), "Get first message must return the correct text");
-        $this->assertSame($texts[count($texts) - 1], $this->messages->getLast(), "Get last message must return the correct text");
+        $this->assertSame(
+            $texts[count($texts) - 1],
+            $this->messages->getLast(),
+            "Get last message must return the correct text"
+        );
     }
 
     /**
@@ -78,8 +82,4 @@ class MessagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->messages->add('');
     }
-
-
-
-
 }

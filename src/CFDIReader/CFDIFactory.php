@@ -2,8 +2,8 @@
 
 namespace CFDIReader;
 
-use CFDIReader\SchemaValidator\Locator;
-use CFDIReader\SchemaValidator\SchemaValidator;
+use XmlSchemaValidator\Locator;
+use XmlSchemaValidator\SchemaValidator;
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
 
@@ -82,7 +82,9 @@ class CFDIFactory
         // before creation SchemaValidator
         $schemaValidator = $this->newSchemaValidator();
         if (! $schemaValidator->validate($content)) {
-            throw new \RuntimeException('The content is not a well formed or is not valid: ' . $schemaValidator->getError());
+            throw new \RuntimeException(
+                'The content is not a well formed or is not valid: ' . $schemaValidator->getError()
+            );
         }
 
         // creation
@@ -95,6 +97,4 @@ class CFDIFactory
         $warnings = $postValidator->issues->messages(PostValidations\IssuesTypes::WARNING)->all();
         return $cfdireader;
     }
-
-
 }

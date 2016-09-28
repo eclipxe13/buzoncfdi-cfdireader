@@ -14,7 +14,8 @@ class PostValidatorTest extends \PHPUnit_Framework_TestCase
     /** @var CFDIReader */
     private static $cfdi;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         parent::setUpBeforeClass();
         static::$cfdi = new CFDIReader(file_get_contents(test_file_location('cfdi-valid.xml')));
     }

@@ -10,11 +10,11 @@ use CFDIReader\PostValidations\IssuesTypes;
  */
 class MockValidator implements ValidatorInterface
 {
-
     private $warning;
     private $error;
 
-    public function validate(\CFDIReader\CFDIReader $cfdi, \CFDIReader\PostValidations\Issues $issues) {
+    public function validate(\CFDIReader\CFDIReader $cfdi, \CFDIReader\PostValidations\Issues $issues)
+    {
         if ($this->warning) {
             $issues->add(IssuesTypes::WARNING, $this->warning);
         }
@@ -32,5 +32,4 @@ class MockValidator implements ValidatorInterface
     {
         $this->error = $message;
     }
-
 }

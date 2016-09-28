@@ -11,10 +11,9 @@ require_once __DIR__ . '/function_test_commonxsd_location.php';
 require_once __DIR__."/../vendor/autoload.php";
 
 // require global phpunit, code coverage, etc...
-call_user_func(function(){
+call_user_func(function () {
     $global = '/usr/local/lib/composer/vendor/autoload.php';
     if (file_exists($global) and is_readable($global)) {
         require_once $global;
     }
 });
-

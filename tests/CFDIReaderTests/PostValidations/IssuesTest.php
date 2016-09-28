@@ -60,9 +60,9 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
                 'Notice A'
             ]
         ];
-        foreach($contents as $type => $texts) {
+        foreach ($contents as $type => $texts) {
             $messages = $this->issues->messages($type);
-            foreach($texts as $text) {
+            foreach ($texts as $text) {
                 $messages->add($text);
             }
         }
@@ -84,7 +84,7 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array_keys($contents), $this->issues->types(), 'The types are the equals');
         $types = array_keys($contents);
         $foreachFlag = false;
-        foreach($this->issues as $type => $messages) {
+        foreach ($this->issues as $type => $messages) {
             $foreachFlag = true;
             $this->assertContains($type, $types, 'Types must be registered');
             $this->assertInstanceOf('\CFDIReader\PostValidations\Messages', $messages);
@@ -99,8 +99,12 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $dest->import($this->issues);
         $this->assertEquals($this->issues->types(), $dest->types(), 'After import both types must be the same');
         /* @var $messages \CFDIReader\PostValidations\Messages */
-        foreach($this->issues as $type => $messages) {
-            $this->assertSame($messages->count(), $dest->messages($type)->count(), 'After import both mesages(types) must have the same count of elements');
+        foreach ($this->issues as $type => $messages) {
+            $this->assertSame(
+                $messages->count(),
+                $dest->messages($type)->count(),
+                'After import both mesages(types) must have the same count of elements'
+            );
         }
     }
 
@@ -112,6 +116,4 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([$type], $this->issues->types(), 'The types array must contain only the DUMMY type');
         $this->assertSame($message, $this->issues->messages($type)->getFirst(), 'The message was stored');
     }
-
-
 }

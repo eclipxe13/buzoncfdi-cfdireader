@@ -55,10 +55,10 @@ class Issues implements \IteratorAggregate
      */
     public function import(Issues $issues)
     {
-        foreach($issues->types() as $type) {
+        foreach ($issues->types() as $type) {
             $source = $issues->messages($type);
             $destination = $this->messages($type);
-            foreach($source as $message) {
+            foreach ($source as $message) {
                 $destination->add($message);
             }
         }
@@ -67,7 +67,7 @@ class Issues implements \IteratorAggregate
     public function all()
     {
         $contents = [];
-        foreach($this->messages as $type => $messages) {
+        foreach ($this->messages as $type => $messages) {
             if ($messages->count()) {
                 $contents[$type] = $messages->all();
             }
@@ -75,8 +75,8 @@ class Issues implements \IteratorAggregate
         return $contents;
     }
 
-    public function getIterator() {
+    public function getIterator()
+    {
         return new \ArrayIterator($this->messages);
     }
-
 }

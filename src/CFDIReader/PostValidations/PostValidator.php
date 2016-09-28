@@ -28,7 +28,7 @@ class PostValidator
     {
         // reset issues
         $this->issues = new Issues();
-        foreach($this->validators as $validator) {
+        foreach ($this->validators as $validator) {
             /* @var $validator \CFDIReader\PostValidations\ValidatorInterface */
             // a new issues to be populated
             $issues = new Issues();
