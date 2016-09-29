@@ -3,10 +3,11 @@
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Validators;
+use PHPUnit\Framework\TestCase;
 
-class ValidatorsTest extends \PHPUnit_Framework_TestCase
+class ValidatorsTest extends TestCase
 {
-    /** @var Issues */
+    /** @var Validators */
     private $validators;
 
     public function setUp()
@@ -17,12 +18,12 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
 
     public function testAfterConstruct()
     {
-        $this->assertInstanceOf('\Countable', $this->validators, 'Validator class must implement \Countable');
-        $this->assertInstanceOf('\IteratorAggregate', $this->validators, 'Validator class must implement \IteratorAggregate');
+        $this->assertInstanceOf(\Countable::class, $this->validators);
+        $this->assertInstanceOf(\IteratorAggregate::class, $this->validators);
         $this->assertCount(0, $this->validators, "No types must exists");
-        foreach($this->validators as $vobject) {
-            $this->fail("Found at least one iteration on an empty container");
-        }
+        /* @var $iterator \Iterator */
+        $iterator = $this->validators->getIterator();
+        $this->assertFalse($iterator->valid(), "Found at least one iteration on an empty container");
     }
 
     public function testAppend()
@@ -32,7 +33,7 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $this->validators, "Validators count must be 1 after append");
         $this->validators->append($validator);
         $this->assertCount(1, $this->validators, "Validators count must be 1 after double append");
-        foreach($this->validators as $vobject) {
+        foreach ($this->validators as $vobject) {
             $this->assertSame($validator, $vobject, "The validator included must be the same");
         }
         $this->validators->append(new MockValidator());
@@ -67,5 +68,4 @@ class ValidatorsTest extends \PHPUnit_Framework_TestCase
     {
         $this->validators->get(5);
     }
-
 }

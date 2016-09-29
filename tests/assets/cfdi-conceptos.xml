@@ -8,7 +8,7 @@
     <cfdi:Domicilio codigoPostal="99170" pais="México" estado="Zacatecas" municipio="Zacatecas" localidad="Ejido La Siembra" colonia="Ejido La Siembra" noExterior="102" calle="Av. Principal"/>
   </cfdi:Receptor>
   <cfdi:Conceptos>
-    <cfdi:Concepto importe="35000.00" valorUnitario="35000.00" descripcion="Módulo de embarque serie A-6743-Ñ" unidad="LTE" cantidad="1"/>
+    <cfdi:Concepto importe="35000.01" valorUnitario="35000.00" descripcion="Módulo de embarque serie A-6743-Ñ" unidad="LTE" cantidad="1"/>
   </cfdi:Conceptos>
   <cfdi:Impuestos totalImpuestosTrasladados="5600.00" totalImpuestosRetenidos="0.00">
     <cfdi:Retenciones>

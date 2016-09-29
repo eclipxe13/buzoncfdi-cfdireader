@@ -76,6 +76,4 @@ class Messages implements \IteratorAggregate, \Countable
     {
         return $this->messages;
     }
-
-
 }

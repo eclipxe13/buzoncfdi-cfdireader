@@ -1,11 +1,11 @@
 # buzoncfdi-cfdireader
 
-Library to read and validate a Mexican CFDI (Comprobantre Fiscal por Internet)
+Library to read and validate a Mexican CFDI 3.2 (Comprobantre Fiscal por Internet)
 
-This library open a CFDI and read it as a SimpleXML (without namespaces) for easy access.
+This library open an Xml CFDI and read it as a SimpleXML (without namespaces) for easy access.
 
-It also validates the CFDI agains it's XSD files keeping a cache of the downloaded XSD,
-also contains a local copy of TimbreFiscalDigital.xsd and cfdv32.xsd for validations without download.
+It also validates the CFDI agains it's XSD files
+(using [Xml Schema Validator](https://github.com/eclipxe13/XmlSchemaValidator) library).
 
 This library is part of buzoncfdi project, be aware that this could change since the hole project is on development.
 
@@ -14,7 +14,7 @@ This library is part of buzoncfdi project, be aware that this could change since
 Install using composer
 
 ```
-composer require "eclipxe/buzoncfdi-cfdireader:^1.0"
+composer require "eclipxe/buzoncfdi-cfdireader"
 ```
 
 ## Create a reader
@@ -26,6 +26,7 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 * The version attribute must be 3.2
 * The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
 * The element Comprobante/Complemento/TimbreFiscalDigital must exists
+* Includes a class to clean external XSD and Addendas
 
 ```php
 <?php
@@ -38,8 +39,8 @@ $reader = new \CFDIReader\CFDIReader($xml);
 // The root element is retrieved by comprobante function, it returns always a new instance (cloned) of the root element
 $cfdi = $reader->comprobante();
 
-// all the nodes and attributes first letter is in lower case except if the name is all upper case
-echo $cfdi->complemento->timbreFiscalDigital["UUID"]
+// all the nodes and attributes first letter is in lower case except if the attribute is all upper case
+echo $cfdi->complemento->timbreFiscalDigital["UUID"];
 ```
 
 ## scripts/validate.php
@@ -57,7 +58,12 @@ The PostValidator do some specific checks about the CFDI, this includes `Concept
 
 ## TODO
 
-Check the mime validation, Locator validate and Schema also validate but both use different mime list
+- [ ] Validator for metodoPago
+- [ ] Check CFDI signature againts certificate
+- [ ] Integrate with Travis CI
+- [ ] Integrate with Scrutinizer
+- [ ] Integrate with Insight SensioLabs
+- [ ] Integrate with Coveralls
 
-A lot of work, this is a open source project that try to offer a common and framework independent way to work with CFDI.
+A lot of work, this is a open source project that try to offer a common and framework independent way to deal with CFDI.
 

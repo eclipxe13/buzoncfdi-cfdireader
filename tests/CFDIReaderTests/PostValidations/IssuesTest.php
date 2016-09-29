@@ -3,8 +3,10 @@
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Issues;
+use CFDIReader\PostValidations\Messages;
+use PHPUnit\Framework\TestCase;
 
-class IssuesTest extends \PHPUnit_Framework_TestCase
+class IssuesTest extends TestCase
 {
     /** @var Issues */
     private $issues;
@@ -42,7 +44,7 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
     public function testMessagesReturnAValidInstance()
     {
         $type = 'Notices';
-        $this->assertInstanceOf('\CFDIReader\PostValidations\Messages', $this->issues->messages($type));
+        $this->assertInstanceOf(Messages::class, $this->issues->messages($type));
         $this->assertContains($type, $this->issues->types(), 'The type was not automatically registered');
     }
 
@@ -60,9 +62,9 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
                 'Notice A'
             ]
         ];
-        foreach($contents as $type => $texts) {
+        foreach ($contents as $type => $texts) {
             $messages = $this->issues->messages($type);
-            foreach($texts as $text) {
+            foreach ($texts as $text) {
                 $messages->add($text);
             }
         }
@@ -84,10 +86,10 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array_keys($contents), $this->issues->types(), 'The types are the equals');
         $types = array_keys($contents);
         $foreachFlag = false;
-        foreach($this->issues as $type => $messages) {
+        foreach ($this->issues as $type => $messages) {
             $foreachFlag = true;
             $this->assertContains($type, $types, 'Types must be registered');
-            $this->assertInstanceOf('\CFDIReader\PostValidations\Messages', $messages);
+            $this->assertInstanceOf(Messages::class, $messages);
         }
         $this->assertTrue($foreachFlag, 'Iterator over types was not used');
     }
@@ -98,9 +100,13 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $dest = new Issues();
         $dest->import($this->issues);
         $this->assertEquals($this->issues->types(), $dest->types(), 'After import both types must be the same');
-        /* @var $messages \CFDIReader\PostValidations\Messages */
-        foreach($this->issues as $type => $messages) {
-            $this->assertSame($messages->count(), $dest->messages($type)->count(), 'After import both mesages(types) must have the same count of elements');
+        /* @var $messages Messages */
+        foreach ($this->issues as $type => $messages) {
+            $this->assertSame(
+                $messages->count(),
+                $dest->messages($type)->count(),
+                'After import both mesages(types) must have the same count of elements'
+            );
         }
     }
 
@@ -112,6 +118,4 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([$type], $this->issues->types(), 'The types array must contain only the DUMMY type');
         $this->assertSame($message, $this->issues->messages($type)->getFirst(), 'The message was stored');
     }
-
-
 }

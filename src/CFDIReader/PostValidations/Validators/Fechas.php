@@ -12,17 +12,24 @@ class Fechas extends AbstractValidator
         // setup the AbstractValidator Helper class
         $this->setup($cfdi, $issues);
         // do the validation process
-        $maxdate = time();
         $document = strtotime($this->comprobante["fecha"]);
-        $comprobante = strtotime($this->comprobante->complemento->timbreFiscalDigital["fechaTimbrado"]);
-        if ($document > $maxdate) {
+        $timbrado = strtotime($this->comprobante->complemento->timbreFiscalDigital["fechaTimbrado"]);
+        if ($document > $this->getCurrentDate()) {
             $this->errors->add('La fecha del documento es mayor a la fecha actual');
         }
-        if ($document > $comprobante) {
+        if ($document > $timbrado) {
             $this->errors->add('La fecha del documento es mayor a la fecha del timbrado');
         }
-        if ($comprobante - $document > 259200) {
+        if ($timbrado - $document > 259200) {
             $this->errors->add('La fecha fecha del timbrado excedió las 72 horas de la fecha del documento');
         }
+    }
+
+    /**
+     * @return int
+     */
+    protected function getCurrentDate()
+    {
+        return time();
     }
 }

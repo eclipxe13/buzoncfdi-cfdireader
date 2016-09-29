@@ -12,11 +12,15 @@ class Conceptos extends AbstractValidator
         // setup the AbstractValidator Helper class
         $this->setup($cfdi, $issues);
         // do the validation process
-        foreach($this->comprobante->conceptos->concepto as $concepto) {
+        foreach ($this->comprobante->conceptos->concepto as $concepto) {
             $extended = $this->value($concepto["valorUnitario"]) * $this->value($concepto["cantidad"]);
             $importe = $this->value($concepto["importe"]);
             if (! $this->compare($extended, $importe)) {
-                $this->warnings->add('El importe del concepto '.$concepto["descripcion"].' no coincide con el producto del valor unitario y el total');
+                $this->warnings->add(
+                    'El importe del concepto '
+                    . $concepto["descripcion"]
+                    . ' no coincide con el producto del valor unitario y el total'
+                );
             }
         }
     }

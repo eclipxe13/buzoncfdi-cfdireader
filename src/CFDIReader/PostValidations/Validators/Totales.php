@@ -25,7 +25,10 @@ class Totales extends AbstractValidator
         $total = $this->value($this->comprobante["total"]);
         $calculated = $subtotal - $descuentos + $traslados - $retenidos + $localesTraslados - $localesRetenidos;
         if (! $this->compare($calculated, $total)) {
-            $this->warnings->add('El total no coincide con la suma del subtotal menos el descuento mas los traslados menos las retenciones');
+            $this->warnings->add(
+                'El total no coincide con la suma del subtotal'
+                . ' menos el descuento más los traslados menos las retenciones'
+            );
         }
     }
 }

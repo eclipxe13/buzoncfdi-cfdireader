@@ -4,7 +4,6 @@ namespace CFDIReader\PostValidations;
 
 class Validators implements \IteratorAggregate, \Countable
 {
-
     private $validators = [];
 
     /**
@@ -67,11 +66,10 @@ class Validators implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return ValidatorInterface[]
+     * @return ValidatorInterface[]|\ArrayIterator
      */
     public function getIterator()
     {
         return new \ArrayIterator($this->validators);
     }
-
 }

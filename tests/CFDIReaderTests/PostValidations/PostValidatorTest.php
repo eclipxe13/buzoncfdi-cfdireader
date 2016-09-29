@@ -2,19 +2,23 @@
 
 namespace CFDIReaderTests\PostValidations;
 
+use CFDIReader\PostValidations\Issues;
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\IssuesTypes;
 use CFDIReader\CFDIReader;
+use CFDIReader\PostValidations\Validators;
+use PHPUnit\Framework\TestCase;
 
-class PostValidatorTest extends \PHPUnit_Framework_TestCase
+class PostValidatorTest extends TestCase
 {
-    /** @var Issues */
+    /** @var PostValidator */
     private $postvalidator;
 
     /** @var CFDIReader */
     private static $cfdi;
 
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         parent::setUpBeforeClass();
         static::$cfdi = new CFDIReader(file_get_contents(test_file_location('cfdi-valid.xml')));
     }
@@ -27,8 +31,8 @@ class PostValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testAfterConstruct()
     {
-        $this->assertInstanceOf('\CFDIReader\PostValidations\Issues', $this->postvalidator->issues);
-        $this->assertInstanceOf('\CFDIReader\PostValidations\Validators', $this->postvalidator->validators);
+        $this->assertInstanceOf(Issues::class, $this->postvalidator->issues);
+        $this->assertInstanceOf(Validators::class, $this->postvalidator->validators);
     }
 
     /**

@@ -60,7 +60,9 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function compare($first, $second, $delta = null)
     {
-        if (null === $delta) $delta = $this->compareDelta();
+        if (null === $delta) {
+            $delta = $this->compareDelta();
+        }
         return (abs($first - $second) <= $delta);
     }
 
@@ -78,23 +80,21 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param string $attribute
      * @return float
      */
-    protected function sumNodes(SimpleXMLElement $collection = null, $attribute = null) {
-        if (null == $collection) return 0;
+    protected function sumNodes(SimpleXMLElement $collection = null, $attribute = null)
+    {
+        if (null === $collection) {
+            return 0;
+        }
         $sum = 0;
         if (! $attribute) {
-            foreach($collection as $node) {
+            foreach ($collection as $node) {
                 $sum = $sum + $this->value($node);
             }
         } else {
-            foreach($collection as $node) {
+            foreach ($collection as $node) {
                 $sum = $sum + $this->value($node[$attribute]);
             }
         }
         return $sum;
     }
-
-    // do not override the validate function
-    abstract public function validate(CFDIReader $cfdi, Issues $issues);
-
-
 }
