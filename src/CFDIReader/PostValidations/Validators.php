@@ -66,7 +66,7 @@ class Validators implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return ValidatorInterface[]
+     * @return ValidatorInterface[]|\ArrayIterator
      */
     public function getIterator()
     {
