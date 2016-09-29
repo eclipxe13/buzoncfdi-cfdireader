@@ -99,6 +99,8 @@ Contributions are welcome! Please read [CONTRIBUTING][] for details.
 The eclipxe\buzoncfdi-cfdireader library is copyright © [Carlos C Soto](https://eclipxe.com.mx/)
 and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
 
+[contributing]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/CONTRIBUTING.md
+
 [release]: https://github.com/eclipxe13/buzoncfdi-cfdireader/releases
 [license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
 [build]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/build-status/master
