@@ -3,8 +3,9 @@
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Messages;
+use PHPUnit\Framework\TestCase;
 
-class MessagesTest extends \PHPUnit_Framework_TestCase
+class MessagesTest extends TestCase
 {
     /** @var Messages */
     private $messages;

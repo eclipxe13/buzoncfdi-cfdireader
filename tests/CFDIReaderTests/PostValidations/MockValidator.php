@@ -2,6 +2,8 @@
 
 namespace CFDIReaderTests\PostValidations;
 
+use CFDIReader\CFDIReader;
+use CFDIReader\PostValidations\Issues;
 use CFDIReader\PostValidations\ValidatorInterface;
 use CFDIReader\PostValidations\IssuesTypes;
 
@@ -13,7 +15,7 @@ class MockValidator implements ValidatorInterface
     private $warning;
     private $error;
 
-    public function validate(\CFDIReader\CFDIReader $cfdi, \CFDIReader\PostValidations\Issues $issues)
+    public function validate(CFDIReader $cfdi, Issues $issues)
     {
         if ($this->warning) {
             $issues->add(IssuesTypes::WARNING, $this->warning);

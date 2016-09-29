@@ -3,8 +3,10 @@
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Issues;
+use CFDIReader\PostValidations\Messages;
+use PHPUnit\Framework\TestCase;
 
-class IssuesTest extends \PHPUnit_Framework_TestCase
+class IssuesTest extends TestCase
 {
     /** @var Issues */
     private $issues;
@@ -42,7 +44,7 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
     public function testMessagesReturnAValidInstance()
     {
         $type = 'Notices';
-        $this->assertInstanceOf('\CFDIReader\PostValidations\Messages', $this->issues->messages($type));
+        $this->assertInstanceOf(Messages::class, $this->issues->messages($type));
         $this->assertContains($type, $this->issues->types(), 'The type was not automatically registered');
     }
 
@@ -87,7 +89,7 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         foreach ($this->issues as $type => $messages) {
             $foreachFlag = true;
             $this->assertContains($type, $types, 'Types must be registered');
-            $this->assertInstanceOf('\CFDIReader\PostValidations\Messages', $messages);
+            $this->assertInstanceOf(Messages::class, $messages);
         }
         $this->assertTrue($foreachFlag, 'Iterator over types was not used');
     }
@@ -98,7 +100,7 @@ class IssuesTest extends \PHPUnit_Framework_TestCase
         $dest = new Issues();
         $dest->import($this->issues);
         $this->assertEquals($this->issues->types(), $dest->types(), 'After import both types must be the same');
-        /* @var $messages \CFDIReader\PostValidations\Messages */
+        /* @var $messages Messages */
         foreach ($this->issues as $type => $messages) {
             $this->assertSame(
                 $messages->count(),

@@ -4,13 +4,14 @@ namespace CFDIReaderTests;
 
 use CFDIReader\CFDICleaner;
 use CFDIReader\CFDICleanerException;
+use PHPUnit\Framework\TestCase;
 
-class CFDICleanerTest extends \PHPUnit_Framework_TestCase
+class CFDICleanerTest extends TestCase
 {
     public function testConstructorWithEmptyText()
     {
         $cleaner = new CFDICleaner("");
-        $this->setExpectedException(CFDICleanerException::class);
+        $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
         @$cleaner->loadContent("");
     }
@@ -18,14 +19,14 @@ class CFDICleanerTest extends \PHPUnit_Framework_TestCase
     public function xxtestConstructorWithNonCFDI()
     {
         $cleaner = new CFDICleaner("");
-        $this->setExpectedException(CFDICleanerException::class);
+        $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
         @$cleaner->loadContent('<cfdi></cfdi>');
     }
 
     public function testConstructorWithBadVersion()
     {
-        $this->setExpectedException(CFDICleanerException::class);
+        $this->expectException(CFDICleanerException::class);
         new CFDICleaner('<?xml version="1.0" encoding="UTF-8"?>
             <'.'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.15" />
         ');

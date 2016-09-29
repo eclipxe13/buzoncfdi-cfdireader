@@ -20,7 +20,7 @@
     </cfdi:Traslados>
   </cfdi:Impuestos>
   <cfdi:Complemento>
-    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigital.xsd" selloSAT="HZcDZ/W0obh9pzd6XGSXfAEEzCp1bYLYHmptBRZLhYGgyo/nYegLpv1ULshKA2WiFnf9OpiemBQ9q0Z/To8QFINH1JqTBtEu0lo+8NWDBi6Zwc2VsR3uYE6ZmZKdQS7LtSt6uSqCiejXDqIV57EkJy3LE6JnTBsbQ7GmST1Wx/M=" noCertificadoSAT="20001000000100005761" selloCFD="MMakX8Q1RyedjoNEQdHN64DgpZesmkcPSye2Tb+nELqFNNzITTicyc7WRcr/gj4UQX1ffhBuWmO959453o4pkMO9omip2DiM0Ud2KitU58+P4yRyxdjhmaRS9QSsUSpcKIrLB4viSJ9GD32pJYnxmpxYi8+GO+n3HvIAMHega+A=" FechaTimbrado="2015-02-18T11:49:20" UUID="e403f396-6a57-4625-adb4-bb436b00789f" version="1.0"/>
+    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigital.xsd" selloSAT="HZcDZ/W0obh9pzd6XGSXfAEEzCp1bYLYHmptBRZLhYGgyo/nYegLpv1ULshKA2WiFnf9OpiemBQ9q0Z/To8QFINH1JqTBtEu0lo+8NWDBi6Zwc2VsR3uYE6ZmZKdQS7LtSt6uSqCiejXDqIV57EkJy3LE6JnTBsbQ7GmST1Wx/M=" noCertificadoSAT="20001000000100005761" selloCFD="MMakX8Q1RyedjoNEQdHN64DgpZesmkcPSye2Tb+nELqFNNzITTicyc7WRcr/gj4UQX1ffhBuWmO959453o4pkMO9omip2DiM0Ud2KitU58+P4yRyxdjhmaRS9QSsUSpcKIrLB4viSJ9GD32pJYnxmpxYi8+GO+n3HvIAMHega+A=" FechaTimbrado="2015-02-21T11:49:21" UUID="e403f396-6a57-4625-adb4-bb436b00789f" version="1.0"/>
   </cfdi:Complemento>
   <cfdi:Addenda>
     <bfa2:AddendaBuzonFiscal version="2.0">

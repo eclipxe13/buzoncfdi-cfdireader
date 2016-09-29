@@ -3,14 +3,16 @@
 namespace CFDIReaderTests;
 
 use CFDIReader\CFDIReader;
+use PHPUnit\Framework\TestCase;
+use SimpleXMLElement;
 
-class CFDIReaderTest extends \PHPUnit_Framework_TestCase
+class CFDIReaderTest extends TestCase
 {
     public function testConstructorWithValidCFDI()
     {
         $filename = test_file_location('cfdi-valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
-        $this->assertInstanceOf('\CFDIReader\CFDIReader', $cfdi, 'Object created');
+        $this->assertInstanceOf(CFDIReader::class, $cfdi, 'Object created');
     }
 
     /**
@@ -84,8 +86,8 @@ class CFDIReaderTest extends \PHPUnit_Framework_TestCase
         $cfdi = new CFDIReader(file_get_contents($filename));
         $a = $cfdi->comprobante();
         $b = $cfdi->comprobante();
-        $this->assertInstanceOf('\SimpleXMLElement', $a, 'cfdi->comprobante() do not retrieve a SimpleXMLElement');
-        $this->assertInstanceOf('\SimpleXMLElement', $b, 'cfdi->comprobante() do not retrieve a SimpleXMLElement');
+        $this->assertInstanceOf(SimpleXMLElement::class, $a, 'cfdi->comprobante() do not retrieve a SimpleXMLElement');
+        $this->assertInstanceOf(SimpleXMLElement::class, $b, 'cfdi->comprobante() do not retrieve a SimpleXMLElement');
         $this->assertEquals($a, $b, 'Two instances retrieved by cfdi->comprobante() must be equals');
         $this->assertNotSame($a, $b, 'Two instances retrieved by cfdi->comprobante() must be equals but not the same');
     }

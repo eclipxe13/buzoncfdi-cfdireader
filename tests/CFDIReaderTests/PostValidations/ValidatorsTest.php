@@ -3,8 +3,9 @@
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Validators;
+use PHPUnit\Framework\TestCase;
 
-class ValidatorsTest extends \PHPUnit_Framework_TestCase
+class ValidatorsTest extends TestCase
 {
     /** @var Validators */
     private $validators;
