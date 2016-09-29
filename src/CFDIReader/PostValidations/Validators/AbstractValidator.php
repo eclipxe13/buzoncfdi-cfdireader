@@ -82,7 +82,7 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     protected function sumNodes(SimpleXMLElement $collection = null, $attribute = null)
     {
-        if (null == $collection) {
+        if (null === $collection) {
             return 0;
         }
         $sum = 0;
@@ -97,7 +97,4 @@ abstract class AbstractValidator implements ValidatorInterface
         }
         return $sum;
     }
-
-    // do not override the validate function
-    abstract public function validate(CFDIReader $cfdi, Issues $issues);
 }
