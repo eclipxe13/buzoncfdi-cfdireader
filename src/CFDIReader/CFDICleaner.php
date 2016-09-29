@@ -200,7 +200,7 @@ class CFDICleaner
         if ($source == $modified) {
             return;
         }
-        if (" " !== $modified) {
+        if ("" !== $modified) {
             $schemaLocation->nodeValue = $modified;
         } else {
             $schemaLocation->parentNode->attributes->removeNamedItemNS(
