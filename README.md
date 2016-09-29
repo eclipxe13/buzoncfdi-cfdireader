@@ -105,7 +105,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
 [build]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/build-status/master
 [quality]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/
-[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/?branch=master
+[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/code-structure/master
 [downloads]: https://packagist.org/packages/eclipxe/buzoncfdi-cfdireader
 
 [badge-release]: https://img.shields.io/github/tag/eclipxe13/buzoncfdi-cfdireader.svg?label=version&style=flat-square
