@@ -11,22 +11,9 @@ This library is part of buzoncfdi project, be aware that this could change since
 
 ## Install
 
-Install using composer
+Install using composer like `composer require eclipxe/buzoncfdi-cfdireader`
 
-```
-composer require "eclipxe/buzoncfdi-cfdireader"
-```
-
-## Create a reader
-
-The `CFDIReader` class is immutable, it only perform the following checks:
-
-* The content must be a valid XML
-* The root element must be Comprobante
-* The version attribute must be 3.2
-* The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
-* The element Comprobante/Complemento/TimbreFiscalDigital must exists
-* Includes a class to clean external XSD and Addendas
+## Basic usage
 
 ```php
 <?php
@@ -43,18 +30,51 @@ $cfdi = $reader->comprobante();
 echo $cfdi->complemento->timbreFiscalDigital["UUID"];
 ```
 
-## scripts/validate.php
+### scripts/validate.php
 
 Use `php scripts/validate.php [file1.xml] [file2.xml]` to test CFDIs and see the results.
 
-## Using the CFDIFactory
+## Create a reader
 
-The CFDIFactory allow a common way to create CFDIReaders using SchemaValidator and PostValidator.
+The `CFDIReader` class is immutable, it only perform the following checks:
 
-The SchemaValidator is an tool that validates a XML against its multiple XSD files creating a root schema and importing
+* The content must be a valid XML
+* The root element must be Comprobante
+* The version attribute must be 3.2
+* The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
+* The element Comprobante/Complemento/TimbreFiscalDigital must exists
+* Includes a class to clean external XSD and Addendas
+
+## Using the factory
+
+The `CFDIFactory` allow a common way to create `CFDIReaders` using `SchemaValidator` and `PostValidator`.
+
+The SchemaValidator is a tool that validates a XML against its multiple XSD files creating a root schema and importing
 all the schemas listed in the XML by schemaLocation nodes.
 
-The PostValidator do some specific checks about the CFDI, this includes `Conceptos`, `Fechas`, `Impuestos` and `Totales`
+The PostValidator do some specific checks about the CFDI, this includes `Conceptos`, `Fechas`, `Impuestos` and `Totales`.
+
+## About Addendas and XML Validation
+
+> *why don't you create valid XML files!?*
+
+An XML file has a strict specification, if it includes XML Schemas then the specification must be followed.
+
+The CFDI spec say that it is valid to include additional nodes inside the Addenda but it must follow the
+XML specification (including namespaces and schemas).
+The problem is that -since the addenda is not part of the source string- the emmiters can include additional nodes
+inside the Addenda after it was signed without breaking the CFDI but breaking the XML validation.
+
+So, can I edit a CFDI? Yes. as long you dont change any content of the source string (cadena de origen)
+
+I has created an utility named `CFDICleaner` that removes Addendas and unused namespaces declarations.
+You can use this tool to validate the document without this garbage.
+
+```php
+<?php
+// $content as a clean version of the
+$content = \CFDIReader\CFDICleaner::staticClean(file_get_contents('cfdi-dirty.xml'));
+```
 
 ## TODO
 
@@ -65,5 +85,10 @@ The PostValidator do some specific checks about the CFDI, this includes `Concept
 - [ ] Integrate with Insight SensioLabs
 - [ ] Integrate with Coveralls
 
-A lot of work, this is a open source project that try to offer a common and framework independent way to deal with CFDI.
+A lot of work, this is an open source project that try to offer a common and framework agnostic way to deal with
+Mexican CFDI version 3.2.
 
+## Copyright and License
+
+The eclipxe\buzoncfdi-cfdireader library is copyright © [Carlos C Soto](https://eclipxe.com.mx/)
+and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
