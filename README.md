@@ -1,6 +1,13 @@
-# buzoncfdi-cfdireader
+# eclipxe/buzoncfdi-cfdireader
 
-Library to read and validate a Mexican CFDI 3.2 (Comprobantre Fiscal por Internet)
+**Library to read and validate a Mexican CFDI 3.2 (Comprobantre Fiscal por Internet)**
+
+[![Latest Version][badge-release]][release]
+[![Software License][badge-license]][license]
+[![Build Status][badge-build]][build]
+[![Scrutinizer][badge-quality]][quality]
+[![Coverage Status][badge-coverage]][coverage]
+[![Total Downloads][badge-downloads]][downloads]
 
 This library open an Xml CFDI and read it as a SimpleXML (without namespaces) for easy access.
 
@@ -56,7 +63,7 @@ The PostValidator do some specific checks about the CFDI, this includes `Concept
 
 ## About Addendas and XML Validation
 
-> *why don't you create valid XML files!?*
+> _why don't you create valid XML files!?_
 
 An XML file has a strict specification, if it includes XML Schemas then the specification must be followed.
 
@@ -76,19 +83,32 @@ You can use this tool to validate the document without this garbage.
 $content = \CFDIReader\CFDICleaner::staticClean(file_get_contents('cfdi-dirty.xml'));
 ```
 
-## TODO
+## Constributing and TODO
 
 - [ ] Validator for metodoPago
 - [ ] Check CFDI signature againts certificate
-- [ ] Integrate with Travis CI
-- [ ] Integrate with Scrutinizer
-- [ ] Integrate with Insight SensioLabs
-- [ ] Integrate with Coveralls
+- [X] Integrate with Scrutinizer
 
-A lot of work, this is an open source project that try to offer a common and framework agnostic way to deal with
+There is a lot of work, this is an open source project that try to offer a framework agnostic way to deal with
 Mexican CFDI version 3.2.
+
+Contributions are welcome! Please read [CONTRIBUTING][] for details.
 
 ## Copyright and License
 
 The eclipxe\buzoncfdi-cfdireader library is copyright © [Carlos C Soto](https://eclipxe.com.mx/)
 and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
+
+[release]: https://github.com/eclipxe13/buzoncfdi-cfdireader/releases
+[license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
+[build]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/build-status/master
+[quality]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/
+[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/?branch=master
+[downloads]: https://packagist.org/packages/eclipxe/buzoncfdi-cfdireader
+
+[badge-release]: https://img.shields.io/github/tag/eclipxe13/buzoncfdi-cfdireader.svg?label=version&style=flat-square
+[badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[badge-build]: https://img.shields.io/scrutinizer/build/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
+[badge-quality]: https://img.shields.io/scrutinizer/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
+[badge-coverage]: https://img.shields.io/scrutinizer/coverage/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
+[badge-downloads]: https://img.shields.io/packagist/dt/eclipxe/buzoncfdi-cfdireader.svg?style=flat-square
