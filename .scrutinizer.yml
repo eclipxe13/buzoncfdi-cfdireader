@@ -10,10 +10,15 @@ build:
         memcached: false
         neo4j: false
         rabbitmq: false
-#    tests: true
-#        override:
-#            - phpcs-run --standard=phpcs.xml src
-#            - phpunit
+    tests: true
+        override:
+            - phpcs-run --standard=phpcs.xml src
+            -
+                command: 'phpunit --coverage-clover=coverage.xml'
+                coverage:
+                    file: 'coverage.xml'
+                    format: 'clover'
+
 
 filter:
     excluded_paths: ['tests/*', 'vendor/*']
