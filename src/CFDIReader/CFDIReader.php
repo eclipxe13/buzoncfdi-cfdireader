@@ -51,7 +51,7 @@ class CFDIReader
         if ('Comprobante' !== $xml->getName()) {
             throw new \InvalidArgumentException('The XML root node must be Comprobante');
         }
-        if (!isset($xml['version']) or strval($xml['version']) !== '3.2') {
+        if (! isset($xml['version']) or strval($xml['version']) !== '3.2') {
             throw new \InvalidArgumentException('The Comprobante version attribute must be 3.2');
         }
         // check it contains both mandatory namespaces
@@ -61,7 +61,7 @@ class CFDIReader
             "http://www.sat.gob.mx/TimbreFiscalDigital",
         ];
         foreach ($required as $namespace) {
-            if (!in_array($namespace, $nss)) {
+            if (! in_array($namespace, $nss)) {
                 throw new \InvalidArgumentException('The content does not use the namespace '.$namespace);
             }
         }
@@ -71,7 +71,7 @@ class CFDIReader
         $dummy = new \SimpleXMLElement('<dummy/>');
         $this->comprobante = $this->appendChild($xml, $dummy, $nss);
         // check that it contains the node comprobante/complemento/timbreFiscalDigital
-        if (!isset($this->comprobante->complemento->timbreFiscalDigital)) {
+        if (! isset($this->comprobante->complemento->timbreFiscalDigital)) {
             throw new \InvalidArgumentException('Seal not found on Comprobante/Complemento/TimbreFiscalDigital');
         }
     }
