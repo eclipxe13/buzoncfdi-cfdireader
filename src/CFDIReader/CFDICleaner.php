@@ -28,7 +28,7 @@ class CFDICleaner
      */
     public function __construct($content)
     {
-        if (!empty($content)) {
+        if (! empty($content)) {
             $this->loadContent($content);
         }
     }
@@ -107,14 +107,14 @@ class CFDICleaner
             throw new CFDICleanerException('XML Error: ' . $loaderror);
         }
         $prefix = $dom->lookupPrefix("http://www.sat.gob.mx/cfd/3");
-        if (!$prefix) {
+        if (! $prefix) {
             throw new CFDICleanerException('The XML document is not a CFDI');
         }
         $version = $this->xpathQuery('/' . $prefix . ':Comprobante/@version', $dom->documentElement);
         if ($version->length != 1) {
             throw new CFDICleanerException('The XML document does not contains a version');
         }
-        if (!$this->isVersionAllowed($version->item(0)->nodeValue)) {
+        if (! $this->isVersionAllowed($version->item(0)->nodeValue)) {
             throw new CFDICleanerException(
                 'The XML document version "' . $version->item(0)->nodeValue . '" is not compatible'
             );
@@ -167,11 +167,11 @@ class CFDICleaner
     public function removeNonSatNSschemaLocations()
     {
         $xsi = $this->dom->lookupPrefix("http://www.w3.org/2001/XMLSchema-instance");
-        if (!$xsi) {
+        if (! $xsi) {
             return;
         }
         $schemaLocations = $this->xpathQuery("//@$xsi:schemaLocation");
-        if (false === $schemaLocations or $schemaLocations->length === 0) {
+        if (false === $schemaLocations || $schemaLocations->length === 0) {
             return;
         }
         for ($s = 0; $s < $schemaLocations->length; $s++) {
@@ -186,12 +186,13 @@ class CFDICleaner
     {
         $source = $schemaLocation->nodeValue;
         $parts = array_values(array_filter(explode(' ', $source)));
-        if (0 !== count($parts) % 2) {
+        $partsCount = count($parts);
+        if (0 !== $partsCount % 2) {
             throw new CFDICleanerException("The schemaLocation value '" . $source . "' must have even number of URIs");
         }
         $modified = "";
-        for ($k = 0; $k < count($parts); $k = $k + 2) {
-            if (!$this->isNameSpaceAllowed($parts[$k])) {
+        for ($k = 0; $k < $partsCount; $k = $k + 2) {
+            if (! $this->isNameSpaceAllowed($parts[$k])) {
                 continue;
             }
             $modified .= $parts[$k] . " " . $parts[$k + 1] . " ";
@@ -223,7 +224,7 @@ class CFDICleaner
             }
             $nss[] = $namespace;
         }
-        if (!count($nss)) {
+        if (! count($nss)) {
             return;
         }
         foreach ($nss as $namespace) {
@@ -250,7 +251,7 @@ class CFDICleaner
         $nss = [];
         foreach ($this->xpathQuery('//namespace::*') as $node) {
             $namespace = $node->nodeValue;
-            if (!$namespace or $this->isNameSpaceAllowed($namespace)) {
+            if (! $namespace || $this->isNameSpaceAllowed($namespace)) {
                 continue;
             }
             $prefix = $this->dom->lookupPrefix($namespace);

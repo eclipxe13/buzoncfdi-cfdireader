@@ -20,7 +20,7 @@ while (count($argv)) {
     // process next argument
     $argument = array_shift($argv);
     $filename = realpath($argument);
-    if ("" === $filename or !is_file($filename) or !is_readable($filename)) {
+    if ('' === $filename || ! is_file($filename) || ! is_readable($filename)) {
         echo "File $argument FATAL: not found or is not readable\n";
         continue;
     }

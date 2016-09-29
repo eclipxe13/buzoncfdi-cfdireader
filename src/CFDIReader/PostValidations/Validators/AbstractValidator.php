@@ -80,13 +80,13 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param string $attribute
      * @return float
      */
-    protected function sumNodes(SimpleXMLElement $collection = null, $attribute = null)
+    protected function sumNodes(SimpleXMLElement $collection = null, $attribute = '')
     {
         if (null === $collection) {
             return 0;
         }
         $sum = 0;
-        if (! $attribute) {
+        if ('' === $attribute) {
             foreach ($collection as $node) {
                 $sum = $sum + $this->value($node);
             }

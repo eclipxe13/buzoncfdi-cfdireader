@@ -31,7 +31,7 @@ class Issues implements \IteratorAggregate
      */
     public function messages($type)
     {
-        if (!is_string($type) or empty($type)) {
+        if (! is_string($type) || empty($type)) {
             throw new \InvalidArgumentException('The type of messages must be a non-empty string');
         }
         if (! array_key_exists($type, $this->messages)) {

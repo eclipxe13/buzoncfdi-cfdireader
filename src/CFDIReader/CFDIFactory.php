@@ -48,7 +48,7 @@ class CFDIFactory
                 'cfdv32.xsd' => 'http://www.sat.gob.mx/cfd/3',
                 'TimbreFiscalDigital.xsd' => 'http://www.sat.gob.mx/TimbreFiscalDigital',
             ];
-            if (false != $basepath = realpath(__DIR__ . "/../../commonxsd")) {
+            if ('' != $basepath = realpath(__DIR__ . "/../../commonxsd")) {
                 foreach ($xsd as $file => $url) {
                     $locator->register($url, $basepath.'/'.$file);
                 }
