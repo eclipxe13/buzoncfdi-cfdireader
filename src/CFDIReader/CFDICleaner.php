@@ -171,7 +171,7 @@ class CFDICleaner
             return;
         }
         $schemaLocations = $this->xpathQuery("//@$xsi:schemaLocation");
-        if (false === $schemaLocations or $schemaLocations->length === 0) {
+        if (false === $schemaLocations || $schemaLocations->length === 0) {
             return;
         }
         for ($s = 0; $s < $schemaLocations->length; $s++) {
@@ -251,7 +251,7 @@ class CFDICleaner
         $nss = [];
         foreach ($this->xpathQuery('//namespace::*') as $node) {
             $namespace = $node->nodeValue;
-            if (! $namespace or $this->isNameSpaceAllowed($namespace)) {
+            if (! $namespace || $this->isNameSpaceAllowed($namespace)) {
                 continue;
             }
             $prefix = $this->dom->lookupPrefix($namespace);

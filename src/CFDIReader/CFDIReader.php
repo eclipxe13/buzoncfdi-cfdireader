@@ -51,7 +51,7 @@ class CFDIReader
         if ('Comprobante' !== $xml->getName()) {
             throw new \InvalidArgumentException('The XML root node must be Comprobante');
         }
-        if (! isset($xml['version']) or strval($xml['version']) !== '3.2') {
+        if (! isset($xml['version']) || strval($xml['version']) !== '3.2') {
             throw new \InvalidArgumentException('The Comprobante version attribute must be 3.2');
         }
         // check it contains both mandatory namespaces
@@ -68,7 +68,7 @@ class CFDIReader
         // include a null element to copy the elements without namespace
         array_push($nss, null);
         // populate the root element
-        $dummy = new \SimpleXMLElement('<dummy/>');
+        $dummy = new SimpleXMLElement('<dummy/>');
         $this->comprobante = $this->appendChild($xml, $dummy, $nss);
         // check that it contains the node comprobante/complemento/timbreFiscalDigital
         if (! isset($this->comprobante->complemento->timbreFiscalDigital)) {
@@ -78,7 +78,7 @@ class CFDIReader
 
     /**
      * Get a copy of the root element
-     * @return SimpleXMLElement;
+     * @return SimpleXMLElement
      */
     public function comprobante()
     {
