@@ -10,7 +10,7 @@ build:
         memcached: false
         neo4j: false
         rabbitmq: false
-    tests: true
+    tests:
         override:
             - phpcs-run --standard=phpcs.xml src
             -
