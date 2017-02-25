@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader\PostValidations\Validators;
 
 use CFDIReader\CFDIReader;
@@ -12,8 +11,8 @@ class Fechas extends AbstractValidator
         // setup the AbstractValidator Helper class
         $this->setup($cfdi, $issues);
         // do the validation process
-        $document = strtotime($this->comprobante["fecha"]);
-        $timbrado = strtotime($this->comprobante->complemento->timbreFiscalDigital["fechaTimbrado"]);
+        $document = strtotime($this->comprobante['fecha']);
+        $timbrado = strtotime($this->comprobante->complemento->timbreFiscalDigital['fechaTimbrado']);
         if ($document > $this->getCurrentDate()) {
             $this->errors->add('La fecha del documento es mayor a la fecha actual');
         }

@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReaderTests;
 
 use CFDIReader\CFDIReader;
@@ -66,7 +65,7 @@ class CFDIReaderTest extends TestCase
      */
     public function testConstructorWithInvalidNamespaceTimbre()
     {
-        $content = '<a'.':Comprobante xmlns:a="http://www.sat.gob.mx/cfd/3" version="3.2" />';
+        $content = '<a' . ':Comprobante xmlns:a="http://www.sat.gob.mx/cfd/3" version="3.2" />';
         new CFDIReader($content);
     }
 

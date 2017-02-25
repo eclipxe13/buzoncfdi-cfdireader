@@ -1,11 +1,10 @@
 <?php
-
 namespace CFDIReaderTests\PostValidations;
 
-use CFDIReader\PostValidations\Issues;
-use CFDIReader\PostValidations\PostValidator;
-use CFDIReader\PostValidations\IssuesTypes;
 use CFDIReader\CFDIReader;
+use CFDIReader\PostValidations\Issues;
+use CFDIReader\PostValidations\IssuesTypes;
+use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
 use PHPUnit\Framework\TestCase;
 
@@ -61,7 +60,7 @@ class PostValidatorTest extends TestCase
         $return = $this->postvalidator->validate(static::$cfdi);
         $this->assertTrue($return, 'Validate must return true with a warning validation');
         $messages = [
-            IssuesTypes::WARNING => [$message]
+            IssuesTypes::WARNING => [$message],
         ];
         $this->assertEquals($messages, $this->postvalidator->issues->all(), 'Expected one warning message');
     }
@@ -75,7 +74,7 @@ class PostValidatorTest extends TestCase
         $return = $this->postvalidator->validate(static::$cfdi);
         $this->assertFalse($return, 'Validate must return false with a error validation');
         $messages = [
-            IssuesTypes::ERROR => [$message]
+            IssuesTypes::ERROR => [$message],
         ];
         $this->assertEquals($messages, $this->postvalidator->issues->all(), 'Expected one warning message');
     }

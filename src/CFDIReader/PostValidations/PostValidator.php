@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader\PostValidations;
 
 use CFDIReader\CFDIReader;

@@ -1,11 +1,10 @@
 <?php
-
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\CFDIReader;
 use CFDIReader\PostValidations\Issues;
-use CFDIReader\PostValidations\ValidatorInterface;
 use CFDIReader\PostValidations\IssuesTypes;
+use CFDIReader\PostValidations\ValidatorInterface;
 
 /**
  * Implements the interface ValidatorInterface with a testing object

@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader\PostValidations;
 
 /**
@@ -40,7 +39,7 @@ class Messages implements \IteratorAggregate, \Countable
     public function get($index)
     {
         if (! array_key_exists($index, $this->messages)) {
-            throw new \OutOfBoundsException("Message does not exists");
+            throw new \OutOfBoundsException('Message does not exists');
         }
         return $this->messages[$index];
     }

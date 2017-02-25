@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReaderTests\PostValidations\Validators;
 
 use CFDIReader\PostValidations\IssuesTypes;

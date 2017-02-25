@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Messages;
@@ -18,8 +17,8 @@ class MessagesTest extends TestCase
 
     public function testAfterConstruct()
     {
-        $this->assertCount(0, $this->messages, "Messages must be empty");
-        $this->assertEquals([], $this->messages->all(), "All method must return an empty array");
+        $this->assertCount(0, $this->messages, 'Messages must be empty');
+        $this->assertEquals([], $this->messages->all(), 'All method must return an empty array');
     }
 
     public function testAppendMessages()
@@ -33,20 +32,20 @@ class MessagesTest extends TestCase
         foreach ($texts as $text) {
             $this->messages->add($text);
         }
-        $this->assertCount(count($texts), $this->messages, "Must include all messages");
+        $this->assertCount(count($texts), $this->messages, 'Must include all messages');
         $i = 0;
         foreach ($this->messages as $message) {
             $this->assertSame($texts[$i], $message, 'Messages must be the same using the iterator');
             $i = $i + 1;
         }
         $this->assertNotSame(0, $i, 'Iterator was not used');
-        $this->assertSame($texts, $this->messages->all(), "All method is not returning the messages");
-        $this->assertSame($texts[2], $this->messages->get(2), "Get message must return the correct text");
-        $this->assertSame($texts[0], $this->messages->getFirst(), "Get first message must return the correct text");
+        $this->assertSame($texts, $this->messages->all(), 'All method is not returning the messages');
+        $this->assertSame($texts[2], $this->messages->get(2), 'Get message must return the correct text');
+        $this->assertSame($texts[0], $this->messages->getFirst(), 'Get first message must return the correct text');
         $this->assertSame(
             $texts[count($texts) - 1],
             $this->messages->getLast(),
-            "Get last message must return the correct text"
+            'Get last message must return the correct text'
         );
     }
 
@@ -58,7 +57,6 @@ class MessagesTest extends TestCase
     {
         $this->messages->get(20);
     }
-
 
     public function testGetFirstAndLastFalse()
     {

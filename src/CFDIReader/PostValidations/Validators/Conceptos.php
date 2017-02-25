@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader\PostValidations\Validators;
 
 use CFDIReader\CFDIReader;
@@ -13,12 +12,12 @@ class Conceptos extends AbstractValidator
         $this->setup($cfdi, $issues);
         // do the validation process
         foreach ($this->comprobante->conceptos->concepto as $concepto) {
-            $extended = $this->value($concepto["valorUnitario"]) * $this->value($concepto["cantidad"]);
-            $importe = $this->value($concepto["importe"]);
+            $extended = $this->value($concepto['valorUnitario']) * $this->value($concepto['cantidad']);
+            $importe = $this->value($concepto['importe']);
             if (! $this->compare($extended, $importe)) {
                 $this->warnings->add(
                     'El importe del concepto '
-                    . $concepto["descripcion"]
+                    . $concepto['descripcion']
                     . ' no coincide con el producto del valor unitario y el total'
                 );
             }

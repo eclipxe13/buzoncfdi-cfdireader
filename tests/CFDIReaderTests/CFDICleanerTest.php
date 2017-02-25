@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReaderTests;
 
 use CFDIReader\CFDICleaner;
@@ -10,15 +9,15 @@ class CFDICleanerTest extends TestCase
 {
     public function testConstructorWithEmptyText()
     {
-        $cleaner = new CFDICleaner("");
+        $cleaner = new CFDICleaner('');
         $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
-        @$cleaner->loadContent("");
+        @$cleaner->loadContent('');
     }
 
     public function xxtestConstructorWithNonCFDI()
     {
-        $cleaner = new CFDICleaner("");
+        $cleaner = new CFDICleaner('');
         $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
         @$cleaner->loadContent('<cfdi></cfdi>');
@@ -28,14 +27,14 @@ class CFDICleanerTest extends TestCase
     {
         $this->expectException(CFDICleanerException::class);
         new CFDICleaner('<?xml version="1.0" encoding="UTF-8"?>
-            <'.'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.15" />
+            <' . 'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.15" />
         ');
     }
 
     public function testConstructorWithMinimalCompatibility()
     {
         $cleaner = new CFDICleaner('<?xml version="1.0" encoding="UTF-8"?>
-            <'.'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.2" />
+            <' . 'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.2" />
         ');
         $this->assertInstanceOf(CFDICleaner::class, $cleaner, 'Cleaner created with minimum compatibility');
     }

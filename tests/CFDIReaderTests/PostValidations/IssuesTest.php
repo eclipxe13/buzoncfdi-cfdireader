@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReaderTests\PostValidations;
 
 use CFDIReader\PostValidations\Issues;
@@ -19,8 +18,8 @@ class IssuesTest extends TestCase
 
     public function testAfterConstruct()
     {
-        $this->assertEmpty($this->issues->types(), "No types must exists");
-        $this->assertEmpty($this->issues->all(), "No messages must exists");
+        $this->assertEmpty($this->issues->types(), 'No types must exists');
+        $this->assertEmpty($this->issues->all(), 'No messages must exists');
     }
 
     /**
@@ -56,11 +55,11 @@ class IssuesTest extends TestCase
                 'Dummy error 2',
             ],
             'WARNING' => [
-                'Warning'
+                'Warning',
             ],
             'NOTICE' => [
-                'Notice A'
-            ]
+                'Notice A',
+            ],
         ];
         foreach ($contents as $type => $texts) {
             $messages = $this->issues->messages($type);
@@ -78,7 +77,6 @@ class IssuesTest extends TestCase
         $this->assertCount(4, $this->issues->types(), 'Dummy type was not registered');
         $this->assertEquals($contents, $this->issues->all());
     }
-
 
     public function testIterator()
     {

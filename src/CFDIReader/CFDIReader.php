@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader;
 
 use SimpleXMLElement;
@@ -27,7 +26,6 @@ use SimpleXMLElement;
  */
 class CFDIReader
 {
-
     /** @var SimpleXMLElement */
     private $comprobante;
 
@@ -57,12 +55,12 @@ class CFDIReader
         // check it contains both mandatory namespaces
         $nss = array_values($xml->getNamespaces(true));
         $required = [
-            "http://www.sat.gob.mx/cfd/3",
-            "http://www.sat.gob.mx/TimbreFiscalDigital",
+            'http://www.sat.gob.mx/cfd/3',
+            'http://www.sat.gob.mx/TimbreFiscalDigital',
         ];
         foreach ($required as $namespace) {
             if (! in_array($namespace, $nss)) {
-                throw new \InvalidArgumentException('The content does not use the namespace '.$namespace);
+                throw new \InvalidArgumentException('The content does not use the namespace ' . $namespace);
             }
         }
         // include a null element to copy the elements without namespace
@@ -91,7 +89,7 @@ class CFDIReader
      */
     public function getUUID()
     {
-        return (string) $this->comprobante->complemento->timbreFiscalDigital["UUID"];
+        return (string) $this->comprobante->complemento->timbreFiscalDigital['UUID'];
     }
 
     /**
