@@ -1,11 +1,10 @@
 <?php
-
 namespace CFDIReader;
 
-use XmlSchemaValidator\Locator;
-use XmlSchemaValidator\SchemaValidator;
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
+use XmlSchemaValidator\Locator;
+use XmlSchemaValidator\SchemaValidator;
 
 /**
  * Description of CFDIFactory
@@ -33,8 +32,8 @@ class CFDIFactory
      * Sets allowed mimes to Xsd and register cfdv32.xsd and TimbreFiscalDigital.xsd from commonxsd/
      * @param bool $registerCommonXsd try to register files located on commonxsd/
      * @param string $repository location of cached files
-     * @param integer $timeout download timeout
-     * @param integer $expire expiration
+     * @param int $timeout download timeout
+     * @param int $expire expiration
      * @return Locator
      */
     public function newLocator($registerCommonXsd = true, $repository = '', $timeout = 20, $expire = 0)
@@ -48,9 +47,9 @@ class CFDIFactory
                 'cfdv32.xsd' => 'http://www.sat.gob.mx/cfd/3',
                 'TimbreFiscalDigital.xsd' => 'http://www.sat.gob.mx/TimbreFiscalDigital',
             ];
-            if ('' != $basepath = realpath(__DIR__ . "/../../commonxsd")) {
+            if ('' != $basepath = realpath(__DIR__ . '/../../commonxsd')) {
                 foreach ($xsd as $file => $url) {
-                    $locator->register($url, $basepath.'/'.$file);
+                    $locator->register($url, $basepath . '/' . $file);
                 }
             }
         }

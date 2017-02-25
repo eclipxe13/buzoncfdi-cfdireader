@@ -83,27 +83,28 @@ You can use this tool to validate the document without this garbage.
 $content = \CFDIReader\CFDICleaner::staticClean(file_get_contents('cfdi-dirty.xml'));
 ```
 
-## Constributing and TODO
-
-- [ ] Validator for metodoPago
-- [ ] Check CFDI signature againts certificate
-- [X] Integrate with Scrutinizer
+## Contributing
 
 There is a lot of work, this is an open source project that try to offer a framework agnostic way to deal with
 Mexican CFDI version 3.2.
 
-Contributions are welcome! Please read [CONTRIBUTING][] for details.
+Contributions are welcome! Please read [CONTRIBUTING][] for details
+and don't forget to take a look in the [TODO][] and [CHANGELOG][] files.
 
-## Copyright and License
+## License
 
-The eclipxe\buzoncfdi-cfdireader library is copyright © [Carlos C Soto](https://eclipxe.com.mx/)
+The eclipxe/buzoncfdi-cfdireader library is copyright © [Carlos C Soto](https://eclipxe.com.mx/)
 and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
+
+[contributing]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/CONTRIBUTING.md
+[todo]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/TODO.md
+[changelog]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/CHANGELOG.md
 
 [release]: https://github.com/eclipxe13/buzoncfdi-cfdireader/releases
 [license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
 [build]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/build-status/master
 [quality]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/
-[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/?branch=master
+[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/code-structure/master
 [downloads]: https://packagist.org/packages/eclipxe/buzoncfdi-cfdireader
 
 [badge-release]: https://img.shields.io/github/tag/eclipxe13/buzoncfdi-cfdireader.svg?label=version&style=flat-square

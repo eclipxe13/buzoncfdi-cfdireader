@@ -2,7 +2,6 @@
 /**
  * Script to validate cfdi files and show all the errors found
  */
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use CFDIReader\CFDIFactory;
@@ -16,6 +15,7 @@ if ($argc == 1 || in_array('-h', $argv) || in_array('--help', $argv)) {
 
 // create the factory
 $factory = new CFDIFactory();
+// @codingStandardsIgnoreLine This is a false positive, the array $argv is reduced on the loop
 while (count($argv)) {
     // process next argument
     $argument = array_shift($argv);

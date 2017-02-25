@@ -11,14 +11,19 @@ build:
         neo4j: false
         rabbitmq: false
     tests:
+        stop_on_failure: true
         override:
-            - phpcs-run --standard=phpcs.xml src
             -
-                command: 'phpunit --coverage-clover=coverage.xml'
+                command: vendor/bin/parallel-lint src/ tests/ scripts/
+            -
+                command: vendor/bin/phpcs -sp src/ tests/ scripts/
+            -
+                command: vendor/bin/php-cs-fixer fix --using-cache=no --dry-run --verbose
+            -
+                command: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
                 coverage:
                     file: 'coverage.xml'
                     format: 'clover'
-
 
 filter:
     excluded_paths: ['tests/*', 'vendor/*']

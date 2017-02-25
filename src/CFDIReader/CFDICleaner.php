@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader;
 
 use DOMDocument;
@@ -18,7 +17,6 @@ use DOMXPath;
  */
 class CFDICleaner
 {
-
     /** @var DOMDocument */
     protected $dom;
 
@@ -53,7 +51,7 @@ class CFDICleaner
      */
     public static function isVersionAllowed($version)
     {
-        return in_array($version, ["3.2"]);
+        return in_array($version, ['3.2']);
     }
 
     /**
@@ -64,8 +62,8 @@ class CFDICleaner
     public static function isNameSpaceAllowed($namespace)
     {
         $fixedNS = [
-            "http://www.w3.org/2001/XMLSchema-instance",
-            "http://www.w3.org/XML/1998/namespace",
+            'http://www.w3.org/2001/XMLSchema-instance',
+            'http://www.w3.org/XML/1998/namespace',
         ];
         foreach ($fixedNS as $ns) {
             if (0 === strcasecmp($ns, $namespace)) {
@@ -73,7 +71,7 @@ class CFDICleaner
             }
         }
         $willcardNS = [
-            "http://www.sat.gob.mx/",
+            'http://www.sat.gob.mx/',
         ];
         foreach ($willcardNS as $ns) {
             if (0 === strpos($namespace, $ns)) {
@@ -106,7 +104,7 @@ class CFDICleaner
         if (true == $loaderror = libxml_get_last_error()) {
             throw new CFDICleanerException('XML Error: ' . $loaderror);
         }
-        $prefix = $dom->lookupPrefix("http://www.sat.gob.mx/cfd/3");
+        $prefix = $dom->lookupPrefix('http://www.sat.gob.mx/cfd/3');
         if (! $prefix) {
             throw new CFDICleanerException('The XML document is not a CFDI');
         }
@@ -148,7 +146,7 @@ class CFDICleaner
      */
     public function removeAddenda()
     {
-        $prefix = $this->dom->lookupPrefix("http://www.sat.gob.mx/cfd/3");
+        $prefix = $this->dom->lookupPrefix('http://www.sat.gob.mx/cfd/3');
         $query = '/' . $prefix . ':Comprobante/' . $prefix . ':Addenda';
         $addendas = $this->xpathQuery($query);
         if ($addendas->length == 0) {
@@ -166,7 +164,7 @@ class CFDICleaner
      */
     public function removeNonSatNSschemaLocations()
     {
-        $xsi = $this->dom->lookupPrefix("http://www.w3.org/2001/XMLSchema-instance");
+        $xsi = $this->dom->lookupPrefix('http://www.w3.org/2001/XMLSchema-instance');
         if (! $xsi) {
             return;
         }
@@ -190,18 +188,18 @@ class CFDICleaner
         if (0 !== $partsCount % 2) {
             throw new CFDICleanerException("The schemaLocation value '" . $source . "' must have even number of URIs");
         }
-        $modified = "";
+        $modified = '';
         for ($k = 0; $k < $partsCount; $k = $k + 2) {
             if (! $this->isNameSpaceAllowed($parts[$k])) {
                 continue;
             }
-            $modified .= $parts[$k] . " " . $parts[$k + 1] . " ";
+            $modified .= $parts[$k] . ' ' . $parts[$k + 1] . ' ';
         }
-        $modified = rtrim($modified, " ");
+        $modified = rtrim($modified, ' ');
         if ($source == $modified) {
             return;
         }
-        if ("" !== $modified) {
+        if ('' !== $modified) {
             $schemaLocation->nodeValue = $modified;
         } else {
             $schemaLocation->parentNode->attributes->removeNamedItemNS(
@@ -238,7 +236,7 @@ class CFDICleaner
      */
     private function removeNonSatNSNode($namespace)
     {
-        foreach ($this->dom->getElementsByTagNameNS($namespace, "*") as $children) {
+        foreach ($this->dom->getElementsByTagNameNS($namespace, '*') as $children) {
             $children->parentNode->removeChild($children);
         }
     }

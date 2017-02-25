@@ -14,9 +14,10 @@
         "eclipxe/xmlschemavalidator": "@stable"
     },
     "require-dev": {
+        "phpunit/phpunit": "@stable",
         "jakub-onderka/php-parallel-lint": "@stable",
         "squizlabs/php_codesniffer": "@stable",
-        "phpunit/phpunit": "@stable"
+        "friendsofphp/php-cs-fixer": "@stable"
     },
     "autoload": {
         "psr-4": {

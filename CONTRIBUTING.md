@@ -57,11 +57,11 @@ When you do begin working on your feature, here are some guidelines to consider:
 * **Submit one feature per pull request.** If you have multiple features you wish to submit, please break them up into separate pull requests.
 * **Send coherent history**. Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please squash them before submitting.
 
-If you are having issues with PSR-2 try to use `phpcbf`
+If you are having issues with coding standars use `php-cs-fixer` and `phpcbf`
 
 ```bash
-# fix sources and tests
-vendor/bin/phpcbf --standard=psr2 --encoding=utf-8 sources/ tests/
+vendor/bin/php-cs-fixer fix -v
+vendor/bin/phpcbf src/ tests/
 ```
 
 ## Running Tests
@@ -70,7 +70,7 @@ The following tests must pass before we will accept a pull request. If any of th
 it will result in a complete build failure. Before you can run these, be sure to `composer install`.
 
 ```
-./vendor/bin/parallel-lint sources tests
-./vendor/bin/phpcs sources tests --encoding=utf-8 --standard=psr2 -sp
-./vendor/bin/phpunit --coverage-text
+vendor/bin/parallel-lint src/ tests/
+vendor/bin/phpcs -sp src/ tests/
+vendor/bin/phpunit --coverage-text
 ```

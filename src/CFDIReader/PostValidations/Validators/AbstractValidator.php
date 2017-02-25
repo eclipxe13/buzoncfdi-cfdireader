@@ -1,11 +1,10 @@
 <?php
-
 namespace CFDIReader\PostValidations\Validators;
 
 use CFDIReader\CFDIReader;
-use CFDIReader\PostValidations\Messages;
 use CFDIReader\PostValidations\Issues;
 use CFDIReader\PostValidations\IssuesTypes;
+use CFDIReader\PostValidations\Messages;
 use CFDIReader\PostValidations\ValidatorInterface;
 use SimpleXMLElement;
 

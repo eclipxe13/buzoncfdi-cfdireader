@@ -1,5 +1,4 @@
 <?php
-
 namespace CFDIReader\PostValidations;
 
 class Validators implements \IteratorAggregate, \Countable
@@ -50,8 +49,6 @@ class Validators implements \IteratorAggregate, \Countable
         return array_search($validator, $this->validators, true);
     }
 
-
-
     /**
      * Return a registered instance of a validator identified by index
      * @param int $index
@@ -60,7 +57,7 @@ class Validators implements \IteratorAggregate, \Countable
     public function get($index)
     {
         if (! array_key_exists($index, $this->validators)) {
-            throw new \OutOfBoundsException("Validator does not exists");
+            throw new \OutOfBoundsException('Validator does not exists');
         }
         return $this->validators[$index];
     }
