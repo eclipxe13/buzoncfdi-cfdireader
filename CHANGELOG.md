@@ -1,3 +1,8 @@
+# Version 1.0.10
+- Move script logic to a class to be tested
+- Follow insight sensiolabs recommendations
+- Add sensiolabs badge
+
 # Version 1.0.9
 - Add .php_cs.dist, rename phpcs.xml to phpcs.xml.dist
 - Add php-cs-fixer to composer.json

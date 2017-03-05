@@ -101,7 +101,7 @@ class CFDICleaner
     {
         $dom = new DOMDocument();
         $dom->loadXML($content, LIBXML_ERR_WARNING);
-        if (true == $loaderror = libxml_get_last_error()) {
+        if (false !== $loaderror = libxml_get_last_error()) {
             throw new CFDICleanerException('XML Error: ' . $loaderror);
         }
         $prefix = $dom->lookupPrefix('http://www.sat.gob.mx/cfd/3');
