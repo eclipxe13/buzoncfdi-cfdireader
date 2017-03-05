@@ -8,6 +8,7 @@
 [![Scrutinizer][badge-quality]][quality]
 [![Coverage Status][badge-coverage]][coverage]
 [![Total Downloads][badge-downloads]][downloads]
+[![SensioLabsInsight][badge-sensiolabs]][sensiolabs]
 
 This library open an Xml CFDI and read it as a SimpleXML (without namespaces) for easy access.
 
@@ -97,8 +98,8 @@ The eclipxe/buzoncfdi-cfdireader library is copyright © [Carlos C Soto](https:/
 and licensed for use under the MIT License (MIT). Please see [LICENSE][] for more information.
 
 [contributing]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/CONTRIBUTING.md
-[todo]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/TODO.md
 [changelog]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/CHANGELOG.md
+[todo]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/TODO.md
 
 [release]: https://github.com/eclipxe13/buzoncfdi-cfdireader/releases
 [license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
@@ -106,6 +107,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [quality]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/
 [coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/code-structure/master
 [downloads]: https://packagist.org/packages/eclipxe/buzoncfdi-cfdireader
+[sensiolabs]: https://insight.sensiolabs.com/projects/ffa9eb49-58e3-4532-acdd-f8089d46ad73
 
 [badge-release]: https://img.shields.io/github/tag/eclipxe13/buzoncfdi-cfdireader.svg?label=version&style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
@@ -113,3 +115,4 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [badge-quality]: https://img.shields.io/scrutinizer/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
 [badge-coverage]: https://img.shields.io/scrutinizer/coverage/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/eclipxe/buzoncfdi-cfdireader.svg?style=flat-square
+[badge-sensiolabs]: https://insight.sensiolabs.com/projects/ffa9eb49-58e3-4532-acdd-f8089d46ad73/mini.png
