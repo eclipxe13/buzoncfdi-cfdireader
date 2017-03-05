@@ -36,6 +36,45 @@ class ValidateTest extends TestCase
         $this->assertEquals($stdErr, $validate->getStdErr());
     }
 
+    public function testMake()
+    {
+        $script = 'command';
+        $filenames = ['first', 'second'];
+        $stdOut = 'php://stdout';
+        $stdErr = 'php://stderr';
+
+        $validate = Validate::make(['command', 'first', 'second']);
+
+        $this->assertEquals($script, $validate->getScript());
+        $this->assertEquals($filenames, $validate->getFilenames());
+        $this->assertEquals($stdOut, $validate->getStdOut());
+        $this->assertEquals($stdErr, $validate->getStdErr());
+    }
+
+    public function testMakeThrowExceptionOnEmptyArgumentsArray()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot construct without arguments');
+
+        Validate::make([]);
+    }
+
+    public function testConstructorScriptThrowException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('script argument is not a string');
+
+        new Validate(null, []);
+    }
+
+    public function testConstructorFilenamesThrowException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('parameter 1 is not a string');
+
+        new Validate('', ['', null]);
+    }
+
     public function testRunExpectUUID()
     {
         $validate = $this->makeValidateObject([
