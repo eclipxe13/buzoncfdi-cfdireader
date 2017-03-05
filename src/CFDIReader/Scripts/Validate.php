@@ -39,7 +39,7 @@ class Validate
             throw new \InvalidArgumentException('Cannot construct without filenames');
         }
         $script = array_shift($argv);
-        return new Validate($script, $argv);
+        return new self($script, $argv);
     }
 
     protected function write($message)
@@ -58,7 +58,7 @@ class Validate
 
         foreach ($this->filenames as $current) {
             if ('' === $current) {
-                $this->error("FATAL: Empty filename");
+                $this->error('FATAL: Empty filename');
                 continue;
             }
             $filename = realpath($current);
