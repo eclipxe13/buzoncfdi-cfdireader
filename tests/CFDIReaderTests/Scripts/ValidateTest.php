@@ -57,7 +57,7 @@ class ValidateTest extends TestCase
 
         $this->assertCount(1, $validate->messages);
         $this->assertCount(1, $validate->errors);
-        $this->assertContains('FATAL: empty filename', $validate->errors[0]);
+        $this->assertContains('FATAL: Empty filename', $validate->errors[0]);
     }
 
     public function testRunExpectErrorFileNotFound()
@@ -120,7 +120,7 @@ class ValidateTest extends TestCase
         $validate->run();
 
         $expectedMessages = [
-            'cfdi-noseal.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
+            'cfdi-valid.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
             'cfdi-totales-subtotal.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
         ];
 
