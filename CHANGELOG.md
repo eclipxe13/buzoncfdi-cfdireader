@@ -1,3 +1,10 @@
+# Version 1.0.11
+- Add docblocks to CFDIReader\Scripts\Validate class
+- Improve code coverage for CFDIReader\Scripts\Validate
+- Reduce complexity of CFDIReader\Scripts\Validate::run
+- Add more tests to CFDIReader\Scripts\Validate constructor
+- Add phpdox.xml.dist to create documentation (testing)
+
 # Version 1.0.10
 - Move script logic to a class to be tested
 - Follow insight sensiolabs recommendations

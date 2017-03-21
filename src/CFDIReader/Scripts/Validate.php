@@ -10,10 +10,10 @@ class Validate
     /** @var string[] */
     private $filenames;
 
-    /** @var string */
+    /** @var string defaults to php://stdout */
     private $stdOut;
 
-    /** @var string */
+    /** @var string defaults to php://stderr */
     private $stdErr;
 
     /**
@@ -31,8 +31,14 @@ class Validate
         $filenames = array_values($filenames);
         foreach ($filenames as $index => $value) {
             if (! is_string($value)) {
-                throw new \InvalidArgumentException("parameter $index is not a string");
+                throw new \InvalidArgumentException("filename parameter $index is not a string");
             }
+        }
+        if (! is_string($stdOut)) {
+            throw new \InvalidArgumentException('argument stdout is not a string');
+        }
+        if (! is_string($stdErr)) {
+            throw new \InvalidArgumentException('argument stderr is not a string');
         }
         $this->script = $script;
         $this->filenames = $filenames;
@@ -41,6 +47,7 @@ class Validate
     }
 
     /**
+     * Use this function to build the validate object from arguments values
      * @param string[] $argv
      * @return Validate
      */

@@ -75,6 +75,22 @@ class ValidateTest extends TestCase
         new Validate('', ['', null]);
     }
 
+    public function testConstructorStdOutThrowException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('argument stdout is not a string');
+
+        new Validate('', [''], null);
+    }
+
+    public function testConstructorStdErrThrowException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('argument stderr is not a string');
+
+        new Validate('', [''], '', null);
+    }
+
     public function testRunExpectUUID()
     {
         $validate = $this->makeValidateObject([

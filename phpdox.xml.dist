@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpdox xmlns="http://xml.phpdox.net/config">
+    <project name="eclipxe/buzoncfdi-reader" source="${basedir}/src" workdir="${basedir}/build/api/xml">
+        <collector backend="parser" />
+        <generator output="${basedir}/build/api">
+            <enrich base="${basedir}/build">
+                <source type="phploc" />
+                <source type="git" binary="/usr/bin/git">
+                    <history enabled="true" limit="15" />
+                </source>
+                <source type="pmd" />
+                <source type="phpunit">
+                    <coverage path="coverage/xml/" />
+                </source>
+            </enrich>
+            <build engine="html" output="html"/>
+        </generator>
+    </project>
+</phpdox>
