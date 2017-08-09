@@ -1,3 +1,15 @@
+# Version 1.1.0
+- Fix `CFDIFactory::newLocator` method since it was not registering in the correct way the commonxsd files
+- Add **basic support for CFDI 3.3**
+  There are several thinks that can be made since version 3.3
+  is not only about XML/XSD validations but also "logic" validations.
+- Add `CFDIReader::allowedVersions` method that return an array with 3.2 and 3.3
+- Include local versions for `cfdv33.xsd` and `TimbreFiscalDigitalv11.xsd` modified to point to local files
+  of `catCFDI.xsd` and `tdCFDI.xsd`  
+- Fix documentation, include gitter chat room in README
+- Fix composer.json required versions (use ^X.Y instead of @stable)
+- Add doc/ files (in spanish) about the project
+
 # Version 1.0.11
 - Add docblocks to CFDIReader\Scripts\Validate class
 - Improve code coverage for CFDIReader\Scripts\Validate
