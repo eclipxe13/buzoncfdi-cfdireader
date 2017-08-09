@@ -164,7 +164,7 @@ class CFDIReader
 
     /**
      * Finds out if the version is supported.
-     * @param  strign $version The version to test (eg 3.3 or 3.2)
+     * @param  string $version The version to test (eg 3.3 or 3.2)
      * @return SchemaRequirementInterface
      * @throws \InvalidArgumentException If the version is not supported.
      */
