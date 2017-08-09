@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd" Version="3.3" Serie="A" Folio="167ABC" Fecha="2017-01-05T09:09:23" Sello="" NoCertificado="20001000000200001428" Certificado="" SubTotal="1000" Moneda="MXN" Total="1500" TipoDeComprobante="I" FormaPago="01" MetodoPago="PUE" CondicionesDePago="CONDICIONES" Descuento="0.00" TipoCambio="1.0" LugarExpedicion="45079">
+  <cfdi:CfdiRelacionados TipoRelacion="01">
+    <cfdi:CfdiRelacionado UUID="A39DA66B-52CA-49E3-879B-5C05185B0EF7"/>
+  </cfdi:CfdiRelacionados>
+  <cfdi:Emisor Rfc="LAHH850905BZ4" Nombre="HORACIO LLANOS" RegimenFiscal="601"/>
+  <cfdi:Receptor Rfc="HEPR930322977" Nombre="RAFAEL ALEJANDRO HERNÁNDEZ PALACIOS" ResidenciaFiscal="MEX" NumRegIdTrib="0000000000000" UsoCFDI="G01"/>
+  <cfdi:Conceptos>
+    <cfdi:Concepto ClaveProdServ="01010101" ClaveUnidad="F52" NoIdentificacion="00001" Cantidad="1.5" Unidad="TONELADA" Descripcion="ACERO" ValorUnitario="1500000" Importe="2250000">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="2250000" Impuesto="001" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="360000"/>
+        </cfdi:Traslados>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="2250000" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.530000" Importe="247500"/>
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+      <cfdi:CuentaPredial Numero="51888"/>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="01010101" ClaveUnidad="F52" NoIdentificacion="00002" Cantidad="1.6" Unidad="TONELADA" Descripcion="ALUMINIO" ValorUnitario="1500" Importe="2400">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="2400" Impuesto="001" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="384"/>
+        </cfdi:Traslados>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="2400" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.530000" Importe="264"/>
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+      <cfdi:InformacionAduanera NumeroPedimento="15  48  4567  6001234"/>
+    </cfdi:Concepto>
+    <cfdi:Concepto ClaveProdServ="01010101" ClaveUnidad="F52" NoIdentificacion="00003" Cantidad="1.7" Unidad="TONELADA" Descripcion="ZAMAC" ValorUnitario="10000" Importe="17000">
+      <cfdi:Impuestos>
+        <cfdi:Traslados>
+          <cfdi:Traslado Base="17000" Impuesto="001" TipoFactor="Tasa" TasaOCuota="0.530000" Importe="2720"/>
+        </cfdi:Traslados>
+        <cfdi:Retenciones>
+          <cfdi:Retencion Base="17000" Impuesto="002" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="1870"/>
+        </cfdi:Retenciones>
+      </cfdi:Impuestos>
+      <cfdi:Parte ClaveProdServ="01010101" NoIdentificacion="055155" Cantidad="1.0" Descripcion="PARTE EJEMPLO" Unidad="UNIDAD" ValorUnitario="1.00" Importe="1.00">
+        <cfdi:InformacionAduanera NumeroPedimento="15  48  4567  6981235"/>
+      </cfdi:Parte>
+    </cfdi:Concepto>
+  </cfdi:Conceptos>
+  <cfdi:Impuestos TotalImpuestosRetenidos="247500" TotalImpuestosTrasladados="360000">
+    <cfdi:Retenciones>
+      <cfdi:Retencion Impuesto="002" Importe="247500"/>
+    </cfdi:Retenciones>
+    <cfdi:Traslados>
+      <cfdi:Traslado Impuesto="001" TipoFactor="Tasa" TasaOCuota="0.160000" Importe="360000"/>
+    </cfdi:Traslados>
+  </cfdi:Impuestos>
+  <cfdi:Complemento>
+    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" xsi:schemaLocation="http://www.sat.gob.mx/TimbreFiscalDigital http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd" Version="1.1" UUID="9FB6ED1A-5F37-4FEF-980A-7F8C83B51894" FechaTimbrado="2017-01-05T12:39:21" RfcProvCertif="SFE0807172W7" SelloCFD="W2Fr9AiEuUIFJUVRWMXWMHndDcwvpNCu2g0uTE58wutNkUgjq3J+5f7Kl/ygpAlQggmJB9dKBd2UsYjd94dGTvIso26CFdmW3QY+KBa5d/qpFBsnLxVq+NgP4l2MpAzMMlzD4AsyaTSPnKc6/xmFzIQszCEQ0DsQO+twW0VsxrI=" NoCertificadoSAT="20001000000300022779" SelloSAT="a0U3KSPH6ouIzOnO3A5KUG+wKJ0Kg77SeDLdw8c4a4bLaib5dCxh4nv1Y/GFq7fgm3DQDCmPTzmcJ8BATwO8r9+e36Zcw0kHcVlJ8+VRz/oHYWyCgq4etsTybXtrqcnLeyCy6Oi38Yk/2lvEwnvtqSFSXrNTL/jA5ZEyeZxpwerGmuQ/NmUC4Ta5+DjjON7bZomfMNBMoAsnLj5uTEQa03mZGhbPg+h/RMLZ7GA2VXLFhxj68YXt/uR5tu4kJTjwTn0ZAK83wzYp68V2TJdEaW3JMLw/5EwXpqctV2drek3u2gt63S9Po2FHpmXDKVNM6LTw57iRQ8tnLSCeKP68Nw=="/>
+  </cfdi:Complemento>
+</cfdi:Comprobante>

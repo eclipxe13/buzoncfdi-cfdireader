@@ -1,6 +1,6 @@
 # eclipxe/buzoncfdi-cfdireader
 
-**Library to read and validate a Mexican CFDI 3.2 (Comprobantre Fiscal por Internet)**
+**Library to read and validate a Mexican CFDI 3.2 and 3.3 (Comprobantre Fiscal por Internet)**
 
 [![Latest Version][badge-release]][release]
 [![Software License][badge-license]][license]
@@ -48,7 +48,7 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 
 * The content must be a valid XML
 * The root element must be Comprobante
-* The version attribute must be 3.2
+* The version attribute must be 3.2 or 3.3
 * The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
 * The element Comprobante/Complemento/TimbreFiscalDigital must exists
 * Includes a class to clean external XSD and Addendas
@@ -87,7 +87,7 @@ $content = \CFDIReader\CFDICleaner::staticClean(file_get_contents('cfdi-dirty.xm
 ## Contributing
 
 There is a lot of work, this is an open source project that try to offer a framework agnostic way to deal with
-Mexican CFDI version 3.2.
+Mexican CFDI version 3.2 and 3.3.
 
 Contributions are welcome! Please read [CONTRIBUTING][] for details
 and don't forget to take a look in the [TODO][] and [CHANGELOG][] files.

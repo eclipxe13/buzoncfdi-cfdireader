@@ -34,7 +34,7 @@ class CFDIReaderTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The Comprobante version attribute must be 3.2
+     * @expectedExceptionMessage The Comprobante version must be
      */
     public function testConstructorWithInvalidVersionMissing()
     {
@@ -43,7 +43,7 @@ class CFDIReaderTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The Comprobante version attribute must be 3.2
+     * @expectedExceptionMessage The Comprobante version must be
      */
     public function testConstructorWithInvalidVersionWrong()
     {
@@ -54,7 +54,7 @@ class CFDIReaderTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The content does not use the namespace http://www.sat.gob.mx/cfd/3
      */
-    public function testConstructorWithInvalidNamespaceCFD3()
+    public function testConstructorWithInvalidNamespaceCFD32()
     {
         new CFDIReader('<Comprobante version="3.2"/>');
     }
@@ -97,6 +97,17 @@ class CFDIReaderTest extends TestCase
         $cfdi = new CFDIReader(file_get_contents($filename));
         $this->assertSame(
             'e403f396-6a57-4625-adb4-bb436b00789f',
+            $cfdi->getUUID(),
+            'Unable to retrieve the UUID by using the getUUID() method'
+        );
+    }
+
+    public function testGetUUID33()
+    {
+        $filename = test_file_location('cfdi33-valid.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+        $this->assertSame(
+            '9FB6ED1A-5F37-4FEF-980A-7F8C83B51894',
             $cfdi->getUUID(),
             'Unable to retrieve the UUID by using the getUUID() method'
         );
