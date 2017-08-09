@@ -49,7 +49,12 @@ class CFDIReader
         if ('Comprobante' !== $xml->getName()) {
             throw new \InvalidArgumentException('The XML root node must be Comprobante');
         }
-        if (! isset($xml['version']) || strval($xml['version']) !== '3.2') {
+        $version = strval($xml['version']);
+        if (!$version) {
+            // SAT generated attribute
+            $version = strval($xml['Version']);
+        }
+        if (! in_array($version, ['3.2', '3.3'])) {
             throw new \InvalidArgumentException('The Comprobante version attribute must be 3.2');
         }
         // check it contains both mandatory namespaces
