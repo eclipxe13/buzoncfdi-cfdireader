@@ -34,7 +34,7 @@ class CFDIReaderTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The Comprobante version attribute must be 3.2
+     * @expectedExceptionMessage This Comprobante version is not supported.
      */
     public function testConstructorWithInvalidVersionMissing()
     {
@@ -43,7 +43,7 @@ class CFDIReaderTest extends TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The Comprobante version attribute must be 3.2
+     * @expectedExceptionMessage This Comprobante version is not supported.
      */
     public function testConstructorWithInvalidVersionWrong()
     {
@@ -57,6 +57,16 @@ class CFDIReaderTest extends TestCase
     public function testConstructorWithInvalidNamespaceCFD3()
     {
         new CFDIReader('<Comprobante version="3.2"/>');
+    }
+
+    public function testConstructorWithValidNamespaceCFD33()
+    {
+        $filename = test_file_location('cfdi-valid-33.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+        $this->assertInstanceOf(CFDIReader::class, $cfdi, 'Object created');
+        $filename = test_file_location('cfdi-valid-33-sat.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+        $this->assertInstanceOf(CFDIReader::class, $cfdi, 'Object created');
     }
 
     /**

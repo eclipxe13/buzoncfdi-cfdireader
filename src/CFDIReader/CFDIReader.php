@@ -2,6 +2,9 @@
 namespace CFDIReader;
 
 use SimpleXMLElement;
+use CFDIReader\SchemaRequirement\SchemaRequirement33;
+use CFDIReader\SchemaRequirement\SchemaRequirement32;
+use CFDIReader\SchemaRequirement\SchemaRequirementInterface;
 
 /**
  * CFDI Reader immutable class to recover contents from a CFDI.
@@ -30,11 +33,22 @@ class CFDIReader
     private $comprobante;
 
     /**
+     * List of allowed schemas
+     *
+     * @var array|SchemaRequirement[]
+     */
+    private $allowedSchemas;
+
+    /**
      * @param string $content xml contents
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
-    public function __construct($content)
+    public function __construct($content, $allowedSchemas = null)
     {
+        if (is_null($allowedSchemas)) {
+            $this->allowDefaultSchemas();
+        }
+
         // create the SimpleXMLElement
         try {
             $xml = new SimpleXMLElement($content);
@@ -50,19 +64,15 @@ class CFDIReader
             throw new \InvalidArgumentException('The XML root node must be Comprobante');
         }
         $version = strval($xml['version']);
-        if (!$version) {
+        if (! $version) {
             // SAT generated attribute
             $version = strval($xml['Version']);
         }
-        if (! in_array($version, ['3.2', '3.3'])) {
-            throw new \InvalidArgumentException('The Comprobante version attribute must be 3.2');
-        }
+        $version = $this->validateVersions($version);
+
         // check it contains both mandatory namespaces
         $nss = array_values($xml->getNamespaces(true));
-        $required = [
-            'http://www.sat.gob.mx/cfd/3',
-            'http://www.sat.gob.mx/TimbreFiscalDigital',
-        ];
+        $required = $version->getRequiredSchemas();
         foreach ($required as $namespace) {
             if (! in_array($namespace, $nss)) {
                 throw new \InvalidArgumentException('The content does not use the namespace ' . $namespace);
@@ -142,5 +152,30 @@ class CFDIReader
                 $this->appendChild($child, $destination, $nss);
             }
         }
+    }
+
+    public function allowDefaultSchemas()
+    {
+        $this->allowedSchemas = [
+            new SchemaRequirement33,
+            new SchemaRequirement32,
+        ];
+    }
+
+    /**
+     * Finds out if the version is supported.
+     * @param  strign $version The version to test (eg 3.3 or 3.2)
+     * @return SchemaRequirementInterface
+     * @throws \InvalidArgumentException If the version is not supported.
+     */
+    public function validateVersions($version)
+    {
+        foreach ($this->allowedSchemas as $req) {
+            if ($req->getVersion() == $version) {
+                return $req;
+            }
+        }
+
+        throw new \InvalidArgumentException('This Comprobante version is not supported.');
     }
 }
