@@ -34,19 +34,20 @@ class CFDICleaner
     /**
      * Method to clean content and return the result
      * If an error occurs, an exception is thrown
-     * @param string $content
+     * @param  string $content
      * @return string
      */
     public static function staticClean($content)
     {
         $cleaner = new self($content);
         $cleaner->clean();
+
         return $cleaner->retrieveXml();
     }
 
     /**
      * Check if the CFDI version is complatible to this class
-     * @param string $version
+     * @param  string $version
      * @return bool
      */
     public static function isVersionAllowed($version)
@@ -56,7 +57,7 @@ class CFDICleaner
 
     /**
      * Check if a given namespace is allowed (must not be removed from CFDI)
-     * @param string $namespace
+     * @param  string $namespace
      * @return bool
      */
     public static function isNameSpaceAllowed($namespace)
@@ -78,6 +79,7 @@ class CFDICleaner
                 return true;
             }
         }
+
         return false;
     }
 
@@ -131,13 +133,14 @@ class CFDICleaner
 
     /**
      * Helper function to Perform a XPath Query using
-     * @param string $query
-     * @param DOMNode|null $element
+     * @param  string       $query
+     * @param  DOMNode|null $element
      * @return DOMNodeList
      */
     private function xpathQuery($query, DOMNode $element = null)
     {
         $element = $element ?: $this->dom->documentElement;
+
         return (new DOMXPath($element->ownerDocument))->query($query, $element);
     }
 

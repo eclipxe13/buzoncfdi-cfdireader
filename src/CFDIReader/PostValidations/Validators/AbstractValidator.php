@@ -31,7 +31,7 @@ abstract class AbstractValidator implements ValidatorInterface
     /**
      * Configure this helper class
      * @param CFDIReader $cfdi
-     * @param Issues $issues
+     * @param Issues     $issues
      */
     protected function setup(CFDIReader $cfdi, Issues $issues)
     {
@@ -42,7 +42,7 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Get a numeric value from a decimal
-     * @param string $input
+     * @param  string $input
      * @return float
      */
     protected function value($input)
@@ -52,9 +52,9 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Compare two numbers using a delta abs(n - m) <= d
-     * @param float $first
-     * @param float $second
-     * @param float|null $delta
+     * @param  float      $first
+     * @param  float      $second
+     * @param  float|null $delta
      * @return bool
      */
     protected function compare($first, $second, $delta = null)
@@ -62,6 +62,7 @@ abstract class AbstractValidator implements ValidatorInterface
         if (null === $delta) {
             $delta = $this->compareDelta();
         }
+
         return (abs($first - $second) <= $delta);
     }
 
@@ -75,8 +76,8 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Compute the sum of a collection of nodes considering an attribute
-     * @param SimpleXMLElement $collection
-     * @param string $attribute
+     * @param  SimpleXMLElement $collection
+     * @param  string           $attribute
      * @return float
      */
     protected function sumNodes(SimpleXMLElement $collection = null, $attribute = '')
@@ -94,6 +95,7 @@ abstract class AbstractValidator implements ValidatorInterface
                 $sum = $sum + $this->value($node[$attribute]);
             }
         }
+
         return $sum;
     }
 }

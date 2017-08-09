@@ -25,7 +25,7 @@ class Issues implements \IteratorAggregate
     /**
      * Return a message collection of the selected type
      * If the type does not exists the object is created
-     * @param string $type
+     * @param  string   $type
      * @return Messages
      */
     public function messages($type)
@@ -36,6 +36,7 @@ class Issues implements \IteratorAggregate
         if (! array_key_exists($type, $this->messages)) {
             $this->messages[$type] = new Messages();
         }
+
         return $this->messages[$type];
     }
 
@@ -71,6 +72,7 @@ class Issues implements \IteratorAggregate
                 $contents[$type] = $messages->all();
             }
         }
+
         return $contents;
     }
 

@@ -2,6 +2,9 @@
 namespace CFDIReader;
 
 use SimpleXMLElement;
+use CFDIReader\SchemaRequirement\SchemaRequirement33;
+use CFDIReader\SchemaRequirement\SchemaRequirement32;
+use CFDIReader\SchemaRequirement\SchemaRequirementInterface;
 
 /**
  * CFDI Reader immutable class to recover contents from a CFDI.
@@ -30,11 +33,22 @@ class CFDIReader
     private $comprobante;
 
     /**
-     * @param string $content xml contents
+     * List of allowed schemas
+     *
+     * @var array|SchemaRequirement[]
+     */
+    private $allowedSchemas;
+
+    /**
+     * @param  string                    $content xml contents
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
-    public function __construct($content)
+    public function __construct($content, $allowedSchemas = null)
     {
+        if (is_null($allowedSchemas)) {
+            $this->allowDefaultSchemas();
+        }
+
         // create the SimpleXMLElement
         try {
             $xml = new SimpleXMLElement($content);
@@ -49,15 +63,16 @@ class CFDIReader
         if ('Comprobante' !== $xml->getName()) {
             throw new \InvalidArgumentException('The XML root node must be Comprobante');
         }
-        if (! isset($xml['version']) || strval($xml['version']) !== '3.2') {
-            throw new \InvalidArgumentException('The Comprobante version attribute must be 3.2');
+        $version = strval($xml['version']);
+        if (! $version) {
+            // SAT generated attribute
+            $version = strval($xml['Version']);
         }
+        $version = $this->validateVersions($version);
+
         // check it contains both mandatory namespaces
         $nss = array_values($xml->getNamespaces(true));
-        $required = [
-            'http://www.sat.gob.mx/cfd/3',
-            'http://www.sat.gob.mx/TimbreFiscalDigital',
-        ];
+        $required = $version->getRequiredSchemas();
         foreach ($required as $namespace) {
             if (! in_array($namespace, $nss)) {
                 throw new \InvalidArgumentException('The content does not use the namespace ' . $namespace);
@@ -94,7 +109,7 @@ class CFDIReader
 
     /**
      * Normalize a name to be accesible by
-     * @param string $name
+     * @param  string $name
      * @return string
      */
     private function normalizeName($name)
@@ -104,15 +119,16 @@ class CFDIReader
 
     /**
      * Utility function to create a child
-     * @param SimpleXMLElement $source
-     * @param SimpleXMLElement $parent
-     * @param array $nss
+     * @param  SimpleXMLElement $source
+     * @param  SimpleXMLElement $parent
+     * @param  array            $nss
      * @return SimpleXMLElement
      */
     private function appendChild(SimpleXMLElement $source, SimpleXMLElement $parent, array $nss)
     {
         $new = $parent->addChild($this->normalizeName($source->getName()), (string) $source);
         $this->populateNode($source, $new, $nss);
+
         return $new;
     }
 
@@ -120,7 +136,7 @@ class CFDIReader
      * Utility function to copy contents from one element to other without namespaces
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $destination
-     * @param array $nss
+     * @param array            $nss
      */
     private function populateNode(SimpleXMLElement $source, SimpleXMLElement $destination, array $nss)
     {
@@ -137,5 +153,30 @@ class CFDIReader
                 $this->appendChild($child, $destination, $nss);
             }
         }
+    }
+
+    public function allowDefaultSchemas()
+    {
+        $this->allowedSchemas = [
+            new SchemaRequirement33,
+            new SchemaRequirement32,
+        ];
+    }
+
+    /**
+     * Finds out if the version is supported.
+     * @param  string                     $version The version to test (eg 3.3 or 3.2)
+     * @return SchemaRequirementInterface
+     * @throws \InvalidArgumentException  If the version is not supported.
+     */
+    public function validateVersions($version)
+    {
+        foreach ($this->allowedSchemas as $req) {
+            if ($req->getVersion() == $version) {
+                return $req;
+            }
+        }
+
+        throw new \InvalidArgumentException('This Comprobante version is not supported.');
     }
 }
