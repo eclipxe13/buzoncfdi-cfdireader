@@ -18,10 +18,10 @@ class Validate
 
     /**
      * Validate constructor.
-     * @param string $script
+     * @param string   $script
      * @param string[] $filenames
-     * @param string $stdOut
-     * @param string $stdErr
+     * @param string   $stdOut
+     * @param string   $stdErr
      */
     public function __construct($script, array $filenames, $stdOut = 'php://stdout', $stdErr = 'php://stderr')
     {
@@ -48,7 +48,7 @@ class Validate
 
     /**
      * Use this function to build the validate object from arguments values
-     * @param string[] $argv
+     * @param  string[] $argv
      * @return Validate
      */
     public static function make(array $argv)
@@ -57,6 +57,7 @@ class Validate
             throw new \InvalidArgumentException('Cannot construct without arguments');
         }
         $script = array_shift($argv);
+
         return new self($script, $argv);
     }
 
@@ -92,17 +93,19 @@ class Validate
     /**
      * Run only a filename, used in the run loop
      * @param CFDIFactory $factory
-     * @param string $argument
+     * @param string      $argument
      */
     protected function runFilename(CFDIFactory $factory, $argument)
     {
         if ('' === $argument) {
             $this->error('FATAL: Empty filename');
+
             return;
         }
         $filename = realpath($argument);
         if ('' === $filename || ! is_file($filename) || ! is_readable($filename)) {
             $this->error("File $argument FATAL: not found or is not readable");
+
             return;
         }
         // do the object creation

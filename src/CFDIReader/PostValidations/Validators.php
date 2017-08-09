@@ -41,8 +41,8 @@ class Validators implements \IteratorAggregate, \Countable
 
     /**
      * Return the index of a registered validator
-     * @param ValidatorInterface $validator
-     * @return int index of the validator, return FALSE if not found
+     * @param  ValidatorInterface $validator
+     * @return int                index of the validator, return FALSE if not found
      */
     public function getIndex(ValidatorInterface $validator)
     {
@@ -51,7 +51,7 @@ class Validators implements \IteratorAggregate, \Countable
 
     /**
      * Return a registered instance of a validator identified by index
-     * @param int $index
+     * @param  int                $index
      * @return ValidatorInterface
      */
     public function get($index)
@@ -59,6 +59,7 @@ class Validators implements \IteratorAggregate, \Countable
         if (! array_key_exists($index, $this->validators)) {
             throw new \OutOfBoundsException('Validator does not exists');
         }
+
         return $this->validators[$index];
     }
 

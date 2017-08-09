@@ -40,7 +40,7 @@ class CFDIReader
     private $allowedSchemas;
 
     /**
-     * @param string $content xml contents
+     * @param  string                    $content xml contents
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
     public function __construct($content, $allowedSchemas = null)
@@ -109,7 +109,7 @@ class CFDIReader
 
     /**
      * Normalize a name to be accesible by
-     * @param string $name
+     * @param  string $name
      * @return string
      */
     private function normalizeName($name)
@@ -119,15 +119,16 @@ class CFDIReader
 
     /**
      * Utility function to create a child
-     * @param SimpleXMLElement $source
-     * @param SimpleXMLElement $parent
-     * @param array $nss
+     * @param  SimpleXMLElement $source
+     * @param  SimpleXMLElement $parent
+     * @param  array            $nss
      * @return SimpleXMLElement
      */
     private function appendChild(SimpleXMLElement $source, SimpleXMLElement $parent, array $nss)
     {
         $new = $parent->addChild($this->normalizeName($source->getName()), (string) $source);
         $this->populateNode($source, $new, $nss);
+
         return $new;
     }
 
@@ -135,7 +136,7 @@ class CFDIReader
      * Utility function to copy contents from one element to other without namespaces
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $destination
-     * @param array $nss
+     * @param array            $nss
      */
     private function populateNode(SimpleXMLElement $source, SimpleXMLElement $destination, array $nss)
     {
@@ -164,9 +165,9 @@ class CFDIReader
 
     /**
      * Finds out if the version is supported.
-     * @param  string $version The version to test (eg 3.3 or 3.2)
+     * @param  string                     $version The version to test (eg 3.3 or 3.2)
      * @return SchemaRequirementInterface
-     * @throws \InvalidArgumentException If the version is not supported.
+     * @throws \InvalidArgumentException  If the version is not supported.
      */
     public function validateVersions($version)
     {

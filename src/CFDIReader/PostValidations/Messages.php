@@ -33,7 +33,7 @@ class Messages implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param int $index
+     * @param  int    $index
      * @return string
      */
     public function get($index)
@@ -41,6 +41,7 @@ class Messages implements \IteratorAggregate, \Countable
         if (! array_key_exists($index, $this->messages)) {
             throw new \OutOfBoundsException('Message does not exists');
         }
+
         return $this->messages[$index];
     }
 
