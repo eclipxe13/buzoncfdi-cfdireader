@@ -3,7 +3,7 @@ namespace CFDIReaderTests\Scripts;
 
 use CFDIReader\Scripts\Validate;
 
-class ValidateArrayOutout extends Validate
+class ValidateArrayOutput extends Validate
 {
     public $writes = [];
     public $errors = [];
