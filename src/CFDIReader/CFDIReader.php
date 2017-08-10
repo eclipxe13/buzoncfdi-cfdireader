@@ -40,6 +40,7 @@ class CFDIReader
     }
 
     /**
+     * @see CFDIReader
      * @param string $content xml contents
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
@@ -90,13 +91,15 @@ class CFDIReader
         $dummy = new SimpleXMLElement('<dummy/>');
         $this->comprobante = $this->appendChild($xml, $dummy, $nss);
         // check that it contains the node comprobante/complemento/timbreFiscalDigital
-        if (! isset($this->comprobante->complemento) || ! isset($this->comprobante->complemento->timbreFiscalDigital)) {
+        if (! isset($this->comprobante->{'complemento'})
+            || ! isset($this->comprobante->{'complemento'}->timbreFiscalDigital)) {
             throw new \InvalidArgumentException('Seal not found on Comprobante/Complemento/TimbreFiscalDigital');
         }
     }
 
     /**
      * Get a copy of the root element
+     *
      * @return SimpleXMLElement
      */
     public function comprobante()
@@ -106,15 +109,20 @@ class CFDIReader
 
     /**
      * Get the UUID from the document
+     *
      * @return string
      */
     public function getUUID()
     {
-        return (string) $this->comprobante->complemento->timbreFiscalDigital['UUID'];
+        return (string) $this->comprobante->{'complemento'}->timbreFiscalDigital['UUID'];
     }
 
     /**
-     * Normalize a name to be accesible by
+     * Normalize a name to follow accesor rules (all is uppercase or first letter is lowercase)
+     * - Version => version
+     * - TimbreFiscalDigital => timbreFiscalDigital
+     * - UUID => UUID
+     *
      * @param string $name
      * @return string
      */
@@ -125,6 +133,7 @@ class CFDIReader
 
     /**
      * Utility function to create a child
+     *
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $parent
      * @param array $nss
@@ -139,6 +148,7 @@ class CFDIReader
 
     /**
      * Utility function to copy contents from one element to other without namespaces
+     *
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $destination
      * @param array $nss
