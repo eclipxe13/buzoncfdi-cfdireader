@@ -7,12 +7,16 @@ use DOMNodeList;
 use DOMXPath;
 
 /**
- * Class to clean CFDI and avoid bad practices
- * Strictly speaking, CFDI must acomplish all XML rules, including that any other
- * xml element must be isolated in its own schema and follow their own rules
- * The common practice (allowed by SAT) is that the CFDI is created, signed and after
- * some nodes are attatched, some of them does not accomply the XML Schemas
+ * Class to clean CFDI and avoid bad common practices.
+ *
+ * Strictly speaking, CFDI must accomplish all XML rules, including that any other
+ * XML element must be isolated in its own namespace and follow their own XSD rules.
+ *
+ * The common practice (allowed by SAT) is that the CFDI is created, signed and
+ * some nodes are attached after sign, some of them does not comply the XML standard.
+ *
  * This is why it's better to clear Comprobante/Addenda and remove unused namespaces
+ *
  * @package CFDIReader
  */
 class CFDICleaner
@@ -51,7 +55,7 @@ class CFDICleaner
      */
     public static function isVersionAllowed($version)
     {
-        return in_array($version, ['3.2']);
+        return in_array($version, ['3.2', '3.3']);
     }
 
     /**
@@ -95,7 +99,13 @@ class CFDICleaner
     /**
      * Load the string content as a CFDI
      * This is exposed to reuse the current object instead of create a new instance
+     *
      * @param string $content
+     *
+     * @throws CFDICleanerException when the content is not valid xml
+     * @throws CFDICleanerException when the document does not use the namespace http://www.sat.gob.mx/cfd/3
+     * @throws CFDICleanerException when cannot find a Comprobante version (or Version) attribute
+     * @throws CFDICleanerException when the version is not compatible
      */
     public function loadContent($content)
     {
@@ -120,6 +130,9 @@ class CFDICleaner
             throw new CFDICleanerException('The XML document is not a CFDI');
         }
         $version = $this->xpathQuery('/' . $prefix . ':Comprobante/@version', $dom->documentElement);
+        if ($version->length != 1) {
+            $version = $this->xpathQuery('/' . $prefix . ':Comprobante/@Version', $dom->documentElement);
+        }
         if ($version->length != 1) {
             throw new CFDICleanerException('The XML document does not contains a version');
         }

@@ -15,12 +15,12 @@ class CFDICleanerTest extends TestCase
         @$cleaner->loadContent('');
     }
 
-    public function xxtestConstructorWithNonCFDI()
+    public function testConstructorWithNonCFDI()
     {
         $cleaner = new CFDICleaner('');
         $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
-        @$cleaner->loadContent('<cfdi></cfdi>');
+        @$cleaner->loadContent('<node></node>');
     }
 
     public function testConstructorWithBadVersion()
@@ -31,10 +31,36 @@ class CFDICleanerTest extends TestCase
         ');
     }
 
-    public function testConstructorWithMinimalCompatibility()
+    public function testConstructorWithoutInvalidXml()
+    {
+        $this->expectException(CFDICleanerException::class);
+        $this->expectExceptionMessage('XML Error');
+
+        new CFDICleaner('<' . 'node>');
+    }
+
+    public function testConstructorWithoutVersion()
+    {
+        $this->expectException(CFDICleanerException::class);
+        $this->expectExceptionMessage('The XML document does not contains a version');
+
+        new CFDICleaner('<?xml version="1.0" encoding="UTF-8"?>
+            <' . 'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" />
+        ');
+    }
+
+    public function testConstructorWithMinimalCompatibilityVersion32()
     {
         $cleaner = new CFDICleaner('<?xml version="1.0" encoding="UTF-8"?>
             <' . 'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.2" />
+        ');
+        $this->assertInstanceOf(CFDICleaner::class, $cleaner, 'Cleaner created with minimum compatibility');
+    }
+
+    public function testConstructorWithMinimalCompatibilityVersion33()
+    {
+        $cleaner = new CFDICleaner('<?xml version="1.0" encoding="UTF-8"?>
+            <' . 'cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" Version="3.3" />
         ');
         $this->assertInstanceOf(CFDICleaner::class, $cleaner, 'Cleaner created with minimum compatibility');
     }
