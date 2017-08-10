@@ -99,10 +99,21 @@ class CFDICleaner
      */
     public function loadContent($content)
     {
+        // run this method with libxml internal errors enabled
+        if (true !== libxml_use_internal_errors(true)) {
+            try {
+                $this->loadContent($content);
+            } finally {
+                libxml_use_internal_errors(false);
+            }
+        }
+
+        libxml_clear_errors(); // clear previous libxml errors
         $dom = new DOMDocument();
-        $dom->loadXML($content, LIBXML_ERR_WARNING);
+        $dom->loadXML($content, LIBXML_NOWARNING | LIBXML_NONET);
         if (false !== $loaderror = libxml_get_last_error()) {
-            throw new CFDICleanerException('XML Error: ' . $loaderror);
+            libxml_clear_errors();  // clear recently libxml errors
+            throw new CFDICleanerException('XML Error: ' . $loaderror->message);
         }
         $prefix = $dom->lookupPrefix('http://www.sat.gob.mx/cfd/3');
         if (! $prefix) {
