@@ -43,12 +43,18 @@ class CFDIFactory
         $locator->mimeAllow('text/plain');
         $locator->mimeAllow('text/xml');
         if ($registerCommonXsd) {
-            $xsd = [
-                'cfdv32.xsd' => 'http://www.sat.gob.mx/cfd/3',
-                'TimbreFiscalDigital.xsd' => 'http://www.sat.gob.mx/TimbreFiscalDigital',
+            $commonXsds = [
+                'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd'
+                    => 'cfdv32.xsd',
+                'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd'
+                    => 'cfdv33.xsd',
+                'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigital.xsd'
+                    => 'TimbreFiscalDigital.xsd',
+                'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd'
+                    => 'TimbreFiscalDigitalv11.xsd',
             ];
             if ('' != $basepath = realpath(__DIR__ . '/../../commonxsd')) {
-                foreach ($xsd as $file => $url) {
+                foreach ($commonXsds as $url => $file) {
                     $locator->register($url, $basepath . '/' . $file);
                 }
             }

@@ -187,6 +187,6 @@ class ValidateTest extends TestCase
 
     private function makeValidateObject(array $filenames)
     {
-        return new ValidateArrayOutout('', $filenames);
+        return new ValidateArrayOutput('', $filenames);
     }
 }

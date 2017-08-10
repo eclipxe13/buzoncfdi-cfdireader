@@ -9,18 +9,18 @@ use SimpleXMLElement;
  * several namespaces and include different rules than the need by SAT.
  *
  * The two mandatory namespaces are:
- * http://www.sat.gob.mx/cfd/3 for CFDI v3.2
- * http://www.sat.gob.mx/TimbreFiscalDigital for TimbreFiscalDigital (Seal)
+ * http://www.sat.gob.mx/cfd/3 for CFDI v3.2 and v3.3
+ * http://www.sat.gob.mx/TimbreFiscalDigital for TimbreFiscalDigital (Seal) versions 1.0 and 1.1
  *
  * The class do not perform validations, only very basic as:
  * - Content must be a XML string
  * - Content must implement both mandatory namespaces
  * - Root node must be Comprobante
- * - Root node must contain an attribute version with the value 3.2
+ * - Root node must contain an attribute version with the value 3.2 or 3.3
  * - The node Comprobante/Complemento/TimbreFiscalDigital must exists
  *
  * Other validations like XSD can be made using SchemaValidator
- * To validate the logic of the contect you can use PostValidations helpers
+ * To validate the logic of the content you can use PostValidations helpers
  *
  * @package CFDIReader
  */
@@ -30,6 +30,17 @@ class CFDIReader
     private $comprobante;
 
     /**
+     * Return an array of the versions that the reader can process
+     *
+     * @return array
+     */
+    public static function allowedVersions()
+    {
+        return ['3.2', '3.3'];
+    }
+
+    /**
+     * @see CFDIReader
      * @param string $content xml contents
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
@@ -49,8 +60,19 @@ class CFDIReader
         if ('Comprobante' !== $xml->getName()) {
             throw new \InvalidArgumentException('The XML root node must be Comprobante');
         }
-        if (! isset($xml['version']) || strval($xml['version']) !== '3.2') {
-            throw new \InvalidArgumentException('The Comprobante version attribute must be 3.2');
+        $version = '';
+        if (isset($xml['version'])) {
+            $version = strval($xml['version']);
+        } elseif (isset($xml['Version'])) {
+            $version = strval($xml['Version']);
+        }
+        if (! in_array($version, $this->allowedVersions())) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The Comprobante version must be one of the following: %s.',
+                    implode(', ', $this->allowedVersions())
+                )
+            );
         }
         // check it contains both mandatory namespaces
         $nss = array_values($xml->getNamespaces(true));
@@ -63,19 +85,21 @@ class CFDIReader
                 throw new \InvalidArgumentException('The content does not use the namespace ' . $namespace);
             }
         }
-        // include a null element to copy the elements without namespace
+        // include a null element to also copy the elements without namespace
         array_push($nss, null);
         // populate the root element
         $dummy = new SimpleXMLElement('<dummy/>');
         $this->comprobante = $this->appendChild($xml, $dummy, $nss);
         // check that it contains the node comprobante/complemento/timbreFiscalDigital
-        if (! isset($this->comprobante->complemento->timbreFiscalDigital)) {
+        if (! isset($this->comprobante->{'complemento'})
+            || ! isset($this->comprobante->{'complemento'}->timbreFiscalDigital)) {
             throw new \InvalidArgumentException('Seal not found on Comprobante/Complemento/TimbreFiscalDigital');
         }
     }
 
     /**
      * Get a copy of the root element
+     *
      * @return SimpleXMLElement
      */
     public function comprobante()
@@ -85,15 +109,20 @@ class CFDIReader
 
     /**
      * Get the UUID from the document
+     *
      * @return string
      */
     public function getUUID()
     {
-        return (string) $this->comprobante->complemento->timbreFiscalDigital['UUID'];
+        return (string) $this->comprobante->{'complemento'}->timbreFiscalDigital['UUID'];
     }
 
     /**
-     * Normalize a name to be accesible by
+     * Normalize a name to follow accesor rules (all is uppercase or first letter is lowercase)
+     * - Version => version
+     * - TimbreFiscalDigital => timbreFiscalDigital
+     * - UUID => UUID
+     *
      * @param string $name
      * @return string
      */
@@ -104,6 +133,7 @@ class CFDIReader
 
     /**
      * Utility function to create a child
+     *
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $parent
      * @param array $nss
@@ -118,6 +148,7 @@ class CFDIReader
 
     /**
      * Utility function to copy contents from one element to other without namespaces
+     *
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $destination
      * @param array $nss

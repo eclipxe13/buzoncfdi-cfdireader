@@ -1,7 +1,8 @@
 # eclipxe/buzoncfdi-cfdireader
 
-**Library to read and validate a Mexican CFDI 3.2 (Comprobantre Fiscal por Internet)**
+**Library to read and validate a Mexican CFDI 3.2 and 3.3 (Comprobantre Fiscal por Internet)**
 
+[![Gitter][badge-gitter]][gitter]
 [![Latest Version][badge-release]][release]
 [![Software License][badge-license]][license]
 [![Build Status][badge-build]][build]
@@ -48,7 +49,7 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 
 * The content must be a valid XML
 * The root element must be Comprobante
-* The version attribute must be 3.2
+* The version attribute must be 3.2 or 3.3
 * The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
 * The element Comprobante/Complemento/TimbreFiscalDigital must exists
 * Includes a class to clean external XSD and Addendas
@@ -87,7 +88,7 @@ $content = \CFDIReader\CFDICleaner::staticClean(file_get_contents('cfdi-dirty.xm
 ## Contributing
 
 There is a lot of work, this is an open source project that try to offer a framework agnostic way to deal with
-Mexican CFDI version 3.2.
+Mexican CFDI version 3.2 and 3.3.
 
 Contributions are welcome! Please read [CONTRIBUTING][] for details
 and don't forget to take a look in the [TODO][] and [CHANGELOG][] files.
@@ -103,12 +104,14 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 
 [release]: https://github.com/eclipxe13/buzoncfdi-cfdireader/releases
 [license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
+[gitter]: https://gitter.im/eclipxe13/buzoncfdi-cfdireader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 [build]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/build-status/master
 [quality]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/
-[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/code-structure/master
+[coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/code-structure/master/code-coverage
 [downloads]: https://packagist.org/packages/eclipxe/buzoncfdi-cfdireader
 [sensiolabs]: https://insight.sensiolabs.com/projects/ffa9eb49-58e3-4532-acdd-f8089d46ad73
 
+[badge-gitter]: https://badges.gitter.im/eclipxe13/buzoncfdi-cfdireader.svg
 [badge-release]: https://img.shields.io/github/tag/eclipxe13/buzoncfdi-cfdireader.svg?label=version&style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [badge-build]: https://img.shields.io/scrutinizer/build/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
