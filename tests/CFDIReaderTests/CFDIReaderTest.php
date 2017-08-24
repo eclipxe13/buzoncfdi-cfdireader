@@ -104,7 +104,7 @@ class CFDIReaderTest extends TestCase
 
     public function testGetUUID33()
     {
-        $filename = test_file_location('cfdi33-valid.xml');
+        $filename = test_file_location('v33/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
         $this->assertSame(
             '9FB6ED1A-5F37-4FEF-980A-7F8C83B51894',
