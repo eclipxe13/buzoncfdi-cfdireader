@@ -19,7 +19,7 @@ class PostValidatorTest extends TestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        static::$cfdi = new CFDIReader(file_get_contents(test_file_location('cfdi-valid.xml')));
+        static::$cfdi = new CFDIReader(file_get_contents(test_file_location('v32/valid.xml')));
     }
 
     public function setUp()

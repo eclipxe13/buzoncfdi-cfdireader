@@ -8,7 +8,7 @@ class TotalesTest extends ValidatorsTestCase
 {
     public function testValidateValid()
     {
-        $this->setupWithFile('cfdi-valid.xml');
+        $this->setupWithFile('v32/valid.xml');
 
         $validator = new Totales();
         $validator->validate($this->cfdi, $this->issues);
@@ -18,7 +18,7 @@ class TotalesTest extends ValidatorsTestCase
 
     public function testValidateWarningSubtotal()
     {
-        $this->setupWithFile('cfdi-totales-subtotal.xml');
+        $this->setupWithFile('v32/totales-subtotal.xml');
         $validator = new Totales();
         $validator->validate($this->cfdi, $this->issues);
 
@@ -28,7 +28,7 @@ class TotalesTest extends ValidatorsTestCase
 
     public function testValidateWarningTotal()
     {
-        $this->setupWithFile('cfdi-totales-total.xml');
+        $this->setupWithFile('v32/totales-total.xml');
         $validator = new Totales();
         $validator->validate($this->cfdi, $this->issues);
 

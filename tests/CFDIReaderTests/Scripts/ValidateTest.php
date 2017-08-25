@@ -94,7 +94,7 @@ class ValidateTest extends TestCase
     public function testRunExpectUUID()
     {
         $validate = $this->makeValidateObject([
-            test_file_location('cfdi-valid.xml'),
+            test_file_location('v32/valid.xml'),
         ]);
         $validate->run();
 
@@ -130,13 +130,13 @@ class ValidateTest extends TestCase
     public function testRunExpectErrorsAndWarnings()
     {
         $validate = $this->makeValidateObject([
-            test_file_location('cfdi-totales-subtotal.xml'),
+            test_file_location('v32/totales-subtotal.xml'),
         ]);
         $validate->run();
 
         $expectedMessages = [
-            'cfdi-totales-subtotal.xml ERROR: ',
-            'cfdi-totales-subtotal.xml WARNING: ',
+            'totales-subtotal.xml ERROR: ',
+            'totales-subtotal.xml WARNING: ',
             'UUID: e403f396-6a57-4625-adb4-bb436b00789f',
         ];
 
@@ -151,12 +151,12 @@ class ValidateTest extends TestCase
     public function testRunExpectFatalError()
     {
         $validate = $this->makeValidateObject([
-            test_file_location('cfdi-noseal.xml'),
+            test_file_location('v32/noseal.xml'),
         ]);
         $validate->run();
 
         $expectedMessages = [
-            'cfdi-noseal.xml FATAL: The content is not a well formed or is not valid',
+            'noseal.xml FATAL: The content is not a well formed or is not valid',
         ];
 
         $this->assertCount(1, $validate->messages);
@@ -169,14 +169,14 @@ class ValidateTest extends TestCase
     public function testRunExpectMultipleFiles()
     {
         $validate = $this->makeValidateObject([
-            test_file_location('cfdi-valid.xml'),
-            test_file_location('cfdi-totales-subtotal.xml'),
+            test_file_location('v32/valid.xml'),
+            test_file_location('v32/totales-subtotal.xml'),
         ]);
         $validate->run();
 
         $expectedMessages = [
-            'cfdi-valid.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
-            'cfdi-totales-subtotal.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
+            'valid.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
+            'totales-subtotal.xml UUID: e403f396-6a57-4625-adb4-bb436b00789f',
         ];
 
         $this->assertCount(2, $validate->writes);

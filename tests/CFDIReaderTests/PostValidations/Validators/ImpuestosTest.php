@@ -8,7 +8,7 @@ class ImpuestosTest extends ValidatorsTestCase
 {
     public function testValidate()
     {
-        $this->setupWithFile('cfdi-impuestos-valid.xml');
+        $this->setupWithFile('v32/impuestos-valid.xml');
 
         $validator = new Impuestos();
         $validator->validate($this->cfdi, $this->issues);
@@ -18,7 +18,7 @@ class ImpuestosTest extends ValidatorsTestCase
 
     public function testValidateRetenidos()
     {
-        $this->setupWithFile('cfdi-impuestos-retenidos.xml');
+        $this->setupWithFile('v32/impuestos-retenidos.xml');
 
         $validator = new Impuestos();
         $validator->validate($this->cfdi, $this->issues);
@@ -31,7 +31,7 @@ class ImpuestosTest extends ValidatorsTestCase
 
     public function testValidateTrasladados()
     {
-        $this->setupWithFile('cfdi-impuestos-trasladados.xml');
+        $this->setupWithFile('v32/impuestos-trasladados.xml');
 
         $validator = new Impuestos();
         $validator->validate($this->cfdi, $this->issues);
@@ -44,7 +44,7 @@ class ImpuestosTest extends ValidatorsTestCase
 
     public function testValidateLocalesRetenidos()
     {
-        $this->setupWithFile('cfdi-impuestos-locales-retenidos.xml');
+        $this->setupWithFile('v32/impuestos-locales-retenidos.xml');
 
         $validator = new Impuestos();
         $validator->validate($this->cfdi, $this->issues);
@@ -57,7 +57,7 @@ class ImpuestosTest extends ValidatorsTestCase
 
     public function testValidateLocalesTrasladados()
     {
-        $this->setupWithFile('cfdi-impuestos-locales-trasladados.xml');
+        $this->setupWithFile('v32/impuestos-locales-trasladados.xml');
 
         $validator = new Impuestos();
         $validator->validate($this->cfdi, $this->issues);

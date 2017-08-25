@@ -8,7 +8,7 @@ class ConceptosTest extends ValidatorsTestCase
 {
     public function testValidateValid()
     {
-        $this->setupWithFile('cfdi-valid.xml');
+        $this->setupWithFile('v32/valid.xml');
 
         $validator = new Conceptos();
         $validator->validate($this->cfdi, $this->issues);
@@ -18,7 +18,7 @@ class ConceptosTest extends ValidatorsTestCase
 
     public function testInvalidFechaIsInTheFuture()
     {
-        $this->setupWithFile('cfdi-conceptos.xml');
+        $this->setupWithFile('v32/conceptos.xml');
 
         $validator = new Conceptos();
         $validator->validate($this->cfdi, $this->issues);
