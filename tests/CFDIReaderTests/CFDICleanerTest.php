@@ -67,11 +67,11 @@ class CFDICleanerTest extends TestCase
 
     public function testCleanOnDetail()
     {
-        $basefile = test_file_location('cfdi-cleaner-dirty.xml');
-        $step1 = test_file_location('cfdi-cleaner-no-addenda.xml');
-        $step2 = test_file_location('cfdi-cleaner-no-nonsat-nodes.xml');
-        $step3 = test_file_location('cfdi-cleaner-no-nonsat-schemalocations.xml');
-        $step4 = test_file_location('cfdi-cleaner-no-nonsat-xmlns.xml');
+        $basefile = test_file_location('v32/cleaner-dirty.xml');
+        $step1 = test_file_location('v32/cleaner-no-addenda.xml');
+        $step2 = test_file_location('v32/cleaner-no-nonsat-nodes.xml');
+        $step3 = test_file_location('v32/cleaner-no-nonsat-schemalocations.xml');
+        $step4 = test_file_location('v32/cleaner-no-nonsat-xmlns.xml');
         foreach ([$basefile, $step1, $step2, $step3, $step4] as $filename) {
             $this->assertFileExists($basefile, "The file $filename for testing does not exists");
         }

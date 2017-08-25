@@ -8,7 +8,7 @@ class FechasTest extends ValidatorsTestCase
 {
     public function testValidateValid()
     {
-        $this->setupWithFile('cfdi-valid.xml');
+        $this->setupWithFile('v32/valid.xml');
 
         $validator = new Fechas();
         $validator->validate($this->cfdi, $this->issues);
@@ -18,7 +18,7 @@ class FechasTest extends ValidatorsTestCase
 
     public function testInvalidFechaIsInTheFuture()
     {
-        $this->setupWithFile('cfdi-fechas-fechafutura.xml');
+        $this->setupWithFile('v32/fechas-fechafutura.xml');
 
         $validator = new Fechas();
         $validator->validate($this->cfdi, $this->issues);
@@ -29,7 +29,7 @@ class FechasTest extends ValidatorsTestCase
 
     public function testInvalidFechaTimbradoIsGreaterThanFecha()
     {
-        $this->setupWithFile('cfdi-fechas-fechatimbrado.xml');
+        $this->setupWithFile('v32/fechas-fechatimbrado.xml');
 
         $validator = new Fechas();
         $validator->validate($this->cfdi, $this->issues);
@@ -40,7 +40,7 @@ class FechasTest extends ValidatorsTestCase
 
     public function testInvalidFechaTimbradoIs72HoursLate()
     {
-        $this->setupWithFile('cfdi-fechas-timbrado72hrs.xml');
+        $this->setupWithFile('v32/fechas-timbrado72hrs.xml');
 
         $validator = new Fechas();
         $validator->validate($this->cfdi, $this->issues);

@@ -9,7 +9,7 @@ class CFDIReaderTest extends TestCase
 {
     public function testConstructorWithValidCFDI()
     {
-        $filename = test_file_location('cfdi-valid.xml');
+        $filename = test_file_location('v32/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
         $this->assertInstanceOf(CFDIReader::class, $cfdi, 'Object created');
     }
@@ -75,13 +75,13 @@ class CFDIReaderTest extends TestCase
      */
     public function testConstructorWithoutSeal()
     {
-        $filename = test_file_location('cfdi-noseal.xml');
+        $filename = test_file_location('v32/noseal.xml');
         new CFDIReader(file_get_contents($filename));
     }
 
     public function testGetTwoDifferentInstances()
     {
-        $filename = test_file_location('cfdi-valid.xml');
+        $filename = test_file_location('v32/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
         $a = $cfdi->comprobante();
         $b = $cfdi->comprobante();
@@ -93,7 +93,7 @@ class CFDIReaderTest extends TestCase
 
     public function testGetUUID()
     {
-        $filename = test_file_location('cfdi-valid.xml');
+        $filename = test_file_location('v32/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
         $this->assertSame(
             'e403f396-6a57-4625-adb4-bb436b00789f',
@@ -104,7 +104,7 @@ class CFDIReaderTest extends TestCase
 
     public function testGetUUID33()
     {
-        $filename = test_file_location('cfdi33-valid.xml');
+        $filename = test_file_location('v33/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
         $this->assertSame(
             '9FB6ED1A-5F37-4FEF-980A-7F8C83B51894',
