@@ -1,3 +1,8 @@
+# Version 1.1.1
+- Improved code coverage, thanks to pull request #5 by @driftking301
+- Sort assets by cfdi version
+- Won't publish on packagist, just update master branch
+
 # Version 1.1.0
 - Fix `CFDIFactory::newLocator` method since it was not registering in the correct way the commonxsd files
 - Add **basic support for CFDI 3.3**
