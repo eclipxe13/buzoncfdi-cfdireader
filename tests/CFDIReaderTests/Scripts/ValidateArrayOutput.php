@@ -9,13 +9,13 @@ class ValidateArrayOutput extends Validate
     public $errors = [];
     public $messages = [];
 
-    protected function write($message)
+    protected function write(string $message)
     {
         $this->writes[] = $message;
         $this->messages[] = $message;
     }
 
-    protected function error($message)
+    protected function error(string $message)
     {
         $this->errors[] = $message;
         $this->messages[] = $message;

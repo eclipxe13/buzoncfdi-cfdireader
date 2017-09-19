@@ -7,6 +7,7 @@ class Validate
 {
     /** @var string */
     private $script;
+
     /** @var string[] */
     private $filenames;
 
@@ -22,23 +23,19 @@ class Validate
      * @param string[] $filenames
      * @param string $stdOut
      * @param string $stdErr
+     * @throws \TypeError if an item in $filenames is not a string
      */
-    public function __construct($script, array $filenames, $stdOut = 'php://stdout', $stdErr = 'php://stderr')
-    {
-        if (! is_string($script)) {
-            throw new \InvalidArgumentException('script argument is not a string');
-        }
+    public function __construct(
+        string $script,
+        array $filenames,
+        string $stdOut = 'php://stdout',
+        string $stdErr = 'php://stderr'
+    ) {
         $filenames = array_values($filenames);
         foreach ($filenames as $index => $value) {
             if (! is_string($value)) {
                 throw new \InvalidArgumentException("filename parameter $index is not a string");
             }
-        }
-        if (! is_string($stdOut)) {
-            throw new \InvalidArgumentException('argument stdout is not a string');
-        }
-        if (! is_string($stdErr)) {
-            throw new \InvalidArgumentException('argument stderr is not a string');
         }
         $this->script = $script;
         $this->filenames = $filenames;
@@ -51,7 +48,7 @@ class Validate
      * @param string[] $argv
      * @return Validate
      */
-    public static function make(array $argv)
+    public static function make(array $argv): Validate
     {
         if (! count($argv)) {
             throw new \InvalidArgumentException('Cannot construct without arguments');
@@ -63,8 +60,9 @@ class Validate
     /**
      * write a text to stdout
      * @param string $message
+     * @return void
      */
-    protected function write($message)
+    protected function write(string $message)
     {
         file_put_contents($this->stdOut, $message . "\n", FILE_APPEND);
     }
@@ -72,14 +70,16 @@ class Validate
     /**
      * write a text to stderr
      * @param string $message
+     * @return void
      */
-    protected function error($message)
+    protected function error(string $message)
     {
         file_put_contents($this->stdErr, $message . "\n", FILE_APPEND);
     }
 
     /**
      * Run this script
+     * @return void
      */
     public function run()
     {
@@ -93,8 +93,9 @@ class Validate
      * Run only a filename, used in the run loop
      * @param CFDIFactory $factory
      * @param string $argument
+     * @return void
      */
-    protected function runFilename(CFDIFactory $factory, $argument)
+    protected function runFilename(CFDIFactory $factory, string $argument)
     {
         if ('' === $argument) {
             $this->error('FATAL: Empty filename');
@@ -125,7 +126,7 @@ class Validate
     /**
      * @return string
      */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->script;
     }
@@ -133,7 +134,7 @@ class Validate
     /**
      * @return string[]
      */
-    public function getFilenames()
+    public function getFilenames(): array
     {
         return $this->filenames;
     }
@@ -141,7 +142,7 @@ class Validate
     /**
      * @return string
      */
-    public function getStdOut()
+    public function getStdOut(): string
     {
         return $this->stdOut;
     }
@@ -149,7 +150,7 @@ class Validate
     /**
      * @return string
      */
-    public function getStdErr()
+    public function getStdErr(): string
     {
         return $this->stdErr;
     }

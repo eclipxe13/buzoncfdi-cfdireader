@@ -59,36 +59,12 @@ class ValidateTest extends TestCase
         Validate::make([]);
     }
 
-    public function testConstructorScriptThrowException()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('script argument is not a string');
-
-        new Validate(null, []);
-    }
-
     public function testConstructorFilenamesThrowException()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('parameter 1 is not a string');
 
         new Validate('', ['', null]);
-    }
-
-    public function testConstructorStdOutThrowException()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('argument stdout is not a string');
-
-        new Validate('', [''], null);
-    }
-
-    public function testConstructorStdErrThrowException()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('argument stderr is not a string');
-
-        new Validate('', [''], '', null);
     }
 
     public function testRunExpectUUID32()

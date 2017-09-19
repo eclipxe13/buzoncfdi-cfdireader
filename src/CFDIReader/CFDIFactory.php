@@ -18,7 +18,7 @@ class CFDIFactory
      * @param Locator $locator if not provided use factory method to build it with default parameters
      * @return SchemaValidator
      */
-    public function newSchemaValidator(Locator $locator = null)
+    public function newSchemaValidator(Locator $locator = null): SchemaValidator
     {
         if (null === $locator) {
             $locator = $this->newLocator();
@@ -36,8 +36,12 @@ class CFDIFactory
      * @param int $expire expiration
      * @return Locator
      */
-    public function newLocator($registerCommonXsd = true, $repository = '', $timeout = 20, $expire = 0)
-    {
+    public function newLocator(
+        bool $registerCommonXsd = true,
+        string $repository = '',
+        int $timeout = 20,
+        int $expire = 0
+    ): Locator {
         $locator = new Locator($repository, $timeout, $expire);
         $locator->mimeAllow('application/xml');
         $locator->mimeAllow('text/plain');
@@ -65,7 +69,7 @@ class CFDIFactory
     /**
      * @return PostValidator
      */
-    public function newPostValidator()
+    public function newPostValidator(): PostValidator
     {
         $postvalidator = new PostValidator();
         $postvalidator->validators->append(new Validators\Impuestos());
@@ -82,7 +86,7 @@ class CFDIFactory
      * @param array $warnings
      * @return CFDIReader
      */
-    public function newCFDIReader($content, array &$errors = [], array &$warnings = [])
+    public function newCFDIReader(string $content, array &$errors = [], array &$warnings = []): CFDIReader
     {
         // before creation SchemaValidator
         $schemaValidator = $this->newSchemaValidator();

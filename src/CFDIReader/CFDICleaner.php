@@ -28,7 +28,7 @@ class CFDICleaner
      * CFDICleaner constructor.
      * @param string $content
      */
-    public function __construct($content)
+    public function __construct(string $content)
     {
         if (! empty($content)) {
             $this->loadContent($content);
@@ -41,7 +41,7 @@ class CFDICleaner
      * @param string $content
      * @return string
      */
-    public static function staticClean($content)
+    public static function staticClean($content): string
     {
         $cleaner = new self($content);
         $cleaner->clean();
@@ -53,7 +53,7 @@ class CFDICleaner
      * @param string $version
      * @return bool
      */
-    public static function isVersionAllowed($version)
+    public static function isVersionAllowed(string $version): bool
     {
         return in_array($version, ['3.2', '3.3']);
     }
@@ -63,7 +63,7 @@ class CFDICleaner
      * @param string $namespace
      * @return bool
      */
-    public static function isNameSpaceAllowed($namespace)
+    public static function isNameSpaceAllowed(string $namespace): bool
     {
         $fixedNS = [
             'http://www.w3.org/2001/XMLSchema-instance',
@@ -87,6 +87,7 @@ class CFDICleaner
 
     /**
      * Apply all removals (Addenda, Non SAT Nodes and Non SAT namespaces)
+     * @return void
      */
     public function clean()
     {
@@ -106,8 +107,10 @@ class CFDICleaner
      * @throws CFDICleanerException when the document does not use the namespace http://www.sat.gob.mx/cfd/3
      * @throws CFDICleanerException when cannot find a Comprobante version (or Version) attribute
      * @throws CFDICleanerException when the version is not compatible
+     *
+     * @return void
      */
-    public function loadContent($content)
+    public function loadContent(string $content)
     {
         // run this method with libxml internal errors enabled
         if (true !== libxml_use_internal_errors(true)) {
@@ -148,7 +151,7 @@ class CFDICleaner
      * Get the XML content of the CFDI
      * @return string
      */
-    public function retrieveXml()
+    public function retrieveXml(): string
     {
         return $this->dom->saveXML();
     }
@@ -159,7 +162,7 @@ class CFDICleaner
      * @param DOMNode|null $element
      * @return DOMNodeList
      */
-    private function xpathQuery($query, DOMNode $element = null)
+    private function xpathQuery(string $query, DOMNode $element = null): DOMNodeList
     {
         $element = $element ?: $this->dom->documentElement;
         return (new DOMXPath($element->ownerDocument))->query($query, $element);
@@ -167,6 +170,8 @@ class CFDICleaner
 
     /**
      * Procedure to remove the Comprobante/Addenda node
+     *
+     * @return void
      */
     public function removeAddenda()
     {
@@ -185,6 +190,8 @@ class CFDICleaner
     /**
      * Procedure to drop schemaLocations that are not allowed
      * If the schemaLocation is empty then remove the attribute
+     *
+     * @return void
      */
     public function removeNonSatNSschemaLocations()
     {
@@ -203,6 +210,7 @@ class CFDICleaner
 
     /**
      * @param DOMNode $schemaLocation This is the attribute
+     * @return void
      */
     private function removeNonSatNSschemaLocation(DOMNode $schemaLocation)
     {
@@ -234,7 +242,8 @@ class CFDICleaner
     }
 
     /**
-     * Procedure to remove all nodes that are not allowed
+     * Procedure to remove all nodes that are not from an allowed namespace
+     * @return void
      */
     public function removeNonSatNSNodes()
     {
@@ -257,8 +266,9 @@ class CFDICleaner
     /**
      * Procedure to remove all nodes from an specific namespace
      * @param string $namespace
+     * @return void
      */
-    private function removeNonSatNSNode($namespace)
+    private function removeNonSatNSNode(string $namespace)
     {
         foreach ($this->dom->getElementsByTagNameNS($namespace, '*') as $children) {
             $children->parentNode->removeChild($children);
@@ -267,6 +277,7 @@ class CFDICleaner
 
     /**
      * Procedure to remove not allowed xmlns definitions
+     * @return void
      */
     public function removeUnusedNamespaces()
     {
