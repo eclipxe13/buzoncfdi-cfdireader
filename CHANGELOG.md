@@ -1,3 +1,8 @@
+# Version 1.2.0
+- Make optional to require that the Comprobante contains the TimbreFiscalDigital.
+  This is useful to validate before obtaining the TimbreFiscalDigital from an
+  authorized third party.
+
 # Version 1.1.1
 - Improved code coverage, thanks to pull request #5 by @driftking301
 - Sort assets by cfdi version
