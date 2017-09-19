@@ -91,7 +91,7 @@ class ValidateTest extends TestCase
         new Validate('', [''], '', null);
     }
 
-    public function testRunExpectUUID()
+    public function testRunExpectUUID32()
     {
         $validate = $this->makeValidateObject([
             test_file_location('v32/valid.xml'),
@@ -101,6 +101,18 @@ class ValidateTest extends TestCase
         $this->assertCount(1, $validate->messages);
         $this->assertCount(1, $validate->writes);
         $this->assertContains('UUID: e403f396-6a57-4625-adb4-bb436b00789f', $validate->writes[0]);
+    }
+
+    public function testRunExpectUUID33()
+    {
+        $validate = $this->makeValidateObject([
+            test_file_location('v33/valid.xml'),
+        ]);
+        $validate->run();
+
+        $this->assertCount(1, $validate->messages);
+        $this->assertCount(1, $validate->writes);
+        $this->assertContains('UUID: 9FB6ED1A-5F37-4FEF-980A-7F8C83B51894', $validate->writes[0]);
     }
 
     public function testRunExpectErrorEmptyFilename()

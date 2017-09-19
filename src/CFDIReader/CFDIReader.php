@@ -8,16 +8,18 @@ use SimpleXMLElement;
  * This task is a kind of difficult since a CFDI can contain
  * several namespaces and include different rules than the need by SAT.
  *
- * The two mandatory namespaces are:
+ * The only mandatory namespaces is:
  * http://www.sat.gob.mx/cfd/3 for CFDI v3.2 and v3.3
+ *
+ * By default it makes also this namespace as mandatory but can be ommited by constructor:
  * http://www.sat.gob.mx/TimbreFiscalDigital for TimbreFiscalDigital (Seal) versions 1.0 and 1.1
  *
  * The class do not perform validations, only very basic as:
  * - Content must be a XML string
- * - Content must implement both mandatory namespaces
+ * - Content must implement mandatory namespaces
  * - Root node must be Comprobante
  * - Root node must contain an attribute version with the value 3.2 or 3.3
- * - The node Comprobante/Complemento/TimbreFiscalDigital must exists
+ * - The node Comprobante/Complemento/TimbreFiscalDigital must exists if set in the constructor
  *
  * Other validations like XSD can be made using SchemaValidator
  * To validate the logic of the content you can use PostValidations helpers
@@ -42,9 +44,10 @@ class CFDIReader
     /**
      * @see CFDIReader
      * @param string $content xml contents
+     * @param bool $requireTimbre
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
-    public function __construct($content)
+    public function __construct($content, $requireTimbre = true)
     {
         // create the SimpleXMLElement
         try {
@@ -76,10 +79,10 @@ class CFDIReader
         }
         // check it contains both mandatory namespaces
         $nss = array_values($xml->getNamespaces(true));
-        $required = [
-            'http://www.sat.gob.mx/cfd/3',
-            'http://www.sat.gob.mx/TimbreFiscalDigital',
-        ];
+        $required = ['http://www.sat.gob.mx/cfd/3'];
+        if ($requireTimbre) {
+            $required[] = 'http://www.sat.gob.mx/TimbreFiscalDigital';
+        }
         foreach ($required as $namespace) {
             if (! in_array($namespace, $nss)) {
                 throw new \InvalidArgumentException('The content does not use the namespace ' . $namespace);
@@ -90,9 +93,8 @@ class CFDIReader
         // populate the root element
         $dummy = new SimpleXMLElement('<dummy/>');
         $this->comprobante = $this->appendChild($xml, $dummy, $nss);
-        // check that it contains the node comprobante/complemento/timbreFiscalDigital
-        if (! isset($this->comprobante->{'complemento'})
-            || ! isset($this->comprobante->{'complemento'}->timbreFiscalDigital)) {
+        // check that it contains the node comprobante/complemento/timbreFiscalDigital if required
+        if ($requireTimbre && ! $this->hasTimbreFiscalDigital()) {
             throw new \InvalidArgumentException('Seal not found on Comprobante/Complemento/TimbreFiscalDigital');
         }
     }
@@ -108,13 +110,27 @@ class CFDIReader
     }
 
     /**
-     * Get the UUID from the document
+     * Get the UUID from the document. If the node does not exists then return an empty string
      *
      * @return string
      */
     public function getUUID()
     {
+        if (! $this->hasTimbreFiscalDigital()) {
+            return '';
+        }
         return (string) $this->comprobante->{'complemento'}->timbreFiscalDigital['UUID'];
+    }
+
+    /**
+     * Return true if the node Comprobante/Complemento/TimbreFiscalDigital exists
+     *
+     * @return bool
+     */
+    public function hasTimbreFiscalDigital()
+    {
+        return isset($this->comprobante->{'complemento'})
+            && isset($this->comprobante->{'complemento'}->timbreFiscalDigital);
     }
 
     /**
