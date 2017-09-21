@@ -3,7 +3,6 @@ namespace CFDIReader;
 
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
-use XmlSchemaValidator\Locator;
 use XmlSchemaValidator\SchemaValidator;
 
 /**
@@ -15,55 +14,12 @@ class CFDIFactory
 {
     /**
      * Build a new SchemaValidator object with default options for CFDI validations.
-     * @param Locator $locator if not provided use factory method to build it with default parameters
+     * @param string $content
      * @return SchemaValidator
      */
-    public function newSchemaValidator(Locator $locator = null): SchemaValidator
+    public function newSchemaValidator(string $content): SchemaValidator
     {
-        if (null === $locator) {
-            $locator = $this->newLocator();
-        }
-        $schemavalidator = new SchemaValidator($locator);
-        return $schemavalidator;
-    }
-
-    /**
-     * Build a new Locator object with default options for CFDI validations.
-     * Sets allowed mimes to Xsd and register cfdv32.xsd and TimbreFiscalDigital.xsd from commonxsd/
-     * @param bool $registerCommonXsd try to register files located on commonxsd/
-     * @param string $repository location of cached files
-     * @param int $timeout download timeout
-     * @param int $expire expiration
-     * @return Locator
-     */
-    public function newLocator(
-        bool $registerCommonXsd = true,
-        string $repository = '',
-        int $timeout = 20,
-        int $expire = 0
-    ): Locator {
-        $locator = new Locator($repository, $timeout, $expire);
-        $locator->mimeAllow('application/xml');
-        $locator->mimeAllow('text/plain');
-        $locator->mimeAllow('text/xml');
-        if ($registerCommonXsd) {
-            $commonXsds = [
-                'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd'
-                    => 'cfdv32.xsd',
-                'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd'
-                    => 'cfdv33.xsd',
-                'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigital.xsd'
-                    => 'TimbreFiscalDigital.xsd',
-                'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd'
-                    => 'TimbreFiscalDigitalv11.xsd',
-            ];
-            if ('' != $basepath = realpath(__DIR__ . '/../../commonxsd')) {
-                foreach ($commonXsds as $url => $file) {
-                    $locator->register($url, $basepath . '/' . $file);
-                }
-            }
-        }
-        return $locator;
+        return new SchemaValidator($content);
     }
 
     /**
@@ -89,10 +45,10 @@ class CFDIFactory
     public function newCFDIReader(string $content, array &$errors = [], array &$warnings = []): CFDIReader
     {
         // before creation SchemaValidator
-        $schemaValidator = $this->newSchemaValidator();
-        if (! $schemaValidator->validate($content)) {
+        $schemaValidator = $this->newSchemaValidator($content);
+        if (! $schemaValidator->validate()) {
             throw new \RuntimeException(
-                'The content is not a well formed or is not valid: ' . $schemaValidator->getError()
+                'The content is not a well formed or is not valid: ' . $schemaValidator->getLastError()
             );
         }
 
