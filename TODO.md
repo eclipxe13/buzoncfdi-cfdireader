@@ -7,6 +7,13 @@ All your help is very appreciated, please contribute with testing, ideas, code, 
 - [ ] Validator for metodoPago
 - [ ] Check CFDI signature againts certificate
 
+## Validate script
+
+- [ ] include it as a bin in composer, maybe change the name to cfdi-validate
+- [ ] Allow to command line arguments like:
+    - local resource path
+    - require timbre fiscal digital
+
 ## CFDI 3.3
 
 - [ ] Validate logic rules that are not validated against XSD (as in version 3.2)

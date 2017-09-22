@@ -1,3 +1,13 @@
+# Version 2.0.0
+- Require PHP 7.0
+- Add scalar type declarations and docblocks @return void
+- Update dependence XmlSchemaValidator.
+    - That class no longer retrieve and store a local copy of resources,
+      implement `eclipxe/xmlresourceretriever` library
+- Remove SchemaValidator class if favor of `CFDIReader\SchemasValidator\SchemasValidator`
+- Add `CFDIReader::getVersion()`
+- Remove PHP 5.6 from build matrix
+
 # Version 1.2.0
 - Make optional to require that the Comprobante contains the TimbreFiscalDigital.
   This is useful to validate before obtaining the TimbreFiscalDigital from an
