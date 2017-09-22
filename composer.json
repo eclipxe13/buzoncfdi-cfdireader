@@ -10,6 +10,11 @@
             "email": "eclipxe13@gmail.com"
         }
     ],
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        }
+    },
     "require": {
         "php": ">=7.0",
         "eclipxe/xmlschemavalidator": "dev-next-release",
