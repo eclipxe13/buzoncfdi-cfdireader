@@ -95,6 +95,7 @@ class CFDIReaderTest extends TestCase
     {
         $filename = test_file_location('v32/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
+        $this->assertSame('3.2', $cfdi->getVersion());
         $this->assertSame(
             'e403f396-6a57-4625-adb4-bb436b00789f',
             $cfdi->getUUID(),
@@ -106,6 +107,7 @@ class CFDIReaderTest extends TestCase
     {
         $filename = test_file_location('v33/valid.xml');
         $cfdi = new CFDIReader(file_get_contents($filename));
+        $this->assertSame('3.3', $cfdi->getVersion());
         $this->assertSame(
             '9FB6ED1A-5F37-4FEF-980A-7F8C83B51894',
             $cfdi->getUUID(),

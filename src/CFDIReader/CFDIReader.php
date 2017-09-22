@@ -109,6 +109,11 @@ class CFDIReader
         return clone $this->comprobante;
     }
 
+    public function getVersion(): string
+    {
+        return (string) $this->comprobante['version'];
+    }
+
     /**
      * Get the UUID from the document. If the node does not exists then return an empty string
      *
