@@ -144,7 +144,7 @@ class ValidateTest extends TestCase
         $validate->run();
 
         $expectedMessages = [
-            'noseal.xml FATAL: The content is not a well formed or is not valid',
+            'noseal.xml FATAL: ',
         ];
 
         $this->assertCount(1, $validate->messages);
