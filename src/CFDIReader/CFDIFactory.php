@@ -3,7 +3,9 @@ namespace CFDIReader;
 
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
-use XmlSchemaValidator\SchemaValidator;
+use CFDIReader\SchemasValidator\SchemasValidator;
+use XmlResourceRetriever\Downloader\DownloaderInterface;
+use XmlResourceRetriever\XsdRetriever;
 
 /**
  * Description of CFDIFactory
@@ -12,19 +14,20 @@ use XmlSchemaValidator\SchemaValidator;
  */
 class CFDIFactory
 {
-    /**
-     * Build a new SchemaValidator object with default options for CFDI validations.
-     * @param string $content
-     * @return SchemaValidator
-     */
-    public function newSchemaValidator(string $content): SchemaValidator
-    {
-        return new SchemaValidator($content);
-    }
+    /** @var string */
+    private $localResourcesPath;
 
     /**
-     * @return PostValidator
+     * CFDIFactory constructor.
+     *
+     * @see setLocalResourcesPath
+     * @param string|null $localResourcesPath
      */
+    public function __construct(string $localResourcesPath = null)
+    {
+        $this->setLocalResourcesPath($localResourcesPath);
+    }
+
     public function newPostValidator(): PostValidator
     {
         $postvalidator = new PostValidator();
@@ -33,6 +36,54 @@ class CFDIFactory
         $postvalidator->validators->append(new Validators\Conceptos());
         $postvalidator->validators->append(new Validators\Totales());
         return $postvalidator;
+    }
+
+    public function getLocalResourcesPath(): string
+    {
+        return $this->localResourcesPath;
+    }
+
+    /**
+     * Set the local resources path to be used when created the XsdRetriever
+     * If is null then it will take the library installation path + /resources
+     * If is an empty string then no local resources will be used
+     * If is a non-empty string it will use it like the path to store the resources
+     *
+     * @param string|null $localResourcesPath
+     */
+    public function setLocalResourcesPath(string $localResourcesPath = null)
+    {
+        if (null === $localResourcesPath) {
+            $localResourcesPath = $this->getDefaultLocalResourcesPath();
+        }
+        $this->localResourcesPath = $localResourcesPath;
+    }
+
+    public function getDefaultLocalResourcesPath(): string
+    {
+        return dirname(__DIR__, 2) . '/resources';
+    }
+
+    /**
+     * Return a new instance of an XsdRetriever depending on the
+     * property localResourcesPath.
+     *
+     * @param DownloaderInterface|null $downloader
+     * @return null|XsdRetriever
+     */
+    public function newRetriever(DownloaderInterface $downloader = null)
+    {
+        $localResourcesPath = $this->getLocalResourcesPath();
+        if ('' === $localResourcesPath) {
+            return null;
+        }
+        return new XsdRetriever($localResourcesPath, $downloader);
+    }
+
+    public function newSchemasValidator()
+    {
+        $retriever = $this->newRetriever();
+        return new SchemasValidator($retriever);
     }
 
     /**
@@ -44,13 +95,9 @@ class CFDIFactory
      */
     public function newCFDIReader(string $content, array &$errors = [], array &$warnings = []): CFDIReader
     {
-        // before creation SchemaValidator
-        $schemaValidator = $this->newSchemaValidator($content);
-        if (! $schemaValidator->validate()) {
-            throw new \RuntimeException(
-                'The content is not a well formed or is not valid: ' . $schemaValidator->getLastError()
-            );
-        }
+        // before creation
+        $schemaValidator = $this->newSchemasValidator();
+        $schemaValidator->validate($content);
 
         // creation
         $cfdireader = new CFDIReader($content);
