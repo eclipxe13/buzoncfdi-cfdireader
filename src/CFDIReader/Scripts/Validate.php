@@ -2,6 +2,8 @@
 namespace CFDIReader\Scripts;
 
 use CFDIReader\CFDIFactory;
+use GetOpt\GetOpt;
+use GetOpt\Option;
 
 class Validate
 {
@@ -17,19 +19,24 @@ class Validate
     /** @var string defaults to php://stderr */
     private $stdErr;
 
+    /** @var string|null config variable to create the factory */
+    private $localPath;
+
     /**
      * Validate constructor.
      * @param string $script
      * @param string[] $filenames
      * @param string $stdOut
      * @param string $stdErr
-     * @throws \TypeError if an item in $filenames is not a string
+     * @param string|null $localPath Default is null to use library path to store resources
+     * @throws \InvalidArgumentException if an item in $filenames is not a string
      */
     public function __construct(
         string $script,
         array $filenames,
         string $stdOut = 'php://stdout',
-        string $stdErr = 'php://stderr'
+        string $stdErr = 'php://stderr',
+        string $localPath = null
     ) {
         $filenames = array_values($filenames);
         foreach ($filenames as $index => $value) {
@@ -41,20 +48,32 @@ class Validate
         $this->filenames = $filenames;
         $this->stdOut = $stdOut;
         $this->stdErr = $stdErr;
+        $this->localPath = $localPath;
     }
 
     /**
      * Use this function to build the validate object from arguments values
-     * @param string[] $argv
+     * @param string[] $arguments
      * @return Validate
      */
-    public static function make(array $argv): Validate
+    public static function make(array $arguments): Validate
     {
-        if (! count($argv)) {
+        if (! count($arguments)) {
             throw new \InvalidArgumentException('Cannot construct without arguments');
         }
-        $script = array_shift($argv);
-        return new self($script, $argv);
+        $script = array_shift($arguments);
+
+        $getOpt = new GetOpt([
+            Option::create('l', 'local-path', GetOpt::REQUIRED_ARGUMENT)
+                ->setDescription('Set the local repository of files,' .
+                    ' if "disable" then the retriever will not store locally')
+                ->setDefaultValue(''),
+        ]);
+        $getOpt->process($arguments);
+        $command = new self($script, $getOpt->getOperands());
+        $localPath = $getOpt->getOption('local-path');
+        $command->localPath = ('disable' === $localPath) ? null : $localPath;
+        return $command;
     }
 
     /**
@@ -83,7 +102,7 @@ class Validate
      */
     public function run()
     {
-        $factory = new CFDIFactory();
+        $factory = new CFDIFactory($this->localPath);
         foreach ($this->filenames as $filename) {
             $this->runFilename($factory, $filename);
         }
@@ -123,9 +142,6 @@ class Validate
         }
     }
 
-    /**
-     * @return string
-     */
     public function getScript(): string
     {
         return $this->script;
@@ -139,19 +155,21 @@ class Validate
         return $this->filenames;
     }
 
-    /**
-     * @return string
-     */
     public function getStdOut(): string
     {
         return $this->stdOut;
     }
 
-    /**
-     * @return string
-     */
     public function getStdErr(): string
     {
         return $this->stdErr;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLocalPath()
+    {
+        return $this->localPath;
     }
 }

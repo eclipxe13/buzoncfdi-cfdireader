@@ -19,6 +19,7 @@ class ValidateTest extends TestCase
         $this->assertEquals($filenames, $validate->getFilenames());
         $this->assertEquals($stdOut, $validate->getStdOut());
         $this->assertEquals($stdErr, $validate->getStdErr());
+        $this->assertEquals('', $validate->getLocalPath());
     }
 
     public function testConstructorWithFullArguments()
@@ -27,28 +28,52 @@ class ValidateTest extends TestCase
         $filenames = ['foo', 'bar'];
         $stdOut = 'my-stdout';
         $stdErr = 'my-stderr';
+        $localPath = '/assets/';
 
-        $validate = new Validate($script, $filenames, $stdOut, $stdErr);
+        $validate = new Validate($script, $filenames, $stdOut, $stdErr, $localPath);
 
         $this->assertEquals($script, $validate->getScript());
         $this->assertEquals($filenames, $validate->getFilenames());
         $this->assertEquals($stdOut, $validate->getStdOut());
         $this->assertEquals($stdErr, $validate->getStdErr());
+        $this->assertEquals($localPath, $validate->getLocalPath());
     }
 
     public function testMake()
     {
         $script = 'command';
-        $filenames = ['first', 'second'];
-        $stdOut = 'php://stdout';
-        $stdErr = 'php://stderr';
+        $filenames = ['first', 'second', 'third'];
+        $localPath = '/resources';
 
-        $validate = Validate::make(['command', 'first', 'second']);
+        $validate = Validate::make(['command', 'first', 'second', '-l', '/resources', '--', 'third']);
 
         $this->assertEquals($script, $validate->getScript());
         $this->assertEquals($filenames, $validate->getFilenames());
-        $this->assertEquals($stdOut, $validate->getStdOut());
-        $this->assertEquals($stdErr, $validate->getStdErr());
+        $this->assertEquals($localPath, $validate->getLocalPath());
+    }
+
+    public function testWithInvalidArgument()
+    {
+        $this->expectException(\Exception::class);
+        Validate::make(['', '--argument']);
+    }
+
+    public function testMakeWithoutFlags()
+    {
+        $script = 'command';
+        $filenames = ['first', 'second', 'third'];
+
+        $validate = Validate::make(['command', 'first', 'second', 'third']);
+
+        $this->assertEquals($script, $validate->getScript());
+        $this->assertEquals($filenames, $validate->getFilenames());
+        $this->assertEquals('', $validate->getLocalPath());
+    }
+
+    public function testMakeWithLocalPathDisabled()
+    {
+        $validate = Validate::make(['command', '--local-path', 'disable']);
+        $this->assertNull($validate->getLocalPath());
     }
 
     public function testMakeThrowExceptionOnEmptyArgumentsArray()
