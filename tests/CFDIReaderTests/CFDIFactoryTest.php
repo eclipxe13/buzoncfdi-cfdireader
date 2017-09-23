@@ -37,4 +37,29 @@ class CFDIFactoryTest extends TestCase
         $factory = new CFDIFactory();
         $this->assertInstanceOf(XsdRetriever::class, $factory->newRetriever());
     }
+
+    public function testNewCFDIReaderWithOutTimbreAndNotRequired()
+    {
+        $factory = new CFDIFactory();
+        $content = file_get_contents(test_file_location('v33/valid-without-timbre.xml'));
+        $errors = [];
+        $warnings = [];
+        $cfdi = $factory->newCFDIReader($content, $errors, $warnings, false);
+
+        $this->assertFalse($cfdi->hasTimbreFiscalDigital());
+        $this->assertEmpty($errors);
+        $this->assertEmpty($warnings);
+    }
+
+    public function testNewCFDIReaderWithOutTimbreAndRequired()
+    {
+        $factory = new CFDIFactory();
+        $content = file_get_contents(test_file_location('v33/valid-without-timbre.xml'));
+        $errors = [];
+        $warnings = [];
+
+        $this->expectException(\Exception::class);
+
+        $factory->newCFDIReader($content, $errors, $warnings, true);
+    }
 }

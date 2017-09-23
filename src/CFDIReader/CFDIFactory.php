@@ -91,16 +91,21 @@ class CFDIFactory
      * @param string $content
      * @param array $errors
      * @param array $warnings
+     * @param bool $requireTimbre
      * @return CFDIReader
      */
-    public function newCFDIReader(string $content, array &$errors = [], array &$warnings = []): CFDIReader
-    {
+    public function newCFDIReader(
+        string $content,
+        array &$errors = [],
+        array &$warnings = [],
+        bool $requireTimbre = true
+    ): CFDIReader {
         // before creation
         $schemaValidator = $this->newSchemasValidator();
         $schemaValidator->validate($content);
 
         // creation
-        $cfdireader = new CFDIReader($content);
+        $cfdireader = new CFDIReader($content, $requireTimbre);
 
         // after creation
         $postValidator = $this->newPostValidator();
