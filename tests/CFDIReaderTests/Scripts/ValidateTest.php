@@ -45,7 +45,7 @@ class ValidateTest extends TestCase
         $filenames = ['first', 'second', 'third'];
         $localPath = '/resources';
 
-        $validate = Validate::make(['command', 'first', 'second', '-l', '/resources', '--', 'third']);
+        $validate = Validate::make(['command', 'first', 'second', '-l', '/resources', 'third']);
 
         $this->assertEquals($script, $validate->getScript());
         $this->assertEquals($filenames, $validate->getFilenames());

@@ -18,8 +18,7 @@
     "require": {
         "php": ">=7.0",
         "eclipxe/xmlschemavalidator": "dev-next-release",
-        "eclipxe/xmlresourceretriever": "dev-master",
-        "ulrichsg/getopt-php": "^3.0"
+        "eclipxe/xmlresourceretriever": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2",

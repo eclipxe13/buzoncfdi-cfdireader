@@ -2,8 +2,6 @@
 namespace CFDIReader\Scripts;
 
 use CFDIReader\CFDIFactory;
-use GetOpt\GetOpt;
-use GetOpt\Option;
 
 class Validate
 {
@@ -63,15 +61,21 @@ class Validate
         }
         $script = array_shift($arguments);
 
-        $getOpt = new GetOpt([
-            Option::create('l', 'local-path', GetOpt::REQUIRED_ARGUMENT)
-                ->setDescription('Set the local repository of files,' .
-                    ' if "disable" then the retriever will not store locally')
-                ->setDefaultValue(''),
-        ]);
-        $getOpt->process($arguments);
-        $command = new self($script, $getOpt->getOperands());
-        $localPath = $getOpt->getOption('local-path');
+        $filenames = [];
+        $localPath = '';
+        while (null !== $argument = array_shift($arguments)) {
+            if (in_array($argument, ['--local-path', '-l'])) {
+                $localPath = (count($arguments)) ? array_shift($arguments) : '';
+                continue;
+            }
+            if (false === strpos($argument, '-')) {
+                $filenames[] = $argument;
+                continue;
+            }
+            throw new \InvalidArgumentException("Invalid argument '$argument'");
+        }
+
+        $command = new self($script, $filenames);
         $command->localPath = ('disable' === $localPath) ? null : $localPath;
         return $command;
     }
