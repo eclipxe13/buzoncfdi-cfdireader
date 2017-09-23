@@ -11,25 +11,14 @@ class SchemasValidatorTest extends TestCase
     {
         $validator = new SchemasValidator();
         $this->assertFalse($validator->hasRetriever());
-        $this->assertFalse($validator->isForcedDownloads());
     }
 
     public function testDefaultConstructorWithArguments()
     {
         $retriever = new XsdRetriever(__DIR__);
-        $validator = new SchemasValidator($retriever, true);
+        $validator = new SchemasValidator($retriever);
         $this->assertSame($retriever, $validator->getRetriever());
         $this->assertTrue($validator->hasRetriever());
-        $this->assertTrue($validator->isForcedDownloads());
-    }
-
-    public function testForcedDownloadsProperty()
-    {
-        $validator = new SchemasValidator();
-        $validator->setForcedDownloads(true);
-        $this->assertTrue($validator->isForcedDownloads());
-        $validator->setForcedDownloads(false);
-        $this->assertFalse($validator->isForcedDownloads());
     }
 
     public function testGetRetrieverThrowALogicExceptionWhenNoRetrieverHasBeenSet()

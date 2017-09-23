@@ -19,28 +19,9 @@ class SchemasValidator
     /** @var XsdRetriever */
     private $retriever;
 
-    /** @var bool */
-    private $forcedDownloads;
-
-    public function __construct(XsdRetriever $retriever = null, bool $forcedDownloads = false)
+    public function __construct(XsdRetriever $retriever = null)
     {
         $this->retriever = $retriever;
-        $this->forcedDownloads = $forcedDownloads;
-    }
-
-    public function isForcedDownloads(): bool
-    {
-        return $this->forcedDownloads;
-    }
-
-    /**
-     * Set when it should instruct the retriever to download the files
-     * even when they already exists.
-     * @param bool $forcedDownloads
-     */
-    public function setForcedDownloads(bool $forcedDownloads)
-    {
-        $this->forcedDownloads = $forcedDownloads;
     }
 
     public function hasRetriever(): bool
@@ -73,7 +54,7 @@ class SchemasValidator
     public function validate(string $content)
     {
         if ($this->hasRetriever()) {
-            $this->validateWithRetriever($content, $this->isForcedDownloads());
+            $this->validateWithRetriever($content);
         } else {
             $this->validateWithoutRetriever($content);
         }
@@ -86,7 +67,7 @@ class SchemasValidator
      * @param string $content
      * @throws \RuntimeException on validation errors
      */
-    public function validateWithRetriever(string $content, bool $forceDownload = false)
+    public function validateWithRetriever(string $content)
     {
         if (! $this->hasRetriever()) {
             throw new \LogicException('There are no retriever in the object');
@@ -99,7 +80,7 @@ class SchemasValidator
         foreach ($schemas as $schema) {
             $location = $schema->getLocation();
             $localPath = $this->retriever->buildPath($location);
-            if ($forceDownload || ! file_exists($localPath)) {
+            if (! file_exists($localPath)) {
                 $this->retriever->retrieve($location);
             }
             $schemas->create($schema->getNamespace(), $localPath);
