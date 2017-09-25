@@ -7,6 +7,7 @@ class Validate
 {
     /** @var string */
     private $script;
+
     /** @var string[] */
     private $filenames;
 
@@ -16,55 +17,75 @@ class Validate
     /** @var string defaults to php://stderr */
     private $stdErr;
 
+    /** @var string|null config variable to create the factory */
+    private $localPath;
+
     /**
      * Validate constructor.
      * @param string $script
      * @param string[] $filenames
      * @param string $stdOut
      * @param string $stdErr
+     * @param string|null $localPath Default is null to use library path to store resources
+     * @throws \InvalidArgumentException if an item in $filenames is not a string
      */
-    public function __construct($script, array $filenames, $stdOut = 'php://stdout', $stdErr = 'php://stderr')
-    {
-        if (! is_string($script)) {
-            throw new \InvalidArgumentException('script argument is not a string');
-        }
+    public function __construct(
+        string $script,
+        array $filenames,
+        string $stdOut = 'php://stdout',
+        string $stdErr = 'php://stderr',
+        string $localPath = null
+    ) {
         $filenames = array_values($filenames);
         foreach ($filenames as $index => $value) {
             if (! is_string($value)) {
                 throw new \InvalidArgumentException("filename parameter $index is not a string");
             }
         }
-        if (! is_string($stdOut)) {
-            throw new \InvalidArgumentException('argument stdout is not a string');
-        }
-        if (! is_string($stdErr)) {
-            throw new \InvalidArgumentException('argument stderr is not a string');
-        }
         $this->script = $script;
         $this->filenames = $filenames;
         $this->stdOut = $stdOut;
         $this->stdErr = $stdErr;
+        $this->localPath = $localPath;
     }
 
     /**
      * Use this function to build the validate object from arguments values
-     * @param string[] $argv
+     * @param string[] $arguments
      * @return Validate
      */
-    public static function make(array $argv)
+    public static function make(array $arguments): Validate
     {
-        if (! count($argv)) {
+        if (! count($arguments)) {
             throw new \InvalidArgumentException('Cannot construct without arguments');
         }
-        $script = array_shift($argv);
-        return new self($script, $argv);
+        $script = array_shift($arguments);
+
+        $filenames = [];
+        $localPath = '';
+        while (null !== $argument = array_shift($arguments)) {
+            if (in_array($argument, ['--local-path', '-l'])) {
+                $localPath = (count($arguments)) ? array_shift($arguments) : '';
+                continue;
+            }
+            if (false === strpos($argument, '-')) {
+                $filenames[] = $argument;
+                continue;
+            }
+            throw new \InvalidArgumentException("Invalid argument '$argument'");
+        }
+
+        $command = new self($script, $filenames);
+        $command->localPath = ('disable' === $localPath) ? null : $localPath;
+        return $command;
     }
 
     /**
      * write a text to stdout
      * @param string $message
+     * @return void
      */
-    protected function write($message)
+    protected function write(string $message)
     {
         file_put_contents($this->stdOut, $message . "\n", FILE_APPEND);
     }
@@ -72,18 +93,20 @@ class Validate
     /**
      * write a text to stderr
      * @param string $message
+     * @return void
      */
-    protected function error($message)
+    protected function error(string $message)
     {
         file_put_contents($this->stdErr, $message . "\n", FILE_APPEND);
     }
 
     /**
      * Run this script
+     * @return void
      */
     public function run()
     {
-        $factory = new CFDIFactory();
+        $factory = new CFDIFactory($this->localPath);
         foreach ($this->filenames as $filename) {
             $this->runFilename($factory, $filename);
         }
@@ -93,8 +116,9 @@ class Validate
      * Run only a filename, used in the run loop
      * @param CFDIFactory $factory
      * @param string $argument
+     * @return void
      */
-    protected function runFilename(CFDIFactory $factory, $argument)
+    protected function runFilename(CFDIFactory $factory, string $argument)
     {
         if ('' === $argument) {
             $this->error('FATAL: Empty filename');
@@ -122,10 +146,7 @@ class Validate
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getScript()
+    public function getScript(): string
     {
         return $this->script;
     }
@@ -133,24 +154,26 @@ class Validate
     /**
      * @return string[]
      */
-    public function getFilenames()
+    public function getFilenames(): array
     {
         return $this->filenames;
     }
 
-    /**
-     * @return string
-     */
-    public function getStdOut()
+    public function getStdOut(): string
     {
         return $this->stdOut;
     }
 
-    /**
-     * @return string
-     */
-    public function getStdErr()
+    public function getStdErr(): string
     {
         return $this->stdErr;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLocalPath()
+    {
+        return $this->localPath;
     }
 }

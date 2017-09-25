@@ -3,8 +3,9 @@ namespace CFDIReader;
 
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
-use XmlSchemaValidator\Locator;
-use XmlSchemaValidator\SchemaValidator;
+use CFDIReader\SchemasValidator\SchemasValidator;
+use XmlResourceRetriever\Downloader\DownloaderInterface;
+use XmlResourceRetriever\XsdRetriever;
 
 /**
  * Description of CFDIFactory
@@ -13,59 +14,21 @@ use XmlSchemaValidator\SchemaValidator;
  */
 class CFDIFactory
 {
-    /**
-     * Build a new SchemaValidator object with default options for CFDI validations.
-     * @param Locator $locator if not provided use factory method to build it with default parameters
-     * @return SchemaValidator
-     */
-    public function newSchemaValidator(Locator $locator = null)
-    {
-        if (null === $locator) {
-            $locator = $this->newLocator();
-        }
-        $schemavalidator = new SchemaValidator($locator);
-        return $schemavalidator;
-    }
+    /** @var string */
+    private $localResourcesPath;
 
     /**
-     * Build a new Locator object with default options for CFDI validations.
-     * Sets allowed mimes to Xsd and register cfdv32.xsd and TimbreFiscalDigital.xsd from commonxsd/
-     * @param bool $registerCommonXsd try to register files located on commonxsd/
-     * @param string $repository location of cached files
-     * @param int $timeout download timeout
-     * @param int $expire expiration
-     * @return Locator
+     * CFDIFactory constructor.
+     *
+     * @see setLocalResourcesPath
+     * @param string|null $localResourcesPath
      */
-    public function newLocator($registerCommonXsd = true, $repository = '', $timeout = 20, $expire = 0)
+    public function __construct(string $localResourcesPath = null)
     {
-        $locator = new Locator($repository, $timeout, $expire);
-        $locator->mimeAllow('application/xml');
-        $locator->mimeAllow('text/plain');
-        $locator->mimeAllow('text/xml');
-        if ($registerCommonXsd) {
-            $commonXsds = [
-                'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv32.xsd'
-                    => 'cfdv32.xsd',
-                'http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd'
-                    => 'cfdv33.xsd',
-                'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigital.xsd'
-                    => 'TimbreFiscalDigital.xsd',
-                'http://www.sat.gob.mx/sitio_internet/cfd/TimbreFiscalDigital/TimbreFiscalDigitalv11.xsd'
-                    => 'TimbreFiscalDigitalv11.xsd',
-            ];
-            if ('' != $basepath = realpath(__DIR__ . '/../../commonxsd')) {
-                foreach ($commonXsds as $url => $file) {
-                    $locator->register($url, $basepath . '/' . $file);
-                }
-            }
-        }
-        return $locator;
+        $this->setLocalResourcesPath($localResourcesPath);
     }
 
-    /**
-     * @return PostValidator
-     */
-    public function newPostValidator()
+    public function newPostValidator(): PostValidator
     {
         $postvalidator = new PostValidator();
         $postvalidator->validators->append(new Validators\Impuestos());
@@ -75,25 +38,74 @@ class CFDIFactory
         return $postvalidator;
     }
 
+    public function getLocalResourcesPath(): string
+    {
+        return $this->localResourcesPath;
+    }
+
+    /**
+     * Set the local resources path to be used when created the XsdRetriever
+     * If is null then it will take the library installation path + /resources
+     * If is an empty string then no local resources will be used
+     * If is a non-empty string it will use it like the path to store the resources
+     *
+     * @param string|null $localResourcesPath
+     */
+    public function setLocalResourcesPath(string $localResourcesPath = null)
+    {
+        if (null === $localResourcesPath) {
+            $localResourcesPath = $this->getDefaultLocalResourcesPath();
+        }
+        $this->localResourcesPath = $localResourcesPath;
+    }
+
+    public function getDefaultLocalResourcesPath(): string
+    {
+        return dirname(__DIR__, 2) . '/resources';
+    }
+
+    /**
+     * Return a new instance of an XsdRetriever depending on the
+     * property localResourcesPath.
+     *
+     * @param DownloaderInterface|null $downloader
+     * @return null|XsdRetriever
+     */
+    public function newRetriever(DownloaderInterface $downloader = null)
+    {
+        $localResourcesPath = $this->getLocalResourcesPath();
+        if ('' === $localResourcesPath) {
+            return null;
+        }
+        return new XsdRetriever($localResourcesPath, $downloader);
+    }
+
+    public function newSchemasValidator()
+    {
+        $retriever = $this->newRetriever();
+        return new SchemasValidator($retriever);
+    }
+
     /**
      * Create a CFDI Reader, it has to be valid otherwise a exception will be thrown
      * @param string $content
      * @param array $errors
      * @param array $warnings
+     * @param bool $requireTimbre
      * @return CFDIReader
      */
-    public function newCFDIReader($content, array &$errors = [], array &$warnings = [])
-    {
-        // before creation SchemaValidator
-        $schemaValidator = $this->newSchemaValidator();
-        if (! $schemaValidator->validate($content)) {
-            throw new \RuntimeException(
-                'The content is not a well formed or is not valid: ' . $schemaValidator->getError()
-            );
-        }
+    public function newCFDIReader(
+        string $content,
+        array &$errors = [],
+        array &$warnings = [],
+        bool $requireTimbre = true
+    ): CFDIReader {
+        // before creation
+        $schemaValidator = $this->newSchemasValidator();
+        $schemaValidator->validate($content);
 
         // creation
-        $cfdireader = new CFDIReader($content);
+        $cfdireader = new CFDIReader($content, $requireTimbre);
 
         // after creation
         $postValidator = $this->newPostValidator();

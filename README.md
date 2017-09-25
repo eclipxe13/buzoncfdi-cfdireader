@@ -50,16 +50,23 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 * The content must be a valid XML
 * The root element must be Comprobante
 * The version attribute must be 3.2 or 3.3
-* The namespaces must include http://www.sat.gob.mx/cfd/3 and http://www.sat.gob.mx/TimbreFiscalDigital
-* The element Comprobante/Complemento/TimbreFiscalDigital must exists
-* Includes a class to clean external XSD and Addendas
+* The namespaces must include http://www.sat.gob.mx/cfd/3
+* If required, the namespaces could must include http://www.sat.gob.mx/TimbreFiscalDigital
+  and the element Comprobante/Complemento/TimbreFiscalDigital must exists
 
 ## Using the factory
 
-The `CFDIFactory` allow a common way to create `CFDIReaders` using `SchemaValidator` and `PostValidator`.
+The `CFDIFactory` allow a common way to create `CFDIReaders` using `SchemasValidator` and `PostValidator`.
 
-The SchemaValidator is a tool that validates a XML against its multiple XSD files creating a root schema and importing
-all the schemas listed in the XML by schemaLocation nodes.
+Validate a CFDI version 3.3 against its schemas (XSD Files) will require (as of 2017-09-01) more than 6.3 MB.
+This means that you should keep local copies of all xsd files.
+
+This is why this library depends on `eclipxe/xmlresourceretriever` and uses `CFDIFactory` to help on this
+configuration. If you set the property `CFDIFactory::localResourcesPath` with a null object it will take
+the installation directory of the library and append `/resources` as the local repository.
+
+You can pass a local path as your local repository or even use an empty string to indicate that it should not
+create a local copy of any resource and rely enterely on internet files.
 
 The PostValidator do some specific checks about the CFDI, this includes `Conceptos`, `Fechas`, `Impuestos` and `Totales`.
 
@@ -74,9 +81,9 @@ XML specification (including namespaces and schemas).
 The problem is that -since the addenda is not part of the source string- the emmiters can include additional nodes
 inside the Addenda after it was signed without breaking the CFDI but breaking the XML validation.
 
-So, can I edit a CFDI? Yes. as long you dont change any content of the source string (cadena de origen)
+So, can I edit a CFDI? Yes. as long you don't change any content of the source string (cadena de origen)
 
-I has created an utility named `CFDICleaner` that removes Addendas and unused namespaces declarations.
+I had created an utility named `CFDICleaner` that removes Addendas and unused namespaces declarations.
 You can use this tool to validate the document without this garbage.
 
 ```php

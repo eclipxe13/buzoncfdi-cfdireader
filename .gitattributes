@@ -7,6 +7,7 @@
 /build/              export-ignore
 /phpdox.xml          export-ignore
 /phpunit.xml         export-ignore
+/resources/          export-ignore
 
 # Do not put this files on a distribution package
 /.coveralls.yml      export-ignore

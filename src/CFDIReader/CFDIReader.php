@@ -34,9 +34,9 @@ class CFDIReader
     /**
      * Return an array of the versions that the reader can process
      *
-     * @return array
+     * @return string[]
      */
-    public static function allowedVersions()
+    public static function allowedVersions(): array
     {
         return ['3.2', '3.3'];
     }
@@ -47,7 +47,7 @@ class CFDIReader
      * @param bool $requireTimbre
      * @throws \InvalidArgumentException when the content is not a valid XML
      */
-    public function __construct($content, $requireTimbre = true)
+    public function __construct(string $content, bool $requireTimbre = true)
     {
         // create the SimpleXMLElement
         try {
@@ -109,12 +109,17 @@ class CFDIReader
         return clone $this->comprobante;
     }
 
+    public function getVersion(): string
+    {
+        return (string) $this->comprobante['version'];
+    }
+
     /**
      * Get the UUID from the document. If the node does not exists then return an empty string
      *
      * @return string
      */
-    public function getUUID()
+    public function getUUID(): string
     {
         if (! $this->hasTimbreFiscalDigital()) {
             return '';
@@ -127,7 +132,7 @@ class CFDIReader
      *
      * @return bool
      */
-    public function hasTimbreFiscalDigital()
+    public function hasTimbreFiscalDigital(): bool
     {
         return isset($this->comprobante->{'complemento'})
             && isset($this->comprobante->{'complemento'}->timbreFiscalDigital);
@@ -142,7 +147,7 @@ class CFDIReader
      * @param string $name
      * @return string
      */
-    private function normalizeName($name)
+    private function normalizeName(string $name): string
     {
         return (strtoupper($name) === $name) ? $name : lcfirst($name);
     }
@@ -155,7 +160,7 @@ class CFDIReader
      * @param array $nss
      * @return SimpleXMLElement
      */
-    private function appendChild(SimpleXMLElement $source, SimpleXMLElement $parent, array $nss)
+    private function appendChild(SimpleXMLElement $source, SimpleXMLElement $parent, array $nss): SimpleXMLElement
     {
         $new = $parent->addChild($this->normalizeName($source->getName()), (string) $source);
         $this->populateNode($source, $new, $nss);
@@ -168,6 +173,7 @@ class CFDIReader
      * @param SimpleXMLElement $source
      * @param SimpleXMLElement $destination
      * @param array $nss
+     * @return void
      */
     private function populateNode(SimpleXMLElement $source, SimpleXMLElement $destination, array $nss)
     {

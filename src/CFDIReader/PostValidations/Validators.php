@@ -3,6 +3,7 @@ namespace CFDIReader\PostValidations;
 
 class Validators implements \IteratorAggregate, \Countable
 {
+    /** @var ValidatorInterface[] */
     private $validators = [];
 
     /**
@@ -42,7 +43,7 @@ class Validators implements \IteratorAggregate, \Countable
     /**
      * Return the index of a registered validator
      * @param ValidatorInterface $validator
-     * @return int index of the validator, return FALSE if not found
+     * @return int|false index of the validator, return FALSE if not found
      */
     public function getIndex(ValidatorInterface $validator)
     {
