@@ -17,8 +17,8 @@
     },
     "require": {
         "php": ">=7.0",
-        "eclipxe/xmlschemavalidator": "dev-next-release",
-        "eclipxe/xmlresourceretriever": "dev-master"
+        "eclipxe/xmlschemavalidator": "^2.0",
+        "eclipxe/xmlresourceretriever": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.2",
