@@ -1,7 +1,5 @@
 # eclipxe/buzoncfdi-cfdireader To Do
 
-**Stop using -dev once dependences release next version**
-
 All your help is very appreciated, please contribute with testing, ideas, code, documentation, coffee, etc.
 
 - [ ] Validator for metodoPago
