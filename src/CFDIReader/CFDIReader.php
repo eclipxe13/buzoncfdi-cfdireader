@@ -2,6 +2,7 @@
 namespace CFDIReader;
 
 use SimpleXMLElement;
+use DOMDocument;
 
 /**
  * CFDI Reader immutable class to recover contents from a CFDI.
@@ -30,6 +31,9 @@ class CFDIReader
 {
     /** @var SimpleXMLElement */
     private $comprobante;
+
+    /** @var string */
+    private $source;
 
     /**
      * Return an array of the versions that the reader can process
@@ -97,6 +101,30 @@ class CFDIReader
         if ($requireTimbre && ! $this->hasTimbreFiscalDigital()) {
             throw new \InvalidArgumentException('Seal not found on Comprobante/Complemento/TimbreFiscalDigital');
         }
+        $this->source = $content;
+    }
+
+    /**
+     * Get the xml source that was used to create this object
+     *
+     * @return string
+     */
+    public function source(): string
+    {
+        return $this->source;
+    }
+
+    /**
+     * Retrieve a new instance of a DOMDocument using source as the content.
+     * It always creates and return a new instance
+     *
+     * @return DOMDocument
+     */
+    public function document(): DOMDocument
+    {
+        $document = new DOMDocument();
+        $document->loadXML($this->source());
+        return $document;
     }
 
     /**

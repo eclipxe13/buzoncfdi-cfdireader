@@ -114,4 +114,22 @@ class CFDIReaderTest extends TestCase
             'Unable to retrieve the UUID by using the getUUID() method'
         );
     }
+
+    public function testSource()
+    {
+        $filename = test_file_location('v33/valid.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+        $this->assertXmlStringEqualsXmlFile($filename, $cfdi->source());
+    }
+
+    public function testDocument()
+    {
+        $filename = test_file_location('v33/valid.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+        $first = $cfdi->document();
+        $second = $cfdi->document();
+        $this->assertNotEmpty($first->saveXML());
+        $this->assertEquals($first->saveXML(), $second->saveXML());
+        $this->assertNotSame($first, $second, 'Each instance of document must be different');
+    }
 }
