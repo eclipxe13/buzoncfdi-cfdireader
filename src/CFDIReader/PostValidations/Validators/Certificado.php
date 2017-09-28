@@ -15,7 +15,7 @@ use CfdiUtils\CfdiCertificado;
  */
 class Certificado extends AbstractValidator
 {
-    /** @var CadenaOrigen */
+    /** @var CadenaOrigen|null */
     private $cadenaOrigen;
 
     public function setCadenaOrigen(CadenaOrigen $cadenaOrigen = null)
