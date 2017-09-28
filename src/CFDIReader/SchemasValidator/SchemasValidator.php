@@ -70,9 +70,8 @@ class SchemasValidator
      */
     public function validateWithRetriever(string $content)
     {
-        if (! $this->hasRetriever()) {
-            throw new \LogicException('There are no retriever in the object');
-        }
+        // obtain the retriever, throw its own exception if non set
+        $retriever = $this->getRetriever();
         // create the schema validator object
         $validator = new SchemaValidator($content);
         // obtain the list of schemas
@@ -80,9 +79,9 @@ class SchemasValidator
         // replace with the local path
         foreach ($schemas as $schema) {
             $location = $schema->getLocation();
-            $localPath = $this->retriever->buildPath($location);
+            $localPath = $retriever->buildPath($location);
             if (! file_exists($localPath)) {
-                $this->retriever->retrieve($location);
+                $retriever->retrieve($location);
             }
             $schemas->create($schema->getNamespace(), $localPath);
         }
