@@ -54,6 +54,15 @@ The `CFDIReader` class is immutable, it only perform the following checks:
 * If required, the namespaces could must include http://www.sat.gob.mx/TimbreFiscalDigital
   and the element Comprobante/Complemento/TimbreFiscalDigital must exists
 
+### CFDIReader helper functions
+
+`\CFDIReader\CFDIReader::node`: Help you to retrieve an specific node, returns `NULL` if not found.
+i. e. `$cfdi->node('conceptos', 'concepto')` will return the list of `Complemento/Conceptos/Concepto` nodes.
+
+`\CFDIReader\CFDIReader::attribute`: Help you to retrieve an specific attribute inside a node,
+returns an empry string if the node or the attribute was not found.
+i. e. `$cfdi->node('emisor', 'nombre')` will return something like `'Empresa de ejemplo SA de CV'`.
+
 ## Using the factory
 
 The `CFDIFactory` allow a common way to create `CFDIReaders` using `SchemasValidator` and `PostValidator`.
