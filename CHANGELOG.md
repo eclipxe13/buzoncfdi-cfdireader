@@ -7,11 +7,11 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
 - Create a new post validator `\CFDIReader\PostValidations\Validators\Certificado` that checks:
     - certificate number match (error)
     - emisor rfc match  (error)
-    - emisor name match  (warning)
+    - emisor nombre match  (warning)
     - date between certificate dates (error)
     - if contains a CadenaOrigen object, verify that the sello match with the "cadena de origen" using
       the public key certificate (error). If this tails then the CFDI was modified.
-- Add dependency on `eclipxe/CfdiUtils` to be avble to create the "Cadena Origen" and recover
+- Add dependency on `eclipxe/CfdiUtils` to be able to create the "Cadena Origen" and recover
   a certificate from a cfdi.
 - Add new methods on `CFDIReader\CFDIFactory` to create helper objects:
     - `newXsltRetriever(DownloaderInterface $downloader = null): ?XsltRetriever`
