@@ -68,7 +68,7 @@ class Certificado extends AbstractValidator
 
     private function validateNoCertificado(UtilCertificado $certificado, string $noCertificado)
     {
-        if ($certificado->getSerial() !== (string) $noCertificado) {
+        if ($certificado->getSerial() !== $noCertificado) {
             $this->errors->add(sprintf(
                 'El número del certificado extraido (%s) no coincide con el reportado en el comprobante (%s)',
                 $certificado->getSerial(),
