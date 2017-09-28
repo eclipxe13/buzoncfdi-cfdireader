@@ -96,39 +96,4 @@ abstract class AbstractValidator implements ValidatorInterface
         }
         return $sum;
     }
-
-    /**
-     * Return the node in the path inside the Comprobante
-     * Returns null if the node does not exists
-     *
-     * @param string[] ...$path
-     * @return SimpleXMLElement|null
-     */
-    protected function xmlNode(string ...$path)
-    {
-        $node = $this->comprobante;
-        foreach ($path as $level) {
-            if (! isset($node->{$level})) {
-                return null;
-            }
-            $node = $node->{$level};
-        }
-        return $node;
-    }
-
-    /**
-     * Get the attribute content of a comprobante child
-     * If the node does not exists or the attribute does not exists return an empty string
-     *
-     * The last argument is the attribute name
-     *
-     * @param string[] ...$path
-     * @return string
-     */
-    protected function xmlAttr(string ...$path): string
-    {
-        $attribute = array_pop($path);
-        $node = $this->xmlNode(...$path);
-        return (null !== $node) ? (string) $node[$attribute] : '';
-    }
 }
