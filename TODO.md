@@ -3,7 +3,7 @@
 All your help is very appreciated, please contribute with testing, ideas, code, documentation, coffee, etc.
 
 - [ ] Validator for metodoPago
-- [ ] Check CFDI signature againts certificate
+- [X] Check CFDI signature againts certificate
 
 ## Validate script
 
