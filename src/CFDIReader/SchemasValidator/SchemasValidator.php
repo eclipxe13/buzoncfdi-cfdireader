@@ -16,7 +16,7 @@ use XmlSchemaValidator\SchemaValidator;
  */
 class SchemasValidator
 {
-    /** @var XsdRetriever */
+    /** @var XsdRetriever|null */
     private $retriever;
 
     public function __construct(XsdRetriever $retriever = null)
