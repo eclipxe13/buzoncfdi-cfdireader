@@ -10,38 +10,51 @@ class Impuestos extends AbstractValidator
     {
         // setup the AbstractValidator Helper class
         $this->setup($cfdi, $issues);
-        // do the validation process
-        $retenidos = $this->value($this->comprobante->impuestos['totalImpuestosRetenidos']);
-        $retenciones = $this->sumNodes($this->comprobante->impuestos->retenciones->retencion, 'importe');
+
+        // validate impuestos@totalImpuestosRetenidos vs sum(impuestos/retenciones/retencion@importe)
+        $retenidos = $this->value($cfdi->attribute('impuestos', 'totalImpuestosRetenidos'));
+        $retenciones = $this->sumNodes($cfdi->node('impuestos', 'retenciones', 'retencion'), 'importe');
         if (! $this->compare($retenciones, $retenidos)) {
             $this->warnings->add('El total de impuestos retenidos difiere de la suma de los nodos de las retenciones');
         }
-        $traslados = $this->value($this->comprobante->impuestos['totalImpuestosTrasladados']);
-        $trasladados = $this->sumNodes($this->comprobante->impuestos->traslados->traslado, 'importe');
+
+        // validate impuestos@totalImpuestosTrasladados vs sum(impuestos/traslados/traslado@importe)
+        $traslados = $this->value($cfdi->attribute('impuestos', 'totalImpuestosTrasladados'));
+        $trasladados = $this->sumNodes($cfdi->node('impuestos', 'traslados', 'traslado'), 'importe');
         if (! $this->compare($traslados, $trasladados)) {
             $this->warnings->add('El total de impuestos trasladados difiere de la suma de los nodos de los traslados');
         }
-        if (isset($this->comprobante->complemento->impuestosLocales)) {
-            $localesRetenidos = $this->value($this->comprobante->complemento->impuestosLocales['totaldeRetenciones']);
-            $localesRetenciones = $this->sumNodes(
-                $this->comprobante->complemento->impuestosLocales->retencionesLocales,
-                'importe'
+
+        // validate "impuestos locales"
+        $this->validateImpuestosLocales($cfdi);
+    }
+
+    private function validateImpuestosLocales(CFDIReader $cfdi)
+    {
+        $nodeImpuestosLocales = $cfdi->node('complemento', 'impuestosLocales');
+        if (null === $nodeImpuestosLocales) {
+            // nothing to do
+            return;
+        }
+
+        // retenciones
+        $nodesRetenciones = $cfdi->node('complemento', 'impuestosLocales', 'retencionesLocales');
+        $retenciones = $this->sumNodes($nodesRetenciones, 'importe');
+        $retenidos = $this->value($nodeImpuestosLocales['totaldeRetenciones']);
+        if (! $this->compare($retenciones, $retenidos)) {
+            $this->warnings->add(
+                'El total de impuestos locales retenidos difiere de la suma de los nodos de las retenciones'
             );
-            if (! $this->compare($localesRetenciones, $localesRetenidos)) {
-                $this->warnings->add(
-                    'El total de impuestos locales retenidos difiere de la suma de los nodos de las retenciones'
-                );
-            }
-            $localesTraslados = $this->value($this->comprobante->complemento->impuestosLocales['totaldeTraslados']);
-            $localesTrasladados = $this->sumNodes(
-                $this->comprobante->complemento->impuestosLocales->trasladosLocales,
-                'importe'
+        }
+
+        // traslados
+        $nodesTraslados = $cfdi->node('complemento', 'impuestosLocales', 'trasladosLocales');
+        $trasladados = $this->sumNodes($nodesTraslados, 'importe');
+        $traslados = $this->value($nodeImpuestosLocales['totaldeTraslados']);
+        if (! $this->compare($trasladados, $traslados)) {
+            $this->warnings->add(
+                'El total de impuestos locales trasladados difiere de la suma de los nodos de los traslados'
             );
-            if (! $this->compare($localesTrasladados, $localesTraslados)) {
-                $this->warnings->add(
-                    'El total de impuestos locales trasladados difiere de la suma de los nodos de los traslados'
-                );
-            }
         }
     }
 }

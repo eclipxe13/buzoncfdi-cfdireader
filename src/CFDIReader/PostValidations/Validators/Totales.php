@@ -10,19 +10,35 @@ class Totales extends AbstractValidator
     {
         // setup the AbstractValidator Helper class
         $this->setup($cfdi, $issues);
-        // do the validation process
-        $importes = $this->sumNodes($this->comprobante->conceptos->concepto, 'importe');
-        $subtotal = $this->value($this->comprobante['subTotal']);
+
+        // obtain the sum of importes
+        $nodesConcepto = $cfdi->node('conceptos', 'concepto');
+        $importes = $this->sumNodes($nodesConcepto, 'importe');
+
+        // obtain the subtotal
+        $subtotal = $this->value($cfdi->attribute('subTotal'));
+
+        // check subtotal versus importes
         if (! $this->compare($importes, $subtotal)) {
             $this->warnings->add('El subtotal no coincide con la suma de los importes');
         }
-        $retenidos = $this->value($this->comprobante->impuestos['totalImpuestosRetenidos']);
-        $traslados = $this->value($this->comprobante->impuestos['totalImpuestosTrasladados']);
-        $localesRetenidos = $this->value($this->comprobante->complemento->impuestosLocales['totaldeRetenciones']);
-        $localesTraslados = $this->value($this->comprobante->complemento->impuestosLocales['totaldeTraslados']);
-        $descuentos = $this->value($this->comprobante['descuento']);
-        $total = $this->value($this->comprobante['total']);
-        $calculated = $subtotal - $descuentos + $traslados - $retenidos + $localesTraslados - $localesRetenidos;
+
+        // obtain retenidos and traslados
+        $retenidos = $this->value($cfdi->attribute('impuestos', 'totalImpuestosRetenidos'));
+        $traslados = $this->value($cfdi->attribute('impuestos', 'totalImpuestosTrasladados'));
+        $locRetenidos = $this->value($cfdi->attribute('complemento', 'impuestosLocales', 'totaldeRetenciones'));
+        $locTraslados = $this->value($cfdi->attribute('complemento', 'impuestosLocales', 'totalImpuestosRetenidos'));
+
+        // obtain descuentos
+        $descuentos = $this->value($cfdi->attribute('descuento'));
+
+        // calculate the amount of the total
+        $calculated = $subtotal - $descuentos + $traslados - $retenidos + $locTraslados - $locRetenidos;
+
+        // obtain the total
+        $total = $this->value($cfdi->attribute('total'));
+
+        // compare total versus calculated
         if (! $this->compare($calculated, $total)) {
             $this->warnings->add(
                 'El total no coincide con la suma del subtotal'

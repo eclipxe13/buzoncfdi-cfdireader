@@ -50,31 +50,34 @@ class Certificado extends AbstractValidator
             return;
         }
 
-        $this->validateNoCertificado($certificado);
-        $this->validateRfc($certificado);
-        $this->validateNombre($certificado);
-        $this->validateFecha($certificado);
+        $this->validateNoCertificado($certificado, $cfdi->attribute('noCertificado'));
+        $this->validateRfc($certificado, $cfdi->attribute('emisor', 'rfc'));
+        $this->validateNombre($certificado, $cfdi->attribute('emisor', 'nombre'));
+        $this->validateFecha($certificado, $cfdi->attribute('fecha'));
 
         // validate certificate seal
         if ($this->hasCadenaOrigen()) {
-            $this->validateSello($certificado, $cfdi->getVersion(), $this->getCadenaOrigen()->build($cfdi->source()));
+            $this->validateSello(
+                $certificado,
+                $cfdi->getVersion(),
+                $this->getCadenaOrigen()->build($cfdi->source())
+            );
         }
     }
 
-    private function validateNoCertificado(UtilCertificado $certificado)
+    private function validateNoCertificado(UtilCertificado $certificado, string $noCertificado)
     {
-        if ($certificado->getSerial() !== (string) $this->comprobante['noCertificado']) {
+        if ($certificado->getSerial() !== (string) $noCertificado) {
             $this->errors->add(sprintf(
                 'El número del certificado extraido (%s) no coincide con el reportado en el comprobante (%s)',
                 $certificado->getSerial(),
-                $this->comprobante['noCertificado']
+                $noCertificado
             ));
         }
     }
 
-    private function validateRfc(UtilCertificado $certificado)
+    private function validateRfc(UtilCertificado $certificado, string $emisorRfc)
     {
-        $emisorRfc = $this->obtainEmisorAttribute('rfc');
         if ($certificado->getRfc() !== $emisorRfc) {
             $this->errors->add(sprintf(
                 'El certificado extraido contiene el RFC (%s) que no coincide con el RFC reportado en el emisor (%s)',
@@ -84,9 +87,8 @@ class Certificado extends AbstractValidator
         }
     }
 
-    private function validateNombre(UtilCertificado $certificado)
+    private function validateNombre(UtilCertificado $certificado, string $emisorNombre)
     {
-        $emisorNombre = $this->obtainEmisorAttribute('nombre');
         if ('' === $emisorNombre) {
             return;
         }
@@ -100,9 +102,9 @@ class Certificado extends AbstractValidator
         }
     }
 
-    private function validateFecha(UtilCertificado $certificado)
+    private function validateFecha(UtilCertificado $certificado, string $fechaSource)
     {
-        $fecha = $this->obtainFecha();
+        $fecha = ('' === $fechaSource) ? 0 : strtotime($fechaSource);
         if (0 === $fecha) {
             $this->errors->add('La fecha del documento no fue encontrada');
             return;
@@ -146,14 +148,6 @@ class Certificado extends AbstractValidator
         }
     }
 
-    private function obtainEmisorAttribute(string $attribute): string
-    {
-        if (! isset($this->comprobante->emisor) || ! isset($this->comprobante->emisor[$attribute])) {
-            return '';
-        }
-        return (string) $this->comprobante->emisor[$attribute];
-    }
-
     private function obtainSello(): string
     {
         $selloBase64 = (string) $this->comprobante['sello'];
@@ -172,13 +166,5 @@ class Certificado extends AbstractValidator
     private function castNombre(string $nombre): string
     {
         return str_replace([' ', '.'], '', $nombre);
-    }
-
-    private function obtainFecha(): int
-    {
-        if (! isset($this->comprobante['fecha'])) {
-            return 0;
-        }
-        return strtotime($this->comprobante['fecha']);
     }
 }
