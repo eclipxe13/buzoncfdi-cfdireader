@@ -47,8 +47,6 @@ class CFDIFactoryTest extends TestCase
         $cfdi = $factory->newCFDIReader($content, $errors, $warnings, false);
 
         $this->assertFalse($cfdi->hasTimbreFiscalDigital());
-        $this->assertEmpty($errors);
-        $this->assertEmpty($warnings);
     }
 
     public function testNewCFDIReaderWithOutTimbreAndRequired()
