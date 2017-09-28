@@ -78,6 +78,7 @@ class SchemasValidator
         $schemas = $validator->buildSchemas();
         // replace with the local path
         foreach ($schemas as $schema) {
+            /** @var \XmlSchemaValidator\Schema $schema */
             $location = $schema->getLocation();
             $localPath = $retriever->buildPath($location);
             if (! file_exists($localPath)) {
