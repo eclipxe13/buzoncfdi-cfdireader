@@ -12,9 +12,9 @@ class ValidatorsTestCase extends TestCase
     /** @var Issues */
     protected $issues;
 
-    protected function setupWithFile($filename)
+    protected function setupWithFile($filename, $requireTimbre = false)
     {
-        $this->cfdi = new CFDIReader(file_get_contents(test_file_location($filename)));
+        $this->cfdi = new CFDIReader(file_get_contents(test_file_location($filename)), $requireTimbre);
         $this->issues = new Issues();
     }
 }

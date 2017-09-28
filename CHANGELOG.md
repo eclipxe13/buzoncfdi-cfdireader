@@ -1,3 +1,21 @@
+This project is using Semantic Versioning, meaning that a version is: MAJOR.MINOR.PATCH
+  - MAJOR version when you make incompatible API changes,
+  - MINOR version when you add functionality in a backwards-compatible manner, and
+  - PATCH version when you make backwards-compatible bug fixes.
+
+# Version 2.1.0 
+- Add `source(): string` and `document(): \DOMDocument` methods to `CFDIReader\CFDIReader`
+- Add docblocks to `CFDIReader\PostValidations\IssuesTypes` constants
+- Add docblocks to `CFDIReader\PostValidations\ValidatorInterface` methods
+- Improve test files:
+    - Remove unmeaning asserts
+    - By default setup the test does not require the cfdi with timbre
+    - Add asset/v32/real.xml with a real cfdi
+    - Use correct Emisor/nombre (from certificate)
+    - Change v33/valid.xml to include: Emisor, Receptor, Fecha, Sello, Certificado, NoCertificado, FechaTimbrado
+    - Update v33/valid-without-timbre.xml according to valid
+- Update TODO.md
+
 # Version 2.0.0
 - Require PHP 7.0
 - Add scalar type declarations and docblocks @return void

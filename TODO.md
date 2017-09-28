@@ -1,7 +1,5 @@
 # eclipxe/buzoncfdi-cfdireader To Do
 
-**Stop using -dev once dependences release next version**
-
 All your help is very appreciated, please contribute with testing, ideas, code, documentation, coffee, etc.
 
 - [ ] Validator for metodoPago
@@ -17,7 +15,7 @@ All your help is very appreciated, please contribute with testing, ideas, code, 
 ## CFDI 3.3
 
 - [ ] Validate logic rules that are not validated against XSD (as in version 3.2)
-- [ ] Automate the creation of the modified cfdv33.xml, TimbreFiscalDigitalv11.xsd and import downloads
+- [X] Automate the creation of the modified cfdv33.xml, TimbreFiscalDigitalv11.xsd and import downloads
 
 ## Deprecate PHP 5.6 in favor of 7.0
 
