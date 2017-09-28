@@ -1,8 +1,8 @@
 <?php
 namespace CFDIReader;
 
-use SimpleXMLElement;
 use DOMDocument;
+use SimpleXMLElement;
 
 /**
  * CFDI Reader immutable class to recover contents from a CFDI.
