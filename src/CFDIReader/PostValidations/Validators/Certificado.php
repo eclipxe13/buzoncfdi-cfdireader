@@ -25,7 +25,8 @@ class Certificado extends AbstractValidator
 
     public function getCadenaOrigen(): CadenaOrigen
     {
-        if (! $this->hasCadenaOrigen()) {
+        // use this comparison instead of hasCadenaOrigen to satisfy phpstan
+        if (! ($this->cadenaOrigen instanceof CadenaOrigen)) {
             throw new \RuntimeException('The CadenaOrigen object has not been set');
         }
         return $this->cadenaOrigen;

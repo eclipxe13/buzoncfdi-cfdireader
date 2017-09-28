@@ -34,7 +34,8 @@ class SchemasValidator
      */
     public function getRetriever(): XsdRetriever
     {
-        if (! $this->hasRetriever()) {
+        // use this comparison instead of hasRetriever to satisfy phpstan
+        if (! ($this->retriever instanceof XsdRetriever)) {
             throw new \LogicException('The retriever property has not been set');
         }
         return $this->retriever;
