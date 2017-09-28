@@ -16,7 +16,7 @@ use XmlSchemaValidator\SchemaValidator;
  */
 class SchemasValidator
 {
-    /** @var XsdRetriever */
+    /** @var XsdRetriever|null */
     private $retriever;
 
     public function __construct(XsdRetriever $retriever = null)
@@ -34,7 +34,8 @@ class SchemasValidator
      */
     public function getRetriever(): XsdRetriever
     {
-        if (! $this->hasRetriever()) {
+        // use this comparison instead of hasRetriever to satisfy phpstan
+        if (! ($this->retriever instanceof XsdRetriever)) {
             throw new \LogicException('The retriever property has not been set');
         }
         return $this->retriever;
@@ -69,19 +70,19 @@ class SchemasValidator
      */
     public function validateWithRetriever(string $content)
     {
-        if (! $this->hasRetriever()) {
-            throw new \LogicException('There are no retriever in the object');
-        }
+        // obtain the retriever, throw its own exception if non set
+        $retriever = $this->getRetriever();
         // create the schema validator object
         $validator = new SchemaValidator($content);
         // obtain the list of schemas
         $schemas = $validator->buildSchemas();
         // replace with the local path
         foreach ($schemas as $schema) {
+            /** @var \XmlSchemaValidator\Schema $schema */
             $location = $schema->getLocation();
-            $localPath = $this->retriever->buildPath($location);
+            $localPath = $retriever->buildPath($location);
             if (! file_exists($localPath)) {
-                $this->retriever->retrieve($location);
+                $retriever->retrieve($location);
             }
             $schemas->create($schema->getNamespace(), $localPath);
         }

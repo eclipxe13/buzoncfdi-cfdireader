@@ -132,4 +132,42 @@ class CFDIReaderTest extends TestCase
         $this->assertEquals($first->saveXML(), $second->saveXML());
         $this->assertNotSame($first, $second, 'Each instance of document must be different');
     }
+
+    public function testNode()
+    {
+        $filename = test_file_location('v33/valid.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+
+        // retrieve node
+        $this->assertInstanceOf(SimpleXMLElement::class, $cfdi->node('emisor'));
+        // retrieve non existent
+        $this->assertNull($cfdi->node('non-existent-node'));
+        // retrieve non existent inside an existent
+        $this->assertNull($cfdi->node('emisor', 'non-existent-node'));
+        // retrieve collection
+        $this->assertCount(3, $cfdi->node('conceptos', 'concepto'));
+    }
+
+    public function testNodeReturnDifferentInstances()
+    {
+        $filename = test_file_location('v33/valid.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+
+        $first = $cfdi->node('emisor');
+        $second = $cfdi->node('emisor');
+
+        $this->assertEquals($first, $second);
+        $this->assertNotSame($first, $second);
+    }
+
+    public function testAttribute()
+    {
+        $filename = test_file_location('v33/valid.xml');
+        $cfdi = new CFDIReader(file_get_contents($filename));
+
+        $this->assertSame('3.3', $cfdi->attribute('version'));
+        $this->assertSame('AAA010101AAA', $cfdi->attribute('emisor', 'rfc'));
+        $this->assertSame('', $cfdi->attribute('non-existent-attribute'));
+        $this->assertSame('', $cfdi->attribute('foo-bar', 'non-existent-node'));
+    }
 }

@@ -165,7 +165,11 @@ class CFDICleaner
     private function xpathQuery(string $query, DOMNode $element = null): DOMNodeList
     {
         $element = $element ?: $this->dom->documentElement;
-        return (new DOMXPath($element->ownerDocument))->query($query, $element);
+        $nodelist = (new DOMXPath($element->ownerDocument))->query($query, $element);
+        if (false === $nodelist) {
+            $nodelist = new DOMNodeList();
+        }
+        return $nodelist;
     }
 
     /**
@@ -200,7 +204,7 @@ class CFDICleaner
             return;
         }
         $schemaLocations = $this->xpathQuery("//@$xsi:schemaLocation");
-        if (false === $schemaLocations || $schemaLocations->length === 0) {
+        if ($schemaLocations->length === 0) {
             return;
         }
         for ($s = 0; $s < $schemaLocations->length; $s++) {

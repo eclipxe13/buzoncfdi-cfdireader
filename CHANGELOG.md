@@ -3,15 +3,26 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - MINOR version when you add functionality in a backwards-compatible manner, and
   - PATCH version when you make backwards-compatible bug fixes.
 
+# Version 2.3.0 - node and attribute
+- Add `node` and `attribute` methods to `CFDIReader`.
+  This action simplify the information extraction from the comprobante.
+  - `nodes` returns `NULL` or a cloned `\SimpleXmlElement`
+  - `attribute` returns a string
+- Refactor validators and `CFDIReader` to use this helpers, now is more readable and simple
+- Fix possible bug when `CFDIFactory::newXsltRetriever()` returns `NULL`
+- Fix possible bug inside `CFDICleaner::xpathQuery()` when `\DOMXPath::query` returns `FALSE`
+- Fix dockblocks of object type properties that allows nulls
+- Special thanks to `phpstan/phpstan` to help me catch possible bugs
+
 # Version 2.2.0 - Validate certificate
 - Create a new post validator `\CFDIReader\PostValidations\Validators\Certificado` that checks:
     - certificate number match (error)
     - emisor rfc match  (error)
-    - emisor name match  (warning)
+    - emisor nombre match  (warning)
     - date between certificate dates (error)
     - if contains a CadenaOrigen object, verify that the sello match with the "cadena de origen" using
       the public key certificate (error). If this tails then the CFDI was modified.
-- Add dependency on `eclipxe/CfdiUtils` to be avble to create the "Cadena Origen" and recover
+- Add dependency on `eclipxe/CfdiUtils` to be able to create the "Cadena Origen" and recover
   a certificate from a cfdi.
 - Add new methods on `CFDIReader\CFDIFactory` to create helper objects:
     - `newXsltRetriever(DownloaderInterface $downloader = null): ?XsltRetriever`

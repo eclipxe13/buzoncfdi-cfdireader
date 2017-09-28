@@ -119,8 +119,11 @@ class CFDIFactory
      */
     public function newCadenaOrigen(): CadenaOrigen
     {
-        $retriever = $this->newXsltRetriever();
         $cadenaOrigenBuilder = new CadenaOrigen();
+        $retriever = $this->newXsltRetriever();
+        if (null === $retriever) {
+            return $cadenaOrigenBuilder;
+        }
         foreach ($cadenaOrigenBuilder->getXsltLocations() as $version => $remote) {
             $location = $retriever->buildPath($remote);
             if (! file_exists($location)) {

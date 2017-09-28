@@ -139,7 +139,38 @@ class CFDIReader
 
     public function getVersion(): string
     {
-        return (string) $this->comprobante['version'];
+        return $this->attribute('version');
+    }
+
+    /**
+     * Return the node in the path inside the Comprobante
+     * Returns null if the node does not exists
+     * The node retrieved is always a copy
+     *
+     * @param string[] ...$nodePath
+     * @return SimpleXMLElement|null
+     */
+    public function node(...$nodePath)
+    {
+        $node = $this->retrieveNode(...$nodePath);
+        return (null === $node) ? null : clone $node;
+    }
+
+    /**
+     * Get the attribute content of a comprobante or child node
+     * Return an empty string if the node or the attribute does not exists
+     *
+     * The last argument is always the attribute name
+     *
+     * @param string[] ...$nodePath
+     * @return string
+     */
+    public function attribute(string ...$nodePath): string
+    {
+        // cast to string since array_pop can return NULL
+        $attribute = (string) array_pop($nodePath);
+        $node = $this->retrieveNode(...$nodePath);
+        return (null !== $node) ? (string) $node[$attribute] : '';
     }
 
     /**
@@ -149,10 +180,7 @@ class CFDIReader
      */
     public function getUUID(): string
     {
-        if (! $this->hasTimbreFiscalDigital()) {
-            return '';
-        }
-        return (string) $this->comprobante->{'complemento'}->timbreFiscalDigital['UUID'];
+        return $this->attribute('complemento', 'timbreFiscalDigital', 'UUID');
     }
 
     /**
@@ -162,8 +190,7 @@ class CFDIReader
      */
     public function hasTimbreFiscalDigital(): bool
     {
-        return isset($this->comprobante->{'complemento'})
-            && isset($this->comprobante->{'complemento'}->timbreFiscalDigital);
+        return (null !== $this->retrieveNode('complemento', 'timbreFiscalDigital'));
     }
 
     /**
@@ -218,5 +245,23 @@ class CFDIReader
                 $this->appendChild($child, $destination, $nss);
             }
         }
+    }
+
+    /**
+     * Private helper to locate a node
+     * @see node(), attribute()
+     * @param string[] ...$nodePath
+     * @return null|SimpleXMLElement
+     */
+    private function retrieveNode(string ...$nodePath)
+    {
+        $node = $this->comprobante;
+        foreach ($nodePath as $level) {
+            if (! isset($node->{$level})) {
+                return null;
+            }
+            $node = $node->{$level};
+        }
+        return $node;
     }
 }
