@@ -3,6 +3,28 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - MINOR version when you add functionality in a backwards-compatible manner, and
   - PATCH version when you make backwards-compatible bug fixes.
 
+# Version 2.2.0 - Validate certificate
+- Create a new post validator `\CFDIReader\PostValidations\Validators\Certificado` that checks:
+    - certificate number match (error)
+    - emisor rfc match  (error)
+    - emisor name match  (warning)
+    - date between certificate dates (error)
+    - if contains a CadenaOrigen object, verify that the sello match with the "cadena de origen" using
+      the public key certificate (error). If this tails then the CFDI was modified.
+- Add dependency on `eclipxe/CfdiUtils` to be avble to create the "Cadena Origen" and recover
+  a certificate from a cfdi.
+- Add new methods on `CFDIReader\CFDIFactory` to create helper objects:
+    - `newXsltRetriever(DownloaderInterface $downloader = null): ?XsltRetriever`
+      Create a new instance of `XmlResourceRetriever\XsltRetriever` based on local resources path.
+      This allow to create a local repository of xslt files.
+      This is very similar to `newRetriever(DownloaderInterface $downloader = null): ?XsdRetriever`
+      but for XSLT resources instead of XSD.
+    - `newCadenaOrigen(): CadenaOrigen`
+      Create a new instance of `CfdiUtils\CadenaOrigen`, using `newXsltRetriever`
+    - `newCertificadoValidator(): CertificadoValidator`
+      Create a new instance of `CFDIReader\PostValidations\Validators\Certificado` setting the
+      `CadenaOrigen` with the returned instance of `newCadenaOrigen`
+
 # Version 2.1.0 
 - Add `source(): string` and `document(): \DOMDocument` methods to `CFDIReader\CFDIReader`
 - Add docblocks to `CFDIReader\PostValidations\IssuesTypes` constants

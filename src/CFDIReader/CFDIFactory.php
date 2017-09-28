@@ -3,9 +3,12 @@ namespace CFDIReader;
 
 use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
+use CFDIReader\PostValidations\Validators\Certificado as CertificadoValidator;
 use CFDIReader\SchemasValidator\SchemasValidator;
+use CfdiUtils\CadenaOrigen;
 use XmlResourceRetriever\Downloader\DownloaderInterface;
 use XmlResourceRetriever\XsdRetriever;
+use XmlResourceRetriever\XsltRetriever;
 
 /**
  * Description of CFDIFactory
@@ -28,6 +31,11 @@ class CFDIFactory
         $this->setLocalResourcesPath($localResourcesPath);
     }
 
+    /**
+     * Return an object with default validators included in the PostValidator object
+     *
+     * @return PostValidator
+     */
     public function newPostValidator(): PostValidator
     {
         $postvalidator = new PostValidator();
@@ -35,6 +43,7 @@ class CFDIFactory
         $postvalidator->validators->append(new Validators\Fechas());
         $postvalidator->validators->append(new Validators\Conceptos());
         $postvalidator->validators->append(new Validators\Totales());
+        $postvalidator->validators->append($this->newCertificadoValidator());
         return $postvalidator;
     }
 
@@ -84,6 +93,55 @@ class CFDIFactory
     {
         $retriever = $this->newRetriever();
         return new SchemasValidator($retriever);
+    }
+
+    /**
+     * Return a new instance of an XsltRetriever depending on the
+     * property localResourcesPath.
+     *
+     * @param DownloaderInterface|null $downloader
+     * @return null|XsltRetriever
+     */
+    public function newXsltRetriever(DownloaderInterface $downloader = null)
+    {
+        $localResourcesPath = $this->getLocalResourcesPath();
+        if ('' === $localResourcesPath) {
+            return null;
+        }
+        return new XsltRetriever($localResourcesPath, $downloader);
+    }
+
+    /**
+     * Return a new instance of a CadenaOrigen object with the XsltLocations
+     * changed according to the retriever created at newXsltRetriever
+     *
+     * @return CadenaOrigen
+     */
+    public function newCadenaOrigen(): CadenaOrigen
+    {
+        $retriever = $this->newXsltRetriever();
+        $cadenaOrigenBuilder = new CadenaOrigen();
+        foreach ($cadenaOrigenBuilder->getXsltLocations() as $version => $remote) {
+            $location = $retriever->buildPath($remote);
+            if (! file_exists($location)) {
+                $retriever->retrieve($remote);
+            }
+            $cadenaOrigenBuilder->setXsltLocation($version, $location);
+        }
+        return $cadenaOrigenBuilder;
+    }
+
+    /**
+     * Return a CertificadoValidator with the CadenaOrigen property set
+     * to the value of the newCadenaOrigen method
+     *
+     * @return CertificadoValidator
+     */
+    public function newCertificadoValidator(): CertificadoValidator
+    {
+        $validator = new CertificadoValidator();
+        $validator->setCadenaOrigen($this->newCadenaOrigen());
+        return $validator;
     }
 
     /**
