@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/3" version="3.2">
+    <cfdi:Complemento>
+        <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" version="1.0"/>
+    </cfdi:Complemento>
+</cfdi:Comprobante>
