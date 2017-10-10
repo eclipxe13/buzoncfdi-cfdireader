@@ -3,6 +3,14 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - MINOR version when you add functionality in a backwards-compatible manner, and
   - PATCH version when you make backwards-compatible bug fixes.
 
+# Version 2.4.0
+- Fix bug on initilize `CFDIReader\Scripts\Validate` local path
+- Deprecate protected property $comprobante inside `\CFDIReader\PostValidations\Validators\AbstractValidator`
+- Stop using previously deprecated property in internal validators
+- Docblock `\CFDIReader\PostValidations\Validators\AbstractValidator` as access private
+- Fix project description
+
+
 # Version 2.3.0 - node and attribute
 - Add `node` and `attribute` methods to `CFDIReader`.
   This action simplify the information extraction from the `Comprobante`node.
