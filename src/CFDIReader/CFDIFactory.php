@@ -39,6 +39,7 @@ class CFDIFactory
     public function newPostValidator(): PostValidator
     {
         $postvalidator = new PostValidator();
+        $postvalidator->validators->append(new Validators\TFDVersions());
         $postvalidator->validators->append(new Validators\Impuestos());
         $postvalidator->validators->append(new Validators\Fechas());
         $postvalidator->validators->append(new Validators\Conceptos());
