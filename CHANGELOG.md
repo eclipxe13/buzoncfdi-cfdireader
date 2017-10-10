@@ -4,7 +4,7 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - PATCH version when you make backwards-compatible bug fixes.
 
 # Version 2.4.0
-- Fix bug on initilize `CFDIReader\Scripts\Validate` local path
+- Fix bug on initialize `CFDIReader\Scripts\Validate` local path
 - Deprecate protected property $comprobante inside `\CFDIReader\PostValidations\Validators\AbstractValidator`
 - Stop using previously deprecated property in internal validators
 - Docblock `\CFDIReader\PostValidations\Validators\AbstractValidator` as access private
