@@ -19,7 +19,7 @@ class ValidateTest extends TestCase
         $this->assertEquals($filenames, $validate->getFilenames());
         $this->assertEquals($stdOut, $validate->getStdOut());
         $this->assertEquals($stdErr, $validate->getStdErr());
-        $this->assertEquals('', $validate->getLocalPath());
+        $this->assertNull($validate->getLocalPath());
     }
 
     public function testConstructorWithFullArguments()
@@ -36,7 +36,7 @@ class ValidateTest extends TestCase
         $this->assertEquals($filenames, $validate->getFilenames());
         $this->assertEquals($stdOut, $validate->getStdOut());
         $this->assertEquals($stdErr, $validate->getStdErr());
-        $this->assertEquals($localPath, $validate->getLocalPath());
+        $this->assertSame($localPath, $validate->getLocalPath());
     }
 
     public function testMake()
@@ -49,7 +49,7 @@ class ValidateTest extends TestCase
 
         $this->assertEquals($script, $validate->getScript());
         $this->assertEquals($filenames, $validate->getFilenames());
-        $this->assertEquals($localPath, $validate->getLocalPath());
+        $this->assertSame($localPath, $validate->getLocalPath());
     }
 
     public function testWithInvalidArgument()
@@ -67,13 +67,13 @@ class ValidateTest extends TestCase
 
         $this->assertEquals($script, $validate->getScript());
         $this->assertEquals($filenames, $validate->getFilenames());
-        $this->assertEquals('', $validate->getLocalPath());
+        $this->assertNull($validate->getLocalPath());
     }
 
     public function testMakeWithLocalPathDisabled()
     {
         $validate = Validate::make(['command', '--local-path', 'disable']);
-        $this->assertNull($validate->getLocalPath());
+        $this->assertSame('', $validate->getLocalPath());
     }
 
     public function testMakeThrowExceptionOnEmptyArgumentsArray()

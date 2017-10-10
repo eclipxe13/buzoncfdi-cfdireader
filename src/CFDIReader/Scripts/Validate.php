@@ -62,7 +62,7 @@ class Validate
         $script = array_shift($arguments);
 
         $filenames = [];
-        $localPath = '';
+        $localPath = null;
         while (null !== $argument = array_shift($arguments)) {
             if (in_array($argument, ['--local-path', '-l'])) {
                 $localPath = (count($arguments)) ? array_shift($arguments) : '';
@@ -76,7 +76,7 @@ class Validate
         }
 
         $command = new self($script, $filenames);
-        $command->localPath = ('disable' === $localPath) ? null : $localPath;
+        $command->localPath = ('disable' === $localPath) ? '' : $localPath;
         return $command;
     }
 
@@ -170,6 +170,9 @@ class Validate
     }
 
     /**
+     * If it is null then the factory will use library path
+     * If it is empty then local path is disabled
+     * Otherwise the specified path will be used
      * @return null|string
      */
     public function getLocalPath()
