@@ -61,7 +61,8 @@ class Certificado extends AbstractValidator
             $this->validateSello(
                 $certificado,
                 $cfdi->getVersion(),
-                $this->getCadenaOrigen()->build($cfdi->source())
+                $this->getCadenaOrigen()->build($cfdi->source()),
+                $cfdi->attribute('sello')
             );
         }
     }
@@ -126,13 +127,13 @@ class Certificado extends AbstractValidator
         }
     }
 
-    private function validateSello(UtilCertificado $certificado, string $version, string $cadena)
+    private function validateSello(UtilCertificado $certificado, string $version, string $cadena, string $selloBase64)
     {
         $algorithms = [OPENSSL_ALGO_SHA256];
         if ('3.2' === $version) {
             $algorithms[] = OPENSSL_ALGO_SHA1;
         }
-        $sello = $this->obtainSello();
+        $sello = $this->obtainSello($selloBase64);
         if ('' !== $sello) {
             $selloIsValid = false;
             foreach ($algorithms as $algorithm) {
@@ -149,9 +150,10 @@ class Certificado extends AbstractValidator
         }
     }
 
-    private function obtainSello(): string
+    private function obtainSello(string $selloBase64): string
     {
-        $selloBase64 = (string) $this->comprobante['sello'];
+        // this silence error operator is intentional, if $selloBase64 is malformed
+        // then it will return false and I will recognize the error
         if (false === $sello = @base64_decode($selloBase64, true)) {
             $this->errors->add('El sello del comprobante fiscal digital no está en base 64');
             return '';

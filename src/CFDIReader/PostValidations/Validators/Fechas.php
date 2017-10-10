@@ -11,7 +11,7 @@ class Fechas extends AbstractValidator
         // setup the AbstractValidator Helper class
         $this->setup($cfdi, $issues);
         // do the validation process
-        $document = strtotime($this->comprobante['fecha']);
+        $document = strtotime($cfdi->attribute('fecha'));
         if ($document > $this->getCurrentDate()) {
             $this->errors->add('La fecha del documento es mayor a la fecha actual');
         }

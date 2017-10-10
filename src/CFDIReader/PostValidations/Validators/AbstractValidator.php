@@ -10,6 +10,12 @@ use SimpleXMLElement;
 
 /**
  * Decorator class to write Validators using some protected helper methods
+ * If you want to use this class as template please consider add your
+ * validator to this project.
+ *
+ * This class is not supposed to use outside
+ *
+ * @access private
  */
 abstract class AbstractValidator implements ValidatorInterface
 {
@@ -24,6 +30,8 @@ abstract class AbstractValidator implements ValidatorInterface
     protected $warnings;
 
     /**
+     * @deprecated since version 2.4.0, use $cfdi->node and $cfdi->attribute instead
+     *
      * @var SimpleXMLElement
      */
     protected $comprobante;

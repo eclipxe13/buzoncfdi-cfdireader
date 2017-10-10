@@ -3,15 +3,23 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - MINOR version when you add functionality in a backwards-compatible manner, and
   - PATCH version when you make backwards-compatible bug fixes.
 
+# Version 2.4.0
+- Fix bug on initilize `CFDIReader\Scripts\Validate` local path
+- Deprecate protected property $comprobante inside `\CFDIReader\PostValidations\Validators\AbstractValidator`
+- Stop using previously deprecated property in internal validators
+- Docblock `\CFDIReader\PostValidations\Validators\AbstractValidator` as access private
+- Fix project description
+
+
 # Version 2.3.0 - node and attribute
 - Add `node` and `attribute` methods to `CFDIReader`.
-  This action simplify the information extraction from the comprobante.
+  This action simplify the information extraction from the `Comprobante`node.
   - `nodes` returns `NULL` or a cloned `\SimpleXmlElement`
   - `attribute` returns a string
 - Refactor validators and `CFDIReader` to use this helpers, now is more readable and simple
 - Fix possible bug when `CFDIFactory::newXsltRetriever()` returns `NULL`
 - Fix possible bug inside `CFDICleaner::xpathQuery()` when `\DOMXPath::query` returns `FALSE`
-- Fix dockblocks of object type properties that allows nulls
+- Fix docblocks of object type properties that allows nulls
 - Special thanks to `phpstan/phpstan` to help me catch possible bugs
 
 # Version 2.2.0 - Validate certificate
