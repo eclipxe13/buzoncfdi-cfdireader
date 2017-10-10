@@ -3,6 +3,14 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - MINOR version when you add functionality in a backwards-compatible manner, and
   - PATCH version when you make backwards-compatible bug fixes.
 
+# Version 2.5.0 - CFDI and TFD version correlation
+- Add `TFDVersions` to validate correlation between CFDI and TFD versions
+    - CFDI version 3.3 uses TFD version 1.1
+    - CFDI version 3.2 uses TFD version 1.0
+  This was set according to http://www.sat.gob.mx/informacion_fiscal/factura_electronica/Paginas/timbre_fiscal.aspx and a chat session with authorities (SAT).
+- Add `TFDVersions` to `CFDIFactory::newPostValidator`
+
+
 # Version 2.4.0
 - Fix bug on initialize `CFDIReader\Scripts\Validate` local path
 - Deprecate protected property $comprobante inside `\CFDIReader\PostValidations\Validators\AbstractValidator`
