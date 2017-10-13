@@ -76,7 +76,7 @@ class Validate
         }
 
         $command = new self($script, $filenames);
-        $command->localPath = ('disable' === $localPath) ? '' : $localPath;
+        $command->localPath = (null !== $localPath && 'disable' === $localPath) ? '' : $localPath;
         return $command;
     }
 
