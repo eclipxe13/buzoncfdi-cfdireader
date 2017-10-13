@@ -33,6 +33,7 @@ $xml = file_get_contents('some-cfdi-example.xml');
 $reader = new \CFDIReader\CFDIReader($xml);
 
 // The root element is retrieved by comprobante function, it returns always a new instance (cloned) of the root element
+/** @var \SimpleXMLElement $cfdi */
 $cfdi = $reader->comprobante();
 
 // all the nodes and attributes first letter is in lower case except if the attribute is all upper case
