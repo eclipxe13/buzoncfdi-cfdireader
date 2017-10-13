@@ -32,7 +32,7 @@ class PostValidator
             // a new issues to be populated
             $issues = new Issues();
             // ask the validator command to work
-            $validator->validate($cfdi, $this->issues);
+            $validator->validate($cfdi, $issues);
             // import all the issues found
             $this->issues->import($issues);
         }
