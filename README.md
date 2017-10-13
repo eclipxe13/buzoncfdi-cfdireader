@@ -43,6 +43,11 @@ echo $cfdi->complemento->timbreFiscalDigital["UUID"];
 
 Use `php scripts/validate.php [file1.xml] [file2.xml]` to test CFDIs and see the results.
 
+Options:
+- `--local-path | -l local-path`: use the `local-path` argument as the path of local storage.
+    - If `local-path` is the text `disable` then no local storage will be used.
+    - If `local-path` is not set or is an empty text then will use the location of the library plus `/resources`
+
 ## Create a reader
 
 The `CFDIReader` class is immutable, it only perform the following checks:
