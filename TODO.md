@@ -4,6 +4,7 @@ All your help is very appreciated, please contribute with testing, ideas, code, 
 
 - [ ] Validator for metodoPago
 - [X] Check CFDI signature againts certificate
+- [ ] Move build process to travis-ci
 
 ## Validate script
 
