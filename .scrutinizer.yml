@@ -10,7 +10,7 @@ build:
         rabbitmq: false
 
     tests:
-        stop_on_failure: true
+        stop_on_failure: false
         override:
             -
                 command: vendor/bin/parallel-lint src/ tests/ scripts/
@@ -18,6 +18,8 @@ build:
                 command: vendor/bin/phpcs -sp src/ tests/ scripts/
             -
                 command: vendor/bin/php-cs-fixer fix --using-cache=no --dry-run --verbose
+            -
+                command: vendor/bin/phpstan.phar analyze --level max src/ scripts/
             -
                 command: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
                 coverage:
@@ -36,6 +38,4 @@ filter:
     excluded_paths: ['tests/*', 'vendor/*']
 
 checks:
-    php:
-        code_rating: true
-        duplication: true
+    php: true
