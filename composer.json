@@ -36,6 +36,9 @@
     "autoload-dev": {
         "psr-4": {
             "CFDIReaderTests\\": "tests/CFDIReaderTests/"
-        }
+        },
+        "files": [
+            "tests/function_test_file_location.php"
+        ]
     }
 }
