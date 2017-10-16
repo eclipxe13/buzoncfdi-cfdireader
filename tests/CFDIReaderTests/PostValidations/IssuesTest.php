@@ -26,15 +26,6 @@ class IssuesTest extends TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The type of messages must be a non-empty string
      */
-    public function testInvalidTypeNull()
-    {
-        $this->issues->messages(null);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The type of messages must be a non-empty string
-     */
     public function testInvalidTypeEmpty()
     {
         $this->issues->messages('');

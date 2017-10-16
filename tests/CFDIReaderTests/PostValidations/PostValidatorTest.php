@@ -40,7 +40,7 @@ class PostValidatorTest extends TestCase
      */
     public function testInvalidProperty()
     {
-        $x = $this->postvalidator->dummy;
+        $x = $this->postvalidator->{'dummy'};
     }
 
     public function testValidateWithEmptyValidators()

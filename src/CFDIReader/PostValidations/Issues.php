@@ -16,8 +16,9 @@ class Issues implements \IteratorAggregate
      * Short cut to append a message string into the message collection
      * @param string $type
      * @param string $message
+     * @return void
      */
-    public function add($type, $message)
+    public function add(string $type, string $message)
     {
         $this->messages($type)->add($message);
     }
@@ -28,9 +29,9 @@ class Issues implements \IteratorAggregate
      * @param string $type
      * @return Messages
      */
-    public function messages($type)
+    public function messages(string $type)
     {
-        if (! is_string($type) || empty($type)) {
+        if ('' === $type) {
             throw new \InvalidArgumentException('The type of messages must be a non-empty string');
         }
         if (! array_key_exists($type, $this->messages)) {
@@ -41,9 +42,9 @@ class Issues implements \IteratorAggregate
 
     /**
      * The list of current registered types
-     * @return array
+     * @return string[]
      */
-    public function types()
+    public function types(): array
     {
         return array_keys($this->messages);
     }
@@ -51,6 +52,7 @@ class Issues implements \IteratorAggregate
     /**
      * Copy all messages from source to this object
      * @param Issues $issues
+     * @return void
      */
     public function import(Issues $issues)
     {
@@ -63,7 +65,15 @@ class Issues implements \IteratorAggregate
         }
     }
 
-    public function all()
+    /**
+     * Return an array that contains all messages by type only if they contain a message
+     * [
+     *     'errors' => [...]
+     *     'warnings' => [...]
+     * ]
+     * @return array
+     */
+    public function all(): array
     {
         $contents = [];
         foreach ($this->messages as $type => $messages) {

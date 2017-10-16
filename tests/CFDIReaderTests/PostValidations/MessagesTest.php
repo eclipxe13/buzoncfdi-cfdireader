@@ -60,17 +60,8 @@ class MessagesTest extends TestCase
 
     public function testGetFirstAndLastFalse()
     {
-        $this->assertFalse($this->messages->getFirst(), 'With no messages getFirst must return false');
-        $this->assertFalse($this->messages->getLast(), 'With no messages getLast must return false');
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Message must be a valid string
-     */
-    public function testAddInvalidString()
-    {
-        $this->messages->add(null);
+        $this->assertSame(false, $this->messages->getFirst(), 'With no messages getFirst must return false');
+        $this->assertSame(false, $this->messages->getLast(), 'With no messages getLast must return false');
     }
 
     /**

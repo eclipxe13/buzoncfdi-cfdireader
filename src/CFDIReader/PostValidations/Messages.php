@@ -11,32 +11,31 @@ class Messages implements \IteratorAggregate, \Countable
     private $messages = [];
 
     /**
+     * Add a message string to the collection
      * @param string $message
+     * @return void
      */
-    public function add($message)
+    public function add(string $message)
     {
-        if (! is_string($message)) {
-            throw new \InvalidArgumentException('Message must be a valid string');
-        }
-        if (empty($message)) {
+        if ('' === $message) {
             throw new \InvalidArgumentException('Message must be a non-empty string');
         }
-        $this->messages[] = (string) $message;
+        $this->messages[] = $message;
     }
 
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->messages);
     }
 
     /**
+     * Get a message by index
+     *
      * @param int $index
      * @return string
+     * @throws \OutOfBoundsException if the message does not exists
      */
-    public function get($index)
+    public function get(int $index): string
     {
         if (! array_key_exists($index, $this->messages)) {
             throw new \OutOfBoundsException('Message does not exists');
@@ -71,7 +70,7 @@ class Messages implements \IteratorAggregate, \Countable
      * Return an array of string messages
      * @return string[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->messages;
     }
