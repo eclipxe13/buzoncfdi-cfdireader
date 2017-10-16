@@ -44,8 +44,24 @@ class FechasTest extends ValidatorsTestCase
 
         $validator = new Fechas();
         $validator->validate($this->cfdi, $this->issues);
+        $this->assertEquals([], $this->issues->messages(IssuesTypes::ERROR)->all());
 
+        // the sample has the timbrado date is exactly 72 hours + 1 second higher than the document date
+        $validator->setDelta(0);
+        $validator->validate($this->cfdi, $this->issues);
         $expectedError = 'La fecha fecha del timbrado excedió las 72 horas de la fecha del documento';
         $this->assertEquals([$expectedError], $this->issues->messages(IssuesTypes::ERROR)->all());
+    }
+
+    public function testDeltaProperty()
+    {
+        $validator = new Fechas();
+        $this->assertEquals(60, $validator->getDelta());
+        // change value
+        $validator->setDelta(10);
+        $this->assertEquals(10, $validator->getDelta());
+        // disable delta
+        $validator->setDelta(0);
+        $this->assertEquals(0, $validator->getDelta());
     }
 }
