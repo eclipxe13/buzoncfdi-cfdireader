@@ -1,0 +1,34 @@
+language: php
+
+sudo: false
+
+php:
+  - 7.0
+  - 7.1
+
+before_script:
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-dist
+
+script:
+  - mkdir -p build/tests/
+  - vendor/bin/parallel-lint src/ scripts/ tests/
+  - vendor/bin/phpcs -sp src/ scripts/ tests/
+  - vendor/bin/php-cs-fixer fix -v --dry-run
+  - vendor/bin/phpunit --coverage-text --coverage-clover=build/tests/coverage.xml
+  # do not include tests folder in phpstan since
+  # the tests contains cases to throw exceptions for invalid types
+  # and error suppression
+  - vendor/bin/phpstan.phar analyze --level max src/ scripts/
+
+after_script:
+  - |
+    if [[ $TRAVIS_PHP_VERSION == '7.0' ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover build/tests/coverage.xml
+    fi
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always

@@ -130,7 +130,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [release]: https://github.com/eclipxe13/buzoncfdi-cfdireader/releases
 [license]: https://github.com/eclipxe13/buzoncfdi-cfdireader/blob/master/LICENSE
 [gitter]: https://gitter.im/eclipxe13/buzoncfdi-cfdireader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
-[build]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/build-status/master
+[build]: https://travis-ci.org/eclipxe13/buzoncfdi-cfdireader?branch=master
 [quality]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/
 [coverage]: https://scrutinizer-ci.com/g/eclipxe13/buzoncfdi-cfdireader/code-structure/master/code-coverage
 [downloads]: https://packagist.org/packages/eclipxe/buzoncfdi-cfdireader
@@ -139,7 +139,7 @@ and licensed for use under the MIT License (MIT). Please see [LICENSE][] for mor
 [badge-gitter]: https://badges.gitter.im/eclipxe13/buzoncfdi-cfdireader.svg
 [badge-release]: https://img.shields.io/github/tag/eclipxe13/buzoncfdi-cfdireader.svg?label=version&style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[badge-build]: https://img.shields.io/scrutinizer/build/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
+[badge-build]: https://img.shields.io/travis/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
 [badge-quality]: https://img.shields.io/scrutinizer/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
 [badge-coverage]: https://img.shields.io/scrutinizer/coverage/g/eclipxe13/buzoncfdi-cfdireader/master.svg?style=flat-square
 [badge-downloads]: https://img.shields.io/packagist/dt/eclipxe/buzoncfdi-cfdireader.svg?style=flat-square

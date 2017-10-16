@@ -1,41 +1,14 @@
-build:
-    environment:
-        mysql: false
-        postgresql: false
-        mongodb: false
-        elasticsearch: false
-        redis: false
-        memcached: false
-        neo4j: false
-        rabbitmq: false
-
-    tests:
-        stop_on_failure: false
-        override:
-            -
-                command: vendor/bin/parallel-lint src/ tests/ scripts/
-            -
-                command: vendor/bin/phpcs -sp src/ tests/ scripts/
-            -
-                command: vendor/bin/php-cs-fixer fix --using-cache=no --dry-run --verbose
-            -
-                command: vendor/bin/phpstan.phar analyze --level max src/ scripts/
-            -
-                command: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
-                coverage:
-                    file: 'coverage.xml'
-                    format: 'clover'
-
-    nodes:
-        php70:
-            environment:
-                php: 7.0
-        php71:
-            environment:
-                php: 7.1
-
 filter:
-    excluded_paths: ['tests/*', 'vendor/*']
+    excluded_paths:
+        - 'tests/*'
+        - 'vendor/*'
 
 checks:
+    # Do all php checks
     php: true
+
+tools:
+    # Receive code coverage from travis
+    external_code_coverage: true
+    # Disable code style checks (phpcs), already made in travis-ci
+    php_code_sniffer: false
