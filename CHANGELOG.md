@@ -3,6 +3,10 @@ This project is using Semantic Versioning, meaning that a version is: MAJOR.MINO
   - MINOR version when you add functionality in a backwards-compatible manner, and
   - PATCH version when you make backwards-compatible bug fixes.
 
+# Version 2.5.2
+- Fix: Fechas validator take a tolerance of 60 seconds to avoid time sync errors.
+  The property can be adjusted.
+
 # Version 2.5.1
 - Fix: `PostValidator` was using local issues property instead of variable.
 - Fix: Probable bug when comparing null to string (phpstan complains).
