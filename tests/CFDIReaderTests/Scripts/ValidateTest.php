@@ -89,7 +89,9 @@ class ValidateTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('parameter 1 is not a string');
 
-        new Validate('', ['', null]);
+        /** @var string $fakeString Override type to test the exception and avoid phpstan warning */
+        $fakeString = null;
+        new Validate('', ['', $fakeString]);
     }
 
     public function testRunExpectUUID32()

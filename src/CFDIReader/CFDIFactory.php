@@ -5,7 +5,8 @@ use CFDIReader\PostValidations\PostValidator;
 use CFDIReader\PostValidations\Validators;
 use CFDIReader\PostValidations\Validators\Certificado as CertificadoValidator;
 use CFDIReader\SchemasValidator\SchemasValidator;
-use CfdiUtils\CadenaOrigen;
+use CfdiUtils\CadenaOrigen\DOMBuilder;
+use CfdiUtils\CadenaOrigen\XsltBuilderInterface;
 use XmlResourceRetriever\Downloader\DownloaderInterface;
 use XmlResourceRetriever\XsdRetriever;
 use XmlResourceRetriever\XsltRetriever;
@@ -113,26 +114,13 @@ class CFDIFactory
     }
 
     /**
-     * Return a new instance of a CadenaOrigen object with the XsltLocations
-     * changed according to the retriever created at newXsltRetriever
+     * Return a new instance of a XsltBuilderInterface
      *
-     * @return CadenaOrigen
+     * @return XsltBuilderInterface
      */
-    public function newCadenaOrigen(): CadenaOrigen
+    public function newCadenaOrigen(): XsltBuilderInterface
     {
-        $cadenaOrigenBuilder = new CadenaOrigen();
-        $retriever = $this->newXsltRetriever();
-        if (null === $retriever) {
-            return $cadenaOrigenBuilder;
-        }
-        foreach ($cadenaOrigenBuilder->getXsltLocations() as $version => $remote) {
-            $location = $retriever->buildPath($remote);
-            if (! file_exists($location)) {
-                $retriever->retrieve($remote);
-            }
-            $cadenaOrigenBuilder->setXsltLocation($version, $location);
-        }
-        return $cadenaOrigenBuilder;
+        return new DOMBuilder();
     }
 
     /**
@@ -145,6 +133,7 @@ class CFDIFactory
     {
         $validator = new CertificadoValidator();
         $validator->setCadenaOrigen($this->newCadenaOrigen());
+        $validator->setXsltRetriever($this->newXsltRetriever());
         return $validator;
     }
 

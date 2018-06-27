@@ -3,9 +3,12 @@ namespace CFDIReader\PostValidations\Validators;
 
 use CFDIReader\CFDIReader;
 use CFDIReader\PostValidations\Issues;
-use CfdiUtils\CadenaOrigen;
-use CfdiUtils\Certificado as UtilCertificado;
-use CfdiUtils\CfdiCertificado;
+use CfdiUtils\CadenaOrigen\CfdiDefaultLocations;
+use CfdiUtils\CadenaOrigen\XsltBuilderInterface;
+use CfdiUtils\Certificado\Certificado as UtilCertificado;
+use CfdiUtils\Certificado\NodeCertificado;
+use CfdiUtils\Nodes\XmlNodeUtils;
+use XmlResourceRetriever\XsltRetriever;
 
 /**
  * This class validate that:
@@ -15,18 +18,39 @@ use CfdiUtils\CfdiCertificado;
  */
 class Certificado extends AbstractValidator
 {
-    /** @var CadenaOrigen|null */
+    /** @var XsltBuilderInterface|null */
     private $cadenaOrigen;
 
-    public function setCadenaOrigen(CadenaOrigen $cadenaOrigen = null)
+    /** @var XsltRetriever|null */
+    private $xsltRetriever;
+
+    public function setXsltRetriever(XsltRetriever $xsltRetriever = null)
+    {
+        $this->xsltRetriever = $xsltRetriever;
+    }
+
+    public function getXsltRetriever(): XsltRetriever
+    {
+        if (! $this->xsltRetriever instanceof XsltRetriever) {
+            throw new \RuntimeException('The xsltRetriever object has not been set');
+        }
+        return $this->xsltRetriever;
+    }
+
+    public function hasXsltRetriever(): bool
+    {
+        return ($this->xsltRetriever instanceof XsltRetriever);
+    }
+
+    public function setCadenaOrigen(XsltBuilderInterface $cadenaOrigen = null)
     {
         $this->cadenaOrigen = $cadenaOrigen;
     }
 
-    public function getCadenaOrigen(): CadenaOrigen
+    public function getCadenaOrigen(): XsltBuilderInterface
     {
         // use this comparison instead of hasCadenaOrigen to satisfy phpstan
-        if (! ($this->cadenaOrigen instanceof CadenaOrigen)) {
+        if (! $this->cadenaOrigen instanceof XsltBuilderInterface) {
             throw new \RuntimeException('The CadenaOrigen object has not been set');
         }
         return $this->cadenaOrigen;
@@ -34,7 +58,7 @@ class Certificado extends AbstractValidator
 
     public function hasCadenaOrigen(): bool
     {
-        return ($this->cadenaOrigen instanceof CadenaOrigen);
+        return ($this->cadenaOrigen instanceof XsltBuilderInterface);
     }
 
     public function validate(CFDIReader $cfdi, Issues $issues)
@@ -43,7 +67,7 @@ class Certificado extends AbstractValidator
         $this->setup($cfdi, $issues);
 
         // create the certificate
-        $extractor = new CfdiCertificado($cfdi->document());
+        $extractor = new NodeCertificado(XmlNodeUtils::nodeFromXmlElement($cfdi->document()->documentElement));
         try {
             $certificado = $extractor->obtain();
         } catch (\Exception $ex) {
@@ -58,13 +82,31 @@ class Certificado extends AbstractValidator
 
         // validate certificate seal
         if ($this->hasCadenaOrigen()) {
+            $cadenaOrigen = $this->getCadenaOrigen()->build(
+                $cfdi->source(),
+                $this->getXsltLocation($cfdi->getVersion())
+            );
             $this->validateSello(
                 $certificado,
                 $cfdi->getVersion(),
-                $this->getCadenaOrigen()->build($cfdi->source()),
+                $cadenaOrigen,
                 $cfdi->attribute('sello')
             );
         }
+    }
+
+    private function getXsltLocation(string $version): string
+    {
+        $remoteLocation = CfdiDefaultLocations::location($version);
+        if (! $this->hasXsltRetriever()) {
+            return $remoteLocation;
+        }
+        $retriever = $this->getXsltRetriever();
+        $localPath = $retriever->buildPath($remoteLocation);
+        if (! file_exists($localPath)) {
+            $retriever->retrieve($remoteLocation);
+        }
+        return $localPath;
     }
 
     private function validateNoCertificado(UtilCertificado $certificado, string $noCertificado)

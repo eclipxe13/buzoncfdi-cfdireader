@@ -123,7 +123,7 @@ class CFDICleaner
 
         libxml_clear_errors(); // clear previous libxml errors
         $dom = new DOMDocument();
-        $dom->loadXML($content, LIBXML_NOWARNING | LIBXML_NONET);
+        @$dom->loadXML($content, LIBXML_NOWARNING | LIBXML_NONET);
         if (false !== $loaderror = libxml_get_last_error()) {
             libxml_clear_errors();  // clear recently libxml errors
             throw new CFDICleanerException('XML Error: ' . $loaderror->message);

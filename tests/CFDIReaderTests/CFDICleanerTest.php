@@ -12,7 +12,7 @@ class CFDICleanerTest extends TestCase
         $cleaner = new CFDICleaner('');
         $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
-        @$cleaner->loadContent('');
+        $cleaner->loadContent('');
     }
 
     public function testConstructorWithNonCFDI()
@@ -20,7 +20,7 @@ class CFDICleanerTest extends TestCase
         $cleaner = new CFDICleaner('');
         $this->expectException(CFDICleanerException::class);
         // use the @ to not throw the warning
-        @$cleaner->loadContent('<node></node>');
+        $cleaner->loadContent('<node></node>');
     }
 
     public function testConstructorWithBadVersion()

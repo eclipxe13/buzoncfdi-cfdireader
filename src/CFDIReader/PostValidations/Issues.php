@@ -54,7 +54,7 @@ class Issues implements \IteratorAggregate
      * @param Issues $issues
      * @return void
      */
-    public function import(Issues $issues)
+    public function import(self $issues)
     {
         foreach ($issues->types() as $type) {
             $source = $issues->messages($type);

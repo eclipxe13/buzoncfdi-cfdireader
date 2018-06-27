@@ -54,7 +54,7 @@ class Validate
      * @param string[] $arguments
      * @return Validate
      */
-    public static function make(array $arguments): Validate
+    public static function make(array $arguments): self
     {
         if (! count($arguments)) {
             throw new \InvalidArgumentException('Cannot construct without arguments');
